@@ -17,10 +17,15 @@ namespace BE_WAREHOUSE.Core.Entities
         public int ProductStock { get; set; }
         public string ProductDescription { get; set; }
         public string ProductSlug { get; set; }
+        public Boolean ProductNewFlag { get; set; }
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
+        public string? CategoriesName { get; set; }
+        public string? CategoriesSlug { get; set; }
+        public string? CategoriesDescription { get; set; }
+        public string? CategoriesCode { get; set; }
 
     }
 }

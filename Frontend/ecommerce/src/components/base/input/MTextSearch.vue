@@ -108,15 +108,17 @@ export default {
     }
     .p-textfield1 input{
 
-        height: 36px;
-        width: 276px;
+        height: 40px;
+        width: 100%;
         border: 1px solid #e6e6e6;
         padding: 0 30px 0px 12px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 30px 0 rgba(0,0,0,0.15);
         /* margin-top: 8px; */
     }
     .p-textfield1 input:focus{
-        height: 36px;
-        width: 276px;
+        height: 40px;
+        width: 100%;
         outline: unset;
     }
     .p-textfield1 input::placeholder {

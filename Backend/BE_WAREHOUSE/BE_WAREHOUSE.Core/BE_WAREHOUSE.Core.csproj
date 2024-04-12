@@ -25,6 +25,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ProductResource.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\TokenResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TokenResource.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +40,10 @@
     <EmbeddedResource Update="Resources\ProductResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ProductResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\TokenResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TokenResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

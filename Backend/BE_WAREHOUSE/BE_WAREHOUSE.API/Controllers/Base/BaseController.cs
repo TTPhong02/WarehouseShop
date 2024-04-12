@@ -33,7 +33,7 @@ namespace BE_WAREHOUSE.API.Controllers.Base
             var res = await _baseRepository.GetByIdAsync(id);
             return Ok(res);
         }
-        [HttpGet("{NewCode}")]
+        [HttpGet("NewCode")]
         public async Task<IActionResult> GetNewCodeAsync()
         {
             var res = await _baseRepository.GetMaxCodeAsync();
@@ -47,16 +47,16 @@ namespace BE_WAREHOUSE.API.Controllers.Base
             return Ok(res);
         }
         [HttpPost]
-        public async Task<IActionResult> InsertAsync(T entity)
+        public async Task<IActionResult> InsertAsync([FromForm]string dataJson, IFormFile? imageFile)
         {
             var className = typeof(T).Name;
-            var res = await _baseService.InsertServiceAsync(entity);
+            var res = await _baseService.InsertServiceAsync( dataJson, imageFile);
             return StatusCode(201,res);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(T entity, Guid id) 
+        public async Task<IActionResult> UpdateAsync([FromForm] string dataJson, IFormFile? imageFile, Guid id) 
         { 
-            var res = await _baseService.UpdateServiceAsync(entity, id);
+            var res = await _baseService.UpdateServiceAsync( dataJson, imageFile, id);
             return Ok(res);
         }
         [HttpDelete("{id}")]

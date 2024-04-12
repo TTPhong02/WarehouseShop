@@ -181,21 +181,21 @@
 }
 .icon-google {
 	background: url('../../assets/img/logo-brands/icon-google.svg') no-repeat 0px 0px;
-	width: 32px;
+	width: 40px;
 	height: 40px;
 	border-radius: 50%;
 	cursor: pointer;
 }
 .icon-apple {
 	background: url('../../assets/img/logo-brands/icon-apple.svg') no-repeat 0px 0px;
-	width: 32px;
+	width: 40px;
 	height: 40px;
 	border-radius: 50%;
 	cursor: pointer;
 }
 .icon-microsoft {
 	background: url('../../assets/img/logo-brands/icon-microsoft.svg') no-repeat -0px -0px;
-	width: 32px;
+	width: 40px;
 	height: 40px;
 	border-radius: 50%;
 	cursor: pointer;

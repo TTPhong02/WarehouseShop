@@ -10,5 +10,6 @@ namespace BE_WAREHOUSE.Core.Interfaces.Products
 {
     public interface IProductRepository : IBaseRepository<Product>
     {
+        Task<IEnumerable<Product>> GetProductNew();
     }
 }

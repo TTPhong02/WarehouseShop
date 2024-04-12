@@ -1,15 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import MHomePage from "./view/HomePage.vue";
-import MCustomerList from "./view/CustomerList.vue";
-import MEmployeeList from "./view/EmployeeList.vue";
-import MReportPage from "./view/ReportPage.vue";
-import MSettingPage from "./view/SettingPage.vue";
 import MDialog from './components/base/dialog/MDialog.vue';
 import MButton from './components/base/button/MButton.vue';
 import MToastMessage from './components/base/toast/MToastMessage.vue';
 import MLoading from "./components/base/loading/MLoading.vue"
-import MLogin from "./view/Login.vue"
+import AdminLogin from "./view/AdminLogin.vue"
 import axios from 'axios';
 import MISAEnum from './helpers/enum';
 import MISAResource from './helpers/resource';
@@ -19,14 +14,12 @@ import MTooltip from "./components/base/tooltip/MTooltip.vue";
 import router from "./router/routes.js";
 import urlApi from './js/request/urlapi';
 
+// // Import Bootstrap and BootstrapVue CSS files (order is important)
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 const app = createApp(App);
-app.component("MHomePage",MHomePage);
-app.component("MCustomerList",MCustomerList);
-app.component("MEmployeeList",MEmployeeList);
-app.component("MLogin",MLogin); 
-app.component("MReportPage",MReportPage);
-app.component("MSettingPage",MSettingPage);
+app.component("AdminLogin",AdminLogin); 
 app.component("MDialog",MDialog);
 app.component("MToastMessage",MToastMessage);
 app.component("MButton",MButton);

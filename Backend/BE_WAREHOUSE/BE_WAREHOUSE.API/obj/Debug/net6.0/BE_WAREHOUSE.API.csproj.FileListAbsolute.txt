@@ -62,3 +62,4 @@ D:\ĐỒ ÁN\Backend\BE_WAREHOUSE\BE_WAREHOUSE.API\obj\Debug\net6.0\ref\BE_WAREH
 D:\ĐỒ ÁN\Backend\BE_WAREHOUSE\BE_WAREHOUSE.API\obj\Debug\net6.0\BE_WAREHOUSE.API.MvcApplicationPartsAssemblyInfo.cs
 D:\ĐỒ ÁN\Backend\BE_WAREHOUSE\BE_WAREHOUSE.API\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\ĐỒ ÁN\Backend\BE_WAREHOUSE\BE_WAREHOUSE.API\bin\Debug\net6.0\AutoMapper.dll
+D:\ĐỒ ÁN\Backend\BE_WAREHOUSE\BE_WAREHOUSE.API\bin\Debug\net6.0\BE_WAREHOUSE.API.staticwebassets.runtime.json

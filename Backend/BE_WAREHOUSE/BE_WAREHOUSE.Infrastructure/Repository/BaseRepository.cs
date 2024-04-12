@@ -32,7 +32,7 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
 
         public async Task<int> DeleteByIdAsync(Guid id)
         {
-            var res = await _dbContext.UpdateAsync<T>(id);
+            var res = await _dbContext.DeleteAsync<T>(id);
             return res;
         }
 

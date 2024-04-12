@@ -13,3 +13,4 @@ D:\ĐỒ ÁN\Backend\BE_WAREHOUSE\BE_WAREHOUSE.Core\obj\Debug\net6.0\BE_WAREHOUS
 D:\ĐỒ ÁN\Backend\BE_WAREHOUSE\BE_WAREHOUSE.Core\obj\Debug\net6.0\refint\BE_WAREHOUSE.Core.dll
 D:\ĐỒ ÁN\Backend\BE_WAREHOUSE\BE_WAREHOUSE.Core\obj\Debug\net6.0\BE_WAREHOUSE.Core.pdb
 D:\ĐỒ ÁN\Backend\BE_WAREHOUSE\BE_WAREHOUSE.Core\obj\Debug\net6.0\ref\BE_WAREHOUSE.Core.dll
+D:\ĐỒ ÁN\Backend\BE_WAREHOUSE\BE_WAREHOUSE.Core\obj\Debug\net6.0\BE_WAREHOUSE.Core.Resources.TokenResource.resources

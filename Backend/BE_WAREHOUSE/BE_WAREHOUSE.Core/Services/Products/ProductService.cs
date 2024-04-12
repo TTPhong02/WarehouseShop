@@ -1,5 +1,6 @@
 ﻿using BE_WAREHOUSE.Core.Entities;
 using BE_WAREHOUSE.Core.Interfaces.Base;
+using BE_WAREHOUSE.Core.Interfaces.Image;
 using BE_WAREHOUSE.Core.Interfaces.Products;
 using BE_WAREHOUSE.Core.Resources;
 using BE_WAREHOUSE.Core.Services.Base;
@@ -14,9 +15,10 @@ namespace BE_WAREHOUSE.Core.Services.Products
 {
     public class ProductService : BaseService<Product>,IProductService
     {
-        public ProductService(IBaseRepository<Product> repository) : base(repository)
+        public ProductService(IBaseRepository<Product> repository, IImagesService imagesService) : base(repository, imagesService)
         {
         }
+
         public override async Task ValidateBeforeInsert(Product product)
         {
             if (product.ProductName == "" || product.ProductName == null)

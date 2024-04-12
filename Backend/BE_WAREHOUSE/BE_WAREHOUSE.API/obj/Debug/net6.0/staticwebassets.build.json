@@ -1,11 +1,54 @@
 {
   "Version": 1,
-  "Hash": "vbrP0aECRM4uJSFhK2GNiPeJUQfXbn2s70fLRDsNkjY=",
+  "Hash": "JWPDwdd4SsB8W/WaxPHCBzbwNvh4XMfoiDxPSeOi7IE=",
   "Source": "BE_WAREHOUSE.API",
   "BasePath": "_content/BE_WAREHOUSE.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "BE_WAREHOUSE.API\\wwwroot",
+      "Source": "BE_WAREHOUSE.API",
+      "ContentRoot": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\",
+      "BasePath": "_content/BE_WAREHOUSE.API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\1.png",
+      "SourceId": "BE_WAREHOUSE.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\",
+      "BasePath": "_content/BE_WAREHOUSE.API",
+      "RelativePath": "images/1.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\1.png"
+    },
+    {
+      "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\quat-cam-tay.jpg",
+      "SourceId": "BE_WAREHOUSE.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\",
+      "BasePath": "_content/BE_WAREHOUSE.API",
+      "RelativePath": "images/quat-cam-tay.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\quat-cam-tay.jpg"
+    }
+  ]
 }

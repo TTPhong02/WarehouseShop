@@ -1,7 +1,7 @@
 <template>
     <div class="p-dropmenu">
-        <div class="p-dropmenu__label">
-            <label >{{textLabel}}<span v-if="required" class="required"> *</span></label>
+        <div v-if="textLabel" class="p-dropmenu__label">
+            <label>{{textLabel}}<span v-if="required" class="required"> *</span></label>
         </div>
         <div class="p-dropmenu__box">
             <input 
@@ -185,6 +185,8 @@ input{
     border: unset;
 }
 label{
+    margin: 0;
+    padding:0;
     font-weight: 700;
     font-size: 14px;
 }
@@ -275,5 +277,10 @@ label{
   font-size: 12px;
   font-style: italic;
   margin-bottom: 20px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>

@@ -58,7 +58,7 @@ namespace BE_WAREHOUSE.Infrastructure.DbContext
             return res;
         }
 
-        public async Task<int> UpdateAsync<T>(Guid id)
+        public async Task<int> DeleteAsync<T>(Guid id)
         {
             var className = typeof(T).Name;
             var sql = $"DELETE FROM {className} where {className}Id = @{className}Id";

@@ -1,54 +1,91 @@
 import {createRouter,createWebHistory} from "vue-router";
-import DefaultLayout from "../layout/default/DefaultLayout.vue";
-import MEmployeeList from "../view/EmployeeList.vue";
-import MCustomerList from "../view/CustomerList.vue";
+import AdminLayout from "../layout/LayoutAdmin/AdminLayout.vue";
+import ProductList from "../view/ProductList.vue";
+import CategoryList from "../view/CategoryList.vue";
 import MHomePage from "../view/HomePage.vue";
-import MReportPage from "../view/ReportPage.vue";
-import MSettingPage from "../view/SettingPage.vue";
-import MLogin from "../view/Login.vue";
-import MMainLayout from "../layout/main/MainLayout.vue"
+import UserList from "../view/UserList.vue";
+import OrderList from "../view/OrderList.vue";
+import AdminLogin from "../view/AdminLogin.vue";
+import UserLogin from "../view/UserLogin.vue";
+import MMainLayout from "../layout/main/MainLayout.vue";
+import UserLayout from "../layout/LayoutUser/UserLayout.vue";
+import ProductNew from "../pages/shop-pages/products/ProductNew.vue"
+import CartPage from "../pages/shop-pages/carts/CartPage.vue";
+import CheckoutPage from "../pages/shop-pages/checkout/CheckoutPage.vue"
 const routes = [
     {
-        path:'/',
+        path:'',
         components: {
-            default : DefaultLayout,
-            LayoutRouter: DefaultLayout
+            default : UserLayout,
+            LayoutRouter: UserLayout
+        },
+        meta:{ requiresAuth: true },
+        children:[
+            {
+                path:"/san-pham-moi",
+                components:{
+                    ShopRouterView: ProductNew
+                }
+            }
+        ]
+    },
+    {
+        path:'/cart',
+        components: {
+            default : UserLayout,
+            LayoutRouter: CartPage
+        },
+        
+    },
+    {
+        path:'/checkout',
+        components: {
+            default : UserLayout,
+            LayoutRouter: CheckoutPage
+        },
+        
+    },
+    {
+        path:'/admin',
+        components: {
+            default : AdminLayout,
+            LayoutRouter: AdminLayout
         },
         meta:{ requiresAuth: true },
         children:[
             {
                 path:"home",
                 components:{
-                    default:DefaultLayout,
+                    // default:DefaultLayout,
                     ContentRouterView: MHomePage,
                 },              
             },
             {
-                path:"customer",
+                path:"orders",
                 components:{
-                    default:DefaultLayout,
-                    ContentRouterView: MCustomerList,
+                    // default:DefaultLayout,
+                    ContentRouterView: OrderList,
                 },              
             },
             {
-                path:"employee",
+                path:"products",
                 components:{
-                    default:DefaultLayout,
-                    ContentRouterView: MEmployeeList,
+                    // default:DefaultLayout,
+                    ContentRouterView: ProductList,
                 },              
             },
             {
-                path:"report",
+                path:"categories",
                 components:{
-                    default:DefaultLayout,
-                    ContentRouterView: MReportPage,
+                    // default:DefaultLayout,
+                    ContentRouterView: CategoryList,
                 },              
             },
             {
-                path:"setting",
+                path:"users",
                 components:{
-                    default:DefaultLayout,
-                    ContentRouterView: MSettingPage,
+                    // default:DefaultLayout,
+                    ContentRouterView: UserList,
                 },              
             },
         ]
@@ -57,9 +94,17 @@ const routes = [
         path:'/login',
         components:{
             default:MMainLayout,
-            LayoutRouter:MLogin
+            LayoutRouter:UserLogin
+        }
+    },
+    {
+        path:'/login-admin',
+        components:{
+            default:MMainLayout,
+            LayoutRouter:AdminLogin
         }
     }
+    
 ];
 
 const router = createRouter({
@@ -69,13 +114,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     // const token = JSON.parse(localStorage.getItem("Token"));
-    const roles =JSON.parse(localStorage.getItem("Roles")) ;
-    if (to.path ==="/admin" && !roles) {
+    const roles = "" ;
+    if (to.path ==="/admin" && roles !== "Admin") {
       next("/login"); // Chuyển hướng đến trang user nếu admin cố gắng truy cập vào trang user
     } else if (to.path === "/login" && roles === "Admin") {
       next("/admin");
-    } else if(to.path === "/login" && roles !== "User") {
-      next("/");
     }else{
         next();
     }

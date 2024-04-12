@@ -1,6 +1,7 @@
 ﻿using BE_WAREHOUSE.Core.Entities;
 using BE_WAREHOUSE.Core.Interfaces.Base;
 using BE_WAREHOUSE.Core.Interfaces.Category;
+using BE_WAREHOUSE.Core.Interfaces.Image;
 using BE_WAREHOUSE.Core.Resources;
 using BE_WAREHOUSE.Core.Services.Base;
 using MISA.AMISDemo.Core.Exceptions;
@@ -14,9 +15,10 @@ namespace BE_WAREHOUSE.Core.Services.Category
 {
     public class CategoriesService : BaseService<Categories>,ICategoriesService
     {
-        public CategoriesService(IBaseRepository<Categories> repository) : base(repository)
+        public CategoriesService(IBaseRepository<Categories> repository, IImagesService imagesService) : base(repository, imagesService)
         {
         }
+
         public override async Task ValidateBeforeInsert(Categories categories)
         {
             if (categories.CategoriesCode == "" || categories.CategoriesCode == null)

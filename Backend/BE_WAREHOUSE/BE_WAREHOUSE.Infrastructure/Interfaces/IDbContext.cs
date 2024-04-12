@@ -54,7 +54,7 @@ namespace BE_WAREHOUSE.Infrastructure.Interfaces
         /// trả về số lượng bản ghi được xóa
         /// </returns>
         /// Created by : TTPhong (16/03/2023)
-        Task<int> UpdateAsync<T>(Guid id);
+        Task<int> DeleteAsync<T>(Guid id);
         /// <summary>
         /// Thực hiện xóa một vài chỉ định
         /// </summary>

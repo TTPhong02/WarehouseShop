@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BE_WAREHOUSE.Core.DTOs;
+using BE_WAREHOUSE.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +11,9 @@ namespace BE_WAREHOUSE.Core.AutoMapper
 {
     public class AutoMapperProfile : Profile
     {
-        //public AutoMapperProfile()
-        //{
-        //    CreateMap<CustomerImport, Customer>();
-        //    CreateMap<EmployeeImport, Employee>();
-        //}
+        public AutoMapperProfile()
+        {
+            CreateMap<Users, UserDTO>();
+        }
     }
 }

@@ -1,5 +1,5 @@
 body{
-    background-color: #F6F6F6;
+    background-color: #F6F6F6 !important;
 }
 
 /* .p-header__logo img{
@@ -40,11 +40,11 @@ body{
     margin: 20px 0px 12px 24px;
 }
 .p-home__main--header{
-    display: flex;
-    background-color: #F6F6F6;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 16px;
+    display: flex ;
+    background-color: #F6F6F6 ;
+    justify-content: space-between ;
+    align-items: center ;
+    padding-bottom: 16px ;
 
 }
 .p-home__main--header--title{

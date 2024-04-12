@@ -34,9 +34,11 @@ body{
     font-size: 14px;
     background-color: #F6F6F6;
 }
+
 .container{
     width: 1248px;
     margin: 0 auto;
+    padding: 0 0 !important;
 }
 .content{
     margin: 20px 20px;
@@ -47,5 +49,38 @@ body{
 }
 .right{
     float: right;
+}
+input,
+button,
+select,
+optgroup,
+textarea {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+h6,
+.h6,
+h5,
+.h5,
+h4,
+.h4,
+h3,
+.h3,
+h2,
+.h2,
+h1,
+.h1 {
+  margin-top: 0;
+  margin-bottom: 0 !important;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--bs-heading-color);
+}
+a {
+  text-decoration: none !important;
+
 }
 
