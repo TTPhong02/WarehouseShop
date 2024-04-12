@@ -66,7 +66,7 @@ namespace BE_WAREHOUSE.Core.Services.Base
             var className = typeof(T).Name;
             var entity = JsonConvert.DeserializeObject<T>(dataJson);
             await ValidateBeforeUpdate(entity);
-            entity?.GetType()?.GetProperty($"{className}Id")?.SetValue(entity, id);
+            //entity?.GetType()?.GetProperty($"{className}Id")?.SetValue(entity, id);
             if (imageFile != null && imageFile.Length > 0)
             {
                 var res = await repository.UpdateAsync(entity,id );

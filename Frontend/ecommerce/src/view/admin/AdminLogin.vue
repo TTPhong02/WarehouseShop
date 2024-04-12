@@ -240,7 +240,7 @@ export default {
     .admin-container{
         width: 100vw;
         height: 100vh;
-        background: url("../assets/img/background-image/bg1.jpg") no-repeat ;
+        background: url("@/assets/img/background-image/bg1.jpg") no-repeat ;
         background-size: cover;
         display: flex;
         justify-content: center;

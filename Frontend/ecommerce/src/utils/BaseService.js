@@ -31,8 +31,8 @@ class BaseService {
     });
     return res;
   }
-  async put(id, data) {
-    const res = await this.baseAxios.put(`${this.baseUrl}/${id}`, data, {
+  async put(id, dataJson) {
+    const res = await this.baseAxios.put(`${this.baseUrl}/${id}`, dataJson, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

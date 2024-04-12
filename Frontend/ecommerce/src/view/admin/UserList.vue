@@ -3,7 +3,7 @@
         <div class="p-home__main--header">
             <div class="p-home__main--header--title">
                 Nhân viên
-                <img src="../assets/img/popup_design_guideline/Layer 2.png" alt="icondown">
+                <img src="../../assets/img/popup_design_guideline/Layer 2.png" alt="icondown">
             </div>
             <div class="p-home__main--header--button">
                 <button  @click="btnShowFormAddEmployee" id="showAddForm" class="p-button1-plus show-popup-sign tooltip">
@@ -38,7 +38,7 @@
             </div>
             <div class="p-home__main--table">
                 <div class="p-grid">
-                    <MCategoryDetail :filterParent="filter" ref="nextPageRef" refsPreviousPage="previousPageRef"  @totalRecord="hanldeDataPagingTotalRecord"  @totalPage="hanldeDataPagingTotalPage"  @employees="handleListEmployee"  @checkedIDs="handleListChecked" :showFormDuplicate="btnShowFormDuplicateEmployee" :showFormUpdate="btnShowFormUpdateEmployee"  ></MCategoryDetail>
+                    <MUserDetail :filterParent="filter" ref="nextPageRef" refsPreviousPage="previousPageRef"  @totalRecord="hanldeDataPagingTotalRecord"  @totalPage="hanldeDataPagingTotalPage"  @employees="handleListEmployee"  @checkedIDs="handleListChecked" :showFormDuplicate="btnShowFormDuplicateEmployee" :showFormUpdate="btnShowFormUpdateEmployee"  ></MUserDetail>
                 </div>
                 <div class="p-footertable">
                     <div class="left p-footertable__total">
@@ -71,21 +71,21 @@
     </div>
 </template>
 <script>
-import MCategoryDetail from "../components/base/table/MCategoryDetail.vue";
-import  MAddFormEmployee  from "../components/base/form/MAddFormEmployee.vue";
-import MUpdateFormEmployee from  "../components/base/form/MUpdateFormEmployee.vue";
-import MDuplicateFormEmployee from  "../components/base/form/MDuplicateFormEmployee.vue";
-import MTextSearch  from '../components/base/input/MTextSearch.vue';
-import MDialog  from '../components/base/dialog/MDialog.vue';
-import MCombobox from '../components/base/input/MCombobox.vue';
-import MImport from '../components/import/MImport.vue'
+import MUserDetail from "@/components/base/table/MUserDetail.vue";
+import  MAddFormEmployee  from "@/components/base/form/MAddFormEmployee.vue";
+import MUpdateFormEmployee from  "@/components/base/form/MUpdateFormEmployee.vue";
+import MDuplicateFormEmployee from  "@/components/base/form/MDuplicateFormEmployee.vue";
+import MTextSearch  from '@/components/base/input/MTextSearch.vue';
+import MDialog  from '@/components/base/dialog/MDialog.vue';
+import MCombobox from '@/components/base/input/MCombobox.vue';
+import MImport from '@/components/import/MImport.vue'
 // import saveAs from 'file-saver';
 
 export default {
-    name: "CategoryList",
+    name: "UserList",
     components: {
         MAddFormEmployee,
-        MCategoryDetail,
+        MUserDetail,
         MUpdateFormEmployee,
         MDuplicateFormEmployee,
         MTextSearch,
@@ -394,7 +394,7 @@ export default {
     /* -webkit-user-select: none; */
     cursor: pointer;
 }
-    @import url('../css/layout/home.css');
+    @import url('@/css/layout/home.css');
     ::-webkit-scrollbar {
         width: 8px;
         height: 8px;

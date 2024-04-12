@@ -6,6 +6,7 @@ using BE_WAREHOUSE.Core.Interfaces.Token;
 using BE_WAREHOUSE.Core.Interfaces.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MISA.AMISDemo.Core.DTOs;
 
 namespace BE_WAREHOUSE.API.Controllers.User
 {
@@ -14,16 +15,26 @@ namespace BE_WAREHOUSE.API.Controllers.User
     {
         IUsersService _usersService;
         ITokenService _tokenService;
-        public UsersController(IBaseRepository<Users> baseRepository, IBaseService<Users> baseService, IUsersService usersService, ITokenService tokenService) : base(baseRepository, baseService)
+        IUsersRepository _usersRepository;
+        public UsersController(IBaseRepository<Users> baseRepository, IBaseService<Users> baseService, IUsersService usersService, ITokenService tokenService, IUsersRepository usersRepository) : base(baseRepository, baseService)
         {
             _usersService = usersService;
             _tokenService = tokenService;
+            _usersRepository = usersRepository;
         }
         [HttpPost("Login")]
         public async Task<IActionResult> Login(UserLogin userLogin)
         {
-            var res = await _tokenService.LoginTakeToken(userLogin);
-            return StatusCode(201,res);
+            var res = await _usersService.LoginServiceAsync(userLogin);
+            if(res.Success == true)
+            {
+                return StatusCode(201, res);
+            }
+            else
+            {
+                return StatusCode(400,res);
+
+            }
         }
         [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshToken(TokenModel refreshToken)
@@ -43,6 +54,13 @@ namespace BE_WAREHOUSE.API.Controllers.User
         {
             var res = await _usersService.UpdateServiceAsync(dataJson, imageFile, id);
             return Ok(res);
+        }
+
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout([FromBody] string email)
+        {
+            await _tokenService.LogoutAsync(email);
+            return StatusCode(201);
         }
     }
 }

@@ -5,6 +5,7 @@ using BE_WAREHOUSE.Core.Interfaces.Token;
 using BE_WAREHOUSE.Core.Interfaces.User;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MISA.AMISDemo.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -61,28 +62,52 @@ namespace BE_WAREHOUSE.Core.Services.Token
         public async Task<TokenModel> LoginTakeToken(UserLogin userLogin)
         {
             var user = await _usersRepository.FindUserByEmailAndPassword(userLogin);
-            var authClaims = new List<Claim>();
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Email);
-                new Claim(ClaimTypes.Name, user.Fullname);
-                new Claim(ClaimTypes.Email, user.Email);
-                new Claim(ClaimTypes.Role, user.Role);
-                //new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString());
-            }
-            var token = GenerateToken(authClaims);
-            var refreshToken = GenerateRefreshToken();
-            _ = int.TryParse(_configuration["Jwt:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
+            if(user != null) { 
+                var authClaims = new List<Claim>();
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Email);
+                    new Claim(ClaimTypes.Name, user.Fullname);
+                    new Claim(ClaimTypes.Email, user.Email);
+                    new Claim(ClaimTypes.Role, user.Role);
+                    //new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString());
+                }
+                var token = GenerateToken(authClaims);
+                var refreshToken = GenerateRefreshToken();
+                _ = int.TryParse(_configuration["Jwt:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
 
-            user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(refreshTokenValidityInDays);
-            await _usersRepository.UpdateToken(user, user.UsersId);
-            var userInfor = _mapper.Map<UserDTO>(user);
-            return new TokenModel
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpiryTime = DateTime.Now.AddDays(refreshTokenValidityInDays);
+                await _usersRepository.UpdateToken(user, user.UsersId);
+                var userInfor = _mapper.Map<UserDTO>(user);
+                return new TokenModel
+                {
+                    AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                    RefreshToken = user.RefreshToken,
+                    Users = userInfor
+                };
+            }
+            else
             {
-                AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
-                RefreshToken = user.RefreshToken,
-                Users = userInfor
-            };
+                return new TokenModel
+                {
+                    AccessToken = null,
+                    RefreshToken = null
+                };
+            }
+        }
+
+        public async Task LogoutAsync(string email)
+        {
+            var user = await _usersRepository.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                throw new MISAValidateException("Thông tin tài khoản không chính xác.");
+            }
+            user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = null;
+
+            await _usersRepository.UpdateAsync(user,user.UsersId);
         }
 
         public async Task<TokenModel> RefreshToken(TokenModel tokenModel)

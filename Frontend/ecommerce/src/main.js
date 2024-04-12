@@ -4,7 +4,7 @@ import MDialog from './components/base/dialog/MDialog.vue';
 import MButton from './components/base/button/MButton.vue';
 import MToastMessage from './components/base/toast/MToastMessage.vue';
 import MLoading from "./components/base/loading/MLoading.vue"
-import AdminLogin from "./view/AdminLogin.vue"
+import AdminLogin from "./view/admin/AdminLogin.vue"
 import axios from 'axios';
 import MISAEnum from './helpers/enum';
 import MISAResource from './helpers/resource';

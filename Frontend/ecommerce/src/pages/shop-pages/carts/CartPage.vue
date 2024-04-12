@@ -8,41 +8,41 @@
             </div>
             <div class="s-cart-content">
                 <div class="row cart-header">
-                    <div class="col-lg-6 col-md-7 col-sm-7 cart-header-item">Sản phẩm</div>
-                    <div class="col-lg-1 col-md-1 col-sm-1 cart-header-item">Giá </div>
-                    <div class="col-lg-2 col-md-1 col-sm-1 cart-header-item">Số lượng</div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 cart-header-item text-left">Sản phẩm</div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 cart-header-item">Giá </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 cart-header-item">Số lượng</div>
                     <div class="col-lg-2 col-md-2 col-sm-2 cart-header-item">Thành tiền</div>
                     <div class="col-lg-1 col-md-1 col-sm-1 cart-header-item">Thao tác</div>
                 </div>
                 <div class="cart-list-item">
-                    <div class="row cart-item">
-                        <div class="row col-lg-6 col-md-7 col-sm-7 col-7 cart-item-product">
+                    <div v-for="item in cartItems" :key="item.CartItemsId" class="row cart-item">
+                        <div class="row col-lg-6 col-md-6 col-sm-6 col-6 cart-item-product text-left">
                             <div class="cart-product-image">
-                                <img src="../../../assets/img/sanpham1.jpg" alt="">
+                                <img :src="pathImage(item.ImagesPath)" alt="">
                             </div>
-                            <div class="cart-product-infor">
-                                <div class="product-name">Tên sản phẩm</div>
-                                <div class="product-description">Mô tả ở đây</div>
+                            <div class="cart-product-infor ">
+                                <div class="product-name">{{item.ProductName}}</div>
+                                <div class="product-description">{{item.ProductDescription}}</div>
                             </div>
                         </div>
-                        <div class="col-lg-1 col-md-1 col-sm-1  cart-item-price">
-                            <div class="product-price">999999đ</div>
+                        <div class="col-lg-2 col-md-2 col-sm-2  cart-item-price">
+                            <div class="product-price">{{formatMoney(item.ProductPrice)}}</div>
                         </div>  
-                        <div class="col-lg-2 col-md-1 col-sm-1 col-1 row cart-item-quantity">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-1 row cart-item-quantity">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-12 product-manage-quantity">
-                                <button>-</button>
-                                <input type="text" readonly>
-                                <button>+</button>
+                                <button v-on:click="decreaseQuantity(item.CartItemsId)">-</button>
+                                <input :value="item.Quantity" type="text" readonly>
+                                <button v-on:click="increaseQuantity(item.CartItemsId)">+</button>
                             </div>
                             <div class="d-lg-none d-md-none col-sm-12 col-12 product-action">
                                 <i class="fa-solid fa-xmark"></i>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-2 cart-item-sum">
-                            <div class="product-sum product-price">999999đ</div>
+                            <div class="product-sum product-price">{{formatMoney(item.ProductPrice * item.Quantity)}}</div>
                         </div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-1  cart-item-action">
-                            <div class="product-action">
+                            <div v-on:click="deleteCartItems(item.CartItemsId)" class="product-action">
                                 <i class="fa-regular fa-trash-can"></i>
                             </div>
                         </div>
@@ -53,7 +53,7 @@
                         Tổng tiền: 
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-1 col-1  cart-total-money produc-price">
-                        9999999đ
+                        {{formatMoney(9999999)}}
                     </div>
                 </div>
                 <div class="row cart-action">
@@ -70,12 +70,76 @@
 </template>
 
 <script>
-
+import cartItemsService from "../../../utils/CartItemsService";
 import HeadingShop from '../../../layout/LayoutUser/HeadingShop.vue'
 export default {
     components:{
         HeadingShop
-    }
+    },
+    data() {
+        return {
+           users:{} ,
+           cartItems:[]
+        }
+    },
+    created() {
+        this.takeDataUsers();
+        this.getCartItemsFormLocal();
+    },
+    methods: {
+        async deleteCartItems(id){
+             await cartItemsService.delete(id);
+        },
+         decreaseQuantity(id){
+            var data = {};
+            const formData = new FormData();
+            var arrCartItems = this.cartItems;
+            arrCartItems.forEach(item => {
+                if(item.CartItemsId == id && item.Quantity > 1 ){
+                    item.Quantity = item.Quantity - 1
+                    data.ProductId = item.ProductId;
+                    data.CartsId = item.CartsId;
+                    data.CartItemsId = id;
+                    data.Quantity = item.Quantity;
+                    formData.append("dataJson",JSON.stringify(data));
+                    cartItemsService.put(id,formData);
+                    localStorage.setItem("CartItems",JSON.stringify(arrCartItems)); 
+                }
+            });
+                     
+        },
+         increaseQuantity(id){
+            var data = {};
+            const formData = new FormData();
+            var arrCartItems = this.cartItems;
+            arrCartItems.forEach(item => {
+                if(item.CartItemsId == id){
+                    item.Quantity = item.Quantity + 1
+                    data.ProductId = item.ProductId;
+                    data.CartsId = item.CartsId;
+                    data.CartItemsId = id;
+                    data.Quantity = item.Quantity;
+                    formData.append("dataJson",JSON.stringify(data));
+                     cartItemsService.put(id,formData);
+                }
+            });
+            localStorage.setItem("CartItems",JSON.stringify(arrCartItems));          
+        },
+        takeDataUsers(){
+            this.users = JSON.parse(localStorage.getItem("User"));
+        },
+        getCartItemsFormLocal(){
+            var item = localStorage.getItem("CartItems");
+            this.cartItems = JSON.parse(item);
+        },
+        
+        pathImage(valueId){
+             return "https://localhost:7242/" + valueId;
+        },
+        formatMoney(amount) {
+            return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+ " ₫";
+        }
+    },
 }
 </script>
 
@@ -115,47 +179,83 @@ export default {
     justify-content: center;
     align-items: center;
 }
+.product-manage-quantity button:active{
+    background-color: #1ea2d2;
+}
 .product-manage-quantity button{
+    background-color: #a2c5d2;
     cursor: pointer;
     font-size: 20px;
     border: 1px solid #000;
     outline: none;
     min-width: 30px;
     min-height: 20px;
+    font-weight: bold;
 }
 .product-manage-quantity input{
+    text-align: center;
+    font-weight: bold;
     outline: none;
-    /* border: none; */
+    border: 1px solid #a2c5d2;
     width: 30px;
     height: 30px;
+    border-color: #a2c5d2;
+    box-shadow: none;
 }
 .product-description{
-    font-style: initial;
+    padding: 0px !important;
+    font-style: italic;
     font-size: 14px;
 }
 .product-price{
-    font-size: 17px;
+        padding: 0px !important;
+    font-size: 15px;
 }
 .product-name{
-    font-size: 16px;
+    font-weight: bold;
+    padding: 0px !important;
+    font-size: 17px;
 }
 .product-action{
+    padding: 0px !important;
     font-size: 30px;
     cursor: pointer;
 }
+.cart-item-quantity,
+.product-manage-quantity,
+.cart-item-product{
+    
+    padding: 0px !important;
+}
+.cart-item
+.cart-item-price,
+.cart-item-quantity,
+.cart-item-sum,
+.cart-item-action,
+.cart-item-product{
+    text-align: center;
+    width: 100%;
+    flex: 1;
+}
+
 .cart-product-image{
-    padding: 10px 20px;
+    padding: 0px 20px;
 }
 .cart-product-image img{
     width: 100px;
     height: 110px;
 }
+.text-left{
+    text-align: left !important;
+}
 .cart-header-item{
-    padding: 20px 10px ;
+    text-align: center;
+    width: 100%;
+    padding: 20px 0px ;
 }
 .cart-list-item{
     border-bottom: 1px solid #ccc;
-    margin: 20px 50px;
+    margin: 20px 40px;
 }
 .cart-total{
     display: flex;
@@ -182,6 +282,7 @@ export default {
     box-shadow: 0px 2px 46.41px 4.59px rgba(2,38,113,0.1);
 }
 .cart-item{
+    padding: 10px 0px 10px 10px;
     justify-content: space-between;
     align-items: center;
 }

@@ -1,7 +1,9 @@
-﻿using BE_WAREHOUSE.Core.Entities;
+﻿using BE_WAREHOUSE.Core.DTOs;
+using BE_WAREHOUSE.Core.Entities;
 using BE_WAREHOUSE.Core.Interfaces.Base;
 using BE_WAREHOUSE.Core.Interfaces.Cart;
 using BE_WAREHOUSE.Core.Interfaces.Image;
+using BE_WAREHOUSE.Core.Interfaces.Token;
 using BE_WAREHOUSE.Core.Interfaces.User;
 using BE_WAREHOUSE.Core.Services.Base;
 using Microsoft.AspNetCore.Http;
@@ -22,10 +24,12 @@ namespace BE_WAREHOUSE.Core.Services.User
     {
         IUsersRepository _userRepository;
         ICartsRepository _cartRepository;
-        public UsersService(IBaseRepository<Users> repository, IImagesService imagesService, IUsersRepository userRepository, ICartsRepository cartRepository) : base(repository, imagesService)
+        ITokenService _tokenService;
+        public UsersService(IBaseRepository<Users> repository, IImagesService imagesService, IUsersRepository userRepository, ICartsRepository cartRepository, ITokenService tokenService) : base(repository, imagesService)
         {
             _userRepository = userRepository;
             _cartRepository = cartRepository;
+            _tokenService = tokenService;
         }
         public override async Task<MISAServiceResult> UpdateServiceAsync( string dataJson, IFormFile? imageFile, Guid id)
         {
@@ -115,5 +119,32 @@ namespace BE_WAREHOUSE.Core.Services.User
             }
         }
 
+        public async Task<MISAServiceResult> LoginServiceAsync(UserLogin userLogin)
+        {
+            var user = await _userRepository.FindUserByEmailAndPassword(userLogin);
+            List<string> strings = new List<string>();
+            strings.Add("Email hoặc mật khẩu không đúng");
+            if(user == null)
+            {
+                return new MISAServiceResult
+                {
+                    Data = null,
+                    Errors = strings,
+                    StatusCode=System.Net.HttpStatusCode.BadRequest,
+                    Success = false
+                };
+            }
+            else
+            {
+                var res = await _tokenService.LoginTakeToken(userLogin);
+                return new MISAServiceResult
+                {
+                    Success = true,
+                    Data = res,
+                    StatusCode = System.Net.HttpStatusCode.Created,
+                    Errors = null
+                };
+            }
+        }
     }
 }

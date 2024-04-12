@@ -15,6 +15,9 @@ namespace BE_WAREHOUSE.Core.Services.Cart
     {
         public CartItemsService(IBaseRepository<CartItems> repository, IImagesService imagesService) : base(repository, imagesService)
         {
+
         }
+
+
     }
 }

@@ -27,7 +27,7 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
             }
             return true;
         }
-
+        
         public async Task<Users?> FindByEmailAsync(string email)
         {
             var procedure = "Proc_CheckExist_Users";

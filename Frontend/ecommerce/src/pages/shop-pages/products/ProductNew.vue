@@ -33,12 +33,12 @@
                                 <i class="fa-regular fa-eye"></i>
                                 Xem 
                             </div>
-                            <div class="product-cart">
+                            <div v-on:click="addToCart(item.ProductId)" class="product-cart">
                                 <i class="fa-solid fa-cart-plus"></i>
                                 Thêm
                             </div>
                         </div>
-                </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -47,21 +47,52 @@
 </template>
 
 <script>
+import cartItemsService from "../../../utils/CartItemsService"; 
 import producService from "../../../utils/ProductService"; 
 import imagesService from "../../../utils/ImagesService";
 export default {
     name:"ProductNew",
     data() {
         return {
+            user:{},
             products:[],
             images:[],
+            cartItems:[]
+        }
+    },
+    watch:{
+        localStorage(){
+            this.getCartItemsFormLocal();
         }
     },
     created() {
         this.takedataProduct();
         this.takeDataImages();
+        this.getCartItemsFormLocal();
+        this.takeDataUsers();
     },
     methods: {
+        async takeDataUsers(){
+            this.user = await JSON.parse(localStorage.getItem("User"));
+        },
+        getCartItemsFormLocal(){
+            var item = localStorage.getItem("CartItems");
+            this.cartItems = JSON.parse(item);
+        },
+        async addToCart(id){
+            if(!this.user){
+                location.assign("http://localhost:8080/login")
+            }else{
+                var data = {};
+                data.ProductId = id;
+                data.Quantity = 1;
+                data.CartsId = this.cartItems[0].CartsId;
+                console.log(data);
+                await cartItemsService.insertCartItems(data);
+                var res = await cartItemsService.getByUserId(this.user.UsersId);
+                localStorage.setItem("CartItems",JSON.stringify(res.data));
+            }
+        },
         async takedataProduct(){
             try{
                 var res = await producService.getProductNew();

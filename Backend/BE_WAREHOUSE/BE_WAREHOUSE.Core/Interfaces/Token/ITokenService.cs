@@ -15,5 +15,6 @@ namespace BE_WAREHOUSE.Core.Interfaces.Token
 
         Task<TokenModel> RefreshToken(TokenModel tokenModel);
         Task<int> UpdateAccount(Users user);
+        Task LogoutAsync(string email);
     }
 }

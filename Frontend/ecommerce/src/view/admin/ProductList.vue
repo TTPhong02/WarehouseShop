@@ -2,12 +2,10 @@
     <div>
         <div class="p-home__main--header">
             <div class="p-home__main--header--title">
-                Nhân viên
-                <img src="../assets/img/popup_design_guideline/Layer 2.png" alt="icondown">
+                Quản lý sản phẩm
             </div>
             <div class="p-home__main--header--button">
-                <button  @click="btnShowFormAddEmployee" id="showAddForm" class="p-button1-plus show-popup-sign tooltip">
-                    <span class="tooltiptext">Thêm mới</span>
+                <button  @click="btnShowFormAddEmployee" id="showAddForm" class="p-button1-plus show-popup-sign ">
                     <i class="fa-solid fa-plus"></i>
                         Thêm mới
                 </button>
@@ -24,21 +22,18 @@
                 </div>
                 <div class="p-home__main--action--button">
                     <MTextSearch :searchEmployee="searchEmployee" v-model="filter.paging.searchString"></MTextSearch>
-                    <button @click="btnShowFormImport" class="p-button3 icon-import tooltip "> 
-                            <span class="tooltiptext">Nhập khẩu</span>
+                    <button @click="btnShowFormImport" class="p-button3 icon-import  "> 
                     </button>
-                    <button @click="exportEmployee()" class=" p-button3 icon-export tooltip">
-                            <span class="tooltiptext">Xuất khẩu</span>
+                    <button @click="exportEmployee()" class=" p-button3 icon-export ">
                     </button>
                     
-                    <button   id="p-btnLoadData" @click="this.emitter.emit('loadDataPagingEmployee')"  class="p-button3 icon-load tooltip">
-                        <span class="tooltiptext">Tải lại</span>
+                    <button   id="p-btnLoadData" @click="this.emitter.emit('loadDataPagingEmployee')"  class="p-button3 icon-load ">
                     </button>
                 </div>
             </div>
             <div class="p-home__main--table">
                 <div class="p-grid">
-                    <MUserDetail :filterParent="filter" ref="nextPageRef" refsPreviousPage="previousPageRef"  @totalRecord="hanldeDataPagingTotalRecord"  @totalPage="hanldeDataPagingTotalPage"  @employees="handleListEmployee"  @checkedIDs="handleListChecked" :showFormDuplicate="btnShowFormDuplicateEmployee" :showFormUpdate="btnShowFormUpdateEmployee"  ></MUserDetail>
+                    <MProductDetail :filterParent="filter" ref="nextPageRef" refsPreviousPage="previousPageRef"  @totalRecord="hanldeDataPagingTotalRecord"  @totalPage="hanldeDataPagingTotalPage"  @employees="handleListEmployee"  @checkedIDs="handleListChecked" :showFormDuplicate="btnShowFormDuplicateEmployee" :showFormUpdate="btnShowFormUpdateEmployee"  ></MProductDetail>
                 </div>
                 <div class="p-footertable">
                     <div class="left p-footertable__total">
@@ -71,21 +66,21 @@
     </div>
 </template>
 <script>
-import MUserDetail from "../components/base/table/MUserDetail.vue";
-import  MAddFormEmployee  from "../components/base/form/MAddFormEmployee.vue";
-import MUpdateFormEmployee from  "../components/base/form/MUpdateFormEmployee.vue";
-import MDuplicateFormEmployee from  "../components/base/form/MDuplicateFormEmployee.vue";
-import MTextSearch  from '../components/base/input/MTextSearch.vue';
-import MDialog  from '../components/base/dialog/MDialog.vue';
-import MCombobox from '../components/base/input/MCombobox.vue';
-import MImport from '../components/import/MImport.vue'
+import MProductDetail from "@/components/base/table/MProductDetail.vue";
+import  MAddFormEmployee  from "@/components/base/form/MAddFormEmployee.vue";
+import MUpdateFormEmployee from  "@/components/base/form/MUpdateFormEmployee.vue";
+import MDuplicateFormEmployee from  "@/components/base/form/MDuplicateFormEmployee.vue";
+import MTextSearch  from '@/components/base/input/MTextSearch.vue';
+import MDialog  from '@/components/base/dialog/MDialog.vue';
+import MCombobox from '@/components/base/input/MCombobox.vue';
+import MImport from '@/components/import/MImport.vue'
 // import saveAs from 'file-saver';
 
 export default {
-    name: "UserList",
+    name: "ProductList",
     components: {
         MAddFormEmployee,
-        MUserDetail,
+        MProductDetail,
         MUpdateFormEmployee,
         MDuplicateFormEmployee,
         MTextSearch,
@@ -372,6 +367,13 @@ export default {
 }
 </script>
 <style scoped>
+.p-home__main--header--title{
+    display: flex !important; 
+    align-items: center !important;
+    column-gap: 12px !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+}
 .p-button3{
     padding: 0 !important;
         background-color: rgba(255, 255, 255, 0.1);
@@ -394,7 +396,7 @@ export default {
     /* -webkit-user-select: none; */
     cursor: pointer;
 }
-    @import url('../css/layout/home.css');
+    @import url('@/css/layout/home.css');
     ::-webkit-scrollbar {
         width: 8px;
         height: 8px;

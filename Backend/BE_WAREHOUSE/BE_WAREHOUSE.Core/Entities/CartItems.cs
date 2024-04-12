@@ -11,7 +11,6 @@ namespace BE_WAREHOUSE.Core.Entities
         public Guid CartItemsId { get; set; }
         public Guid CartsId { get; set; }
         public Guid ProductId { get; set; }
-        public Guid OrdersId { get; set; }
         public int Quantity { get; set; }
     }
 }

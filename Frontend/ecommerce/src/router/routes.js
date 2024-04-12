@@ -1,17 +1,19 @@
 import {createRouter,createWebHistory} from "vue-router";
 import AdminLayout from "../layout/LayoutAdmin/AdminLayout.vue";
-import ProductList from "../view/ProductList.vue";
-import CategoryList from "../view/CategoryList.vue";
-import MHomePage from "../view/HomePage.vue";
-import UserList from "../view/UserList.vue";
-import OrderList from "../view/OrderList.vue";
-import AdminLogin from "../view/AdminLogin.vue";
-import UserLogin from "../view/UserLogin.vue";
+import ProductList from "../view/admin/ProductList.vue";
+import CategoryList from "../view/admin/CategoryList.vue";
+import MHomePage from "../view/admin/HomePage.vue";
+import UserList from "../view/admin/UserList.vue";
+import OrderList from "../view/admin/OrderList.vue";
+import AdminLogin from "../view/admin/AdminLogin.vue";
+import UserLogin from "../view/user/UserLogin.vue";
 import MMainLayout from "../layout/main/MainLayout.vue";
 import UserLayout from "../layout/LayoutUser/UserLayout.vue";
 import ProductNew from "../pages/shop-pages/products/ProductNew.vue"
 import CartPage from "../pages/shop-pages/carts/CartPage.vue";
 import CheckoutPage from "../pages/shop-pages/checkout/CheckoutPage.vue"
+import UserRegister from "../view/user/UserRegister.vue";
+import UserForgetPassword from "../view/user/UserForgetPassword.vue";
 const routes = [
     {
         path:'',
@@ -93,15 +95,30 @@ const routes = [
     {
         path:'/login',
         components:{
-            default:MMainLayout,
             LayoutRouter:UserLogin
         }
+        
+    },
+    {
+        path:'/register',
+        components:{
+            LayoutRouter:UserRegister
+        }
+        
     },
     {
         path:'/login-admin',
         components:{
             default:MMainLayout,
             LayoutRouter:AdminLogin
+        }
+    }
+    ,
+    {
+        path:'/forget',
+        components:{
+            default:MMainLayout,
+            LayoutRouter:UserForgetPassword
         }
     }
     

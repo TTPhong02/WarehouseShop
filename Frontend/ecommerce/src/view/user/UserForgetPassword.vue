@@ -2,7 +2,7 @@
   <div class="s-container">
     <div class="p-login">
         <div class="p-login-header">
-            <img src="../assets/img/logo.png" alt="">
+            <img src="@/assets/img/logo.png" alt="">
         </div>
         <div class="p-login-form">
             <div class="p-login-form__input">
@@ -27,7 +27,39 @@
                     :class="{'invalid': errors.password} "  
                     :type="showPass ? 'text' : 'password'" 
                     v-model="account.password" 
-                    placeholder="Mật khẩu"
+                    placeholder="Mật khẩu cũ"
+                    @keydown.enter="validateForm()"
+                    >
+                    <div @click="this.showPass = !this.showPass" :class="showPass ? 'icon-show-pass' : 'icon-hide-pass'"></div>
+                </div>
+                <span class="message">{{this.errors.password}}</span>
+            </div>
+            <div class="p-login-form__input">
+                <div class="box-password">
+                    <input 
+                    @focus='handleFocus("password")'
+                    ref="password"
+                    class="input "
+                    :class="{'invalid': errors.password} "  
+                    :type="showPass ? 'text' : 'password'" 
+                    v-model="account.password" 
+                    placeholder="Mật khẩu mới"
+                    @keydown.enter="validateForm()"
+                    >
+                    <div @click="this.showPass = !this.showPass" :class="showPass ? 'icon-show-pass' : 'icon-hide-pass'"></div>
+                </div>
+                <span class="message">{{this.errors.password}}</span>
+            </div>
+            <div class="p-login-form__input">
+                <div class="box-password">
+                    <input 
+                    @focus='handleFocus("password")'
+                    ref="password"
+                    class="input "
+                    :class="{'invalid': errors.password} "  
+                    :type="showPass ? 'text' : 'password'" 
+                    v-model="account.password" 
+                    placeholder="Nhâp lại mật khẩu mới"
                     @keydown.enter="validateForm()"
                     >
                     <div @click="this.showPass = !this.showPass" :class="showPass ? 'icon-show-pass' : 'icon-hide-pass'"></div>
@@ -38,25 +70,12 @@
             <!-- <MTextfield v-model="account.phoneNumber"  :required="true" textPlaceHolder="Số điện thoại/email"></MTextfield>
             <MTextfield v-model="account.password" :required="true" typeInput="password" textPlaceHolder="Mật khẩu"></MTextfield> -->
             <div class="p-login-action">
-                <router-link to="/login/quen-mat-khau" class="p-login-form-forget">Quên mật khẩu?</router-link>
-                <router-link to="/login/dang-ki" class="p-login-form-forget">Đăng kí</router-link>
+                <router-link to="/login" class="p-login-form-forget">Đăng nhập</router-link>
+                <router-link to="/register" class="p-login-form-forget">Đăng kí</router-link>
             </div>
             <div class="p-login-form-button">
-                <MButton  @click="validateForm()" text="Đăng nhập" className="p-button5"></MButton>
-            </div>
-            <div class="p-login-form-title">
-                <div class="p-login-form-title-line"><hr></div>
-                <div class="p-login-form-title-text">Hoặc đăng nhập với</div>
-                <div class="p-login-form-title-line"><hr></div>
-            </div>     
-            <div class="p-login-form-methods">
-                <div class="icon-google item ">
-                </div>
-                <div class="icon-apple item">
-                </div>
-                <div class="icon-microsoft item">
-                </div>
-            </div>       
+                <MButton  @click="validateForm()" text="Đổi mật khẩu" className="p-button5"></MButton>
+            </div>    
         </div>
     </div>
   </div>
@@ -248,7 +267,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        background: url("../assets/img/anh-nen-dang-nhap.png") repeat;
+        background: url("@/assets/img/anh-nen-dang-nhap.png") repeat;
         background-color: rgba(162, 197, 210, 0.25  );
         box-shadow: 0px 2px 46.41px 4.59px rgba(2,38,113,0.1);
     }

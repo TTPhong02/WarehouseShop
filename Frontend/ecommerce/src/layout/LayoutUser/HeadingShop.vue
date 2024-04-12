@@ -27,22 +27,22 @@
             class="col-lg-1 col-md-1 col-sm-2 mid-header-cart"
           >
             <img class="img_cart" src="../../assets/img/cart.png" alt="" />
-            <span class="number_cart">12</span>
+            <span class="number_cart">{{takeNumberOfCart()}}</span>
           </router-link>
           <div
             class="col-lg-2 col-md-2 col-sm-0 mid-header-profile menu-father"
           >
-            <div v-if="false" class="profile-avatar">
+            <div v-if="this.user" class="profile-avatar">
               <img src="../../assets/img/cart.png" alt="" />
-              <div class="profile-name">Xin chao, Tran Thanh Phong</div>
+              <div class="profile-name">Xin chào, {{this.user.Fullname}}</div>
             </div>
-            <div  class="profile-signin">
+            <div v-if="!this.user" class="profile-signin">
               <router-link to="/login">Đăng nhập</router-link>
               <router-link to="/register">Đăng kí</router-link>
             </div>
-            <div class="header-profile-nav menu-child">
+            <div v-if="this.user" class="header-profile-nav menu-child">
               <div class="profile-nav-item">Thông tin tài khoản</div>
-              <div class="profile-nav-item">Đăng xuất</div>
+              <div v-on:click="logout()" class="profile-nav-item">Đăng xuất</div>
             </div>
           </div>
         </div>
@@ -118,16 +118,46 @@
 
 <script>
 import MTextSearch from "../../components/base/input/MTextSearch.vue";
+import usersService from '../../utils/UserService';
 
 export default {
   name: "HeadingShop",
   components: {
     MTextSearch,
   },
+  data() {
+    return {
+      user:{}
+    }
+  },
   mounted() {
+    this.takeDataUsers();
     window.addEventListener("scroll", this.handleScroll);
+    this.takeNumberOfCart();
   },
   methods: {
+    takeNumberOfCart(){
+      var number = JSON.parse(localStorage.getItem("CartItems"));
+      if(number){
+        return number.length;
+      }
+      return 0;
+    },
+    async takeDataUsers(){
+      this.user = await JSON.parse(localStorage.getItem("User"));
+    },
+    async logout(){
+      var res = await usersService.logout(this.user.Email);
+      switch (res.status) {
+        case 201:
+          localStorage.removeItem("AccessToken");
+          localStorage.removeItem("RefreshToken");
+          localStorage.removeItem("User");
+          localStorage.removeItem("CartItems");
+          window.location.reload();
+      }
+
+    },
     handleScroll() {
       let headerNav = document.querySelector(".s-header-nav");
       let headerWrap = document.querySelector(".s-header-wrap");
@@ -156,6 +186,17 @@ export default {
 </script>
 
 <style scoped>
+.profile-name{
+  color: #a2c5d2;
+  font-size: 14px;
+  padding-left:10px ;
+}
+.profile-avatar{
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .s-header-placeholder{
   height: 167px;
   display: none;
