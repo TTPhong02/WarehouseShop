@@ -13,7 +13,7 @@ namespace BE_WAREHOUSE.Core.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<Users, UserDTO>();
+            CreateMap<UserDTO, Users>();
         }
     }
 }

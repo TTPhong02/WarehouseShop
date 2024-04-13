@@ -35,10 +35,10 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
             return res;
         }
 
-        public async Task<Users?> FindUserByEmailAndPassword(UserLogin userLogin)
+        public async Task<UserDTO?> FindUserByEmailAndPassword(UserLogin userLogin)
         {
             var procedure = "Proc_Find_Users_Email_Password";
-            var res = await _dbContext.Connection.QueryFirstOrDefaultAsync<Users>(procedure, userLogin);
+            var res = await _dbContext.Connection.QueryFirstOrDefaultAsync<UserDTO>(procedure, userLogin);
             return res;
         }
 

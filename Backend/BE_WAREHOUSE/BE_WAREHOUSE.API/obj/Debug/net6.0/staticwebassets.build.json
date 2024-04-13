@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "JWPDwdd4SsB8W/WaxPHCBzbwNvh4XMfoiDxPSeOi7IE=",
+  "Hash": "CLyQKWJ7hpIU6zUtkBS4MQUKCFFxx0lRoH0rDsu3ZnA=",
   "Source": "BE_WAREHOUSE.API",
   "BasePath": "_content/BE_WAREHOUSE.API",
   "Mode": "Default",
@@ -49,6 +49,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\quat-cam-tay.jpg"
+    },
+    {
+      "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\quat-de-ban-mini.jpg",
+      "SourceId": "BE_WAREHOUSE.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\",
+      "BasePath": "_content/BE_WAREHOUSE.API",
+      "RelativePath": "images/quat-de-ban-mini.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\quat-de-ban-mini.jpg"
     }
   ]
 }

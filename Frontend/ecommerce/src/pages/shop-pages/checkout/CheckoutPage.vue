@@ -2,32 +2,109 @@
   <div class="row s-checkout">
     <div class="col-lg-8 col-md-8 col-sm-8 col-8 checkout-left">
       <div class="row checkout-header">
-        <div class="iamge-logo">
+        <div class="col-lg-8 col-md-8 col-sm-8 col-8 ">
+          <div class="checkout-header-title">Thông tin giao hàng</div>
+          <div class="header-address-user">
+            <div class="address-select">
+                <input name="address-option" type="radio">
+            </div>
+            <div class="address-user">
+                <img src="../../../assets/img/logo-home-address.png" alt="">
+                <div class="address-user-profile">
+                    <div class="address-user-name">
+                        Trần Thanh Phong
+                        <div class="address-default">Mặc định</div>
+                    </div>
+                    <div class="address-user-location">Số 16 / Xóm 6 , Thôn Lã Côi , Xẫ Yên Viên, H.Gia Lâm, TP. Hà Nội</div>
+                </div>
+                <div class="address-action">
+                    <i class="fa-solid fa-user-pen"></i>
+                </div>
+            </div>
+          </div>
+          <div class="header-address-other">
+            <div class="address-select">
+                <input name="address-option" type="radio">
+                <label for="">Giao hàng đến địa chỉ khác</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-4 image-logo">
           <img src="../../../assets/img/logo.png" alt="" />
         </div>
       </div>
       <div class="row checkout-content">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-6 checkout-content-address">
-          <div class="checkout-address-header">Thông tin nhận hàng</div>
+        <div class="col-lg-7 col-md-7 col-sm-7 col-7 checkout-content-address">
           <div class="checkout-address-form">
-            <input type="email" placeholder="Email" />
-            <input type="text" placeholder="Họ và tên" />
-            <input type="text" placeholder="Số diện thoại" />
-            <input type="text" placeholder="Địa chỉ" />
-            <input type="text" placeholder="Tỉnh thành" />
-            <input type="text" placeholder="Quận huyện" />
-            <input type="text" placeholder="Phường Xã" />
-            <textarea placeholder="Ghi chú"></textarea>
+            <div class="row address-form-input">
+                <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="fullname">Họ và tên <span class="red">*</span></label>
+                <input class="col-lg-8 col-md-8 col-sm-8 col-8 " type="text" placeholder="Họ và tên" />   
+            </div>
+            
+            <div class="row address-form-input">
+                <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="phonenumber">Số điện thoại </label>
+                <input class="col-lg-8 col-md-8 col-sm-8 col-8 " type="text" placeholder="Số điện thoại" />   
+            </div>
+            <div class="row address-form-select">
+                <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="">Chọn tỉnh/thành phố <span class="red">*</span></label>
+                <select v-model="provinceSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
+                    <option v-for="item in province" 
+                    :key="item.province_id" 
+                    :value="{
+                        province_id: item.province_id,
+                        province_name: item.province_name,
+                        province_type: item.province_type,
+                    }">
+                    {{item.province_name}}
+                    </option>
+                </select>
+            </div>
+            <div class="row address-form-select">
+                <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="">Chọn quận/huyện <span class="red">*</span></label>
+                <select v-model="districtSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
+                    <option v-for="item in district" 
+                    :key="item.district_id" 
+                    :value="{
+                        district_id: item.district_id,
+                        district_name: item.district_name,
+                        district_type: item.district_type,
+                    }">
+                    {{item.district_name}}
+                    </option>
+                </select>
+            </div>
+            <div class="row address-form-select">
+                <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="">Chọn xã/phường <span class="red">*</span></label>
+                <select v-model="wardSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
+                    <option v-for="item in ward" 
+                    :key="item.ward_id" 
+                    :value="{
+                        ward_id: item.ward_id,
+                        ward_name: item.ward_name,
+                        ward_type: item.ward_type,
+                    }">
+                    {{item.ward_name}}
+                    </option>
+                </select>
+            </div>
+            <div class="row address-form-input">
+                <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="address">Số nhà/đường <span class="red">*</span></label>
+                <input class="col-lg-8 col-md-8 col-sm-8 col-8 " type="text" placeholder="Số nhà/đường" />   
+            </div>
+            <div class="row address-form-input">
+                <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="address">Ghi chú</label>
+                <textarea class="col-lg-8 col-md-8 col-sm-8 col-8 " placeholder="Ghi chú"></textarea>
+            </div>
           </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-6 checkout-content-right">
+        <div class="col-lg-5 col-md-5 col-sm-5 col-5 checkout-content-right">
           <div class="checkout-delivery">
             <div class="checkout-payment-header">
                 Vận chuyển
             </div>
             <div class="checkout-label">
-                <input type="radio" value="COD">
-                <span for="">Giao hàng tận nơi</span>
+                <input type="radio" checked value="COD">
+                <span for="">Giao hàng tận nơi : 30.000đ</span>
             </div>
           </div>
           <div class="checkout-payment-method">
@@ -35,8 +112,12 @@
                 Thanh toán
             </div>
             <div class="checkout-label">
-                <input type="radio" value="COD">
+                <input name="payment-method" type="radio" value="COD">
                 <span for="">Thanh toán khi giao hàng (COD)</span>
+            </div>
+            <div class="checkout-label">
+                <input name="payment-method" type="radio" value="momo">
+                <span for="">Momo </span>
             </div>
           </div>
         </div>
@@ -94,10 +175,153 @@
 </template>
 
 <script>
-export default {};
+import addressService from '../../../utils/ApiAddressService.js';
+export default {
+    data() {
+        return {
+            addressDelivery:{},
+            province:[],
+            district:[],
+            ward:[],
+            provinceSelected:{},
+            districtSelected:{},
+            wardSelected:{},
+            errorNotEmpty:null
+        }
+    },
+    watch:{
+        provinceSelected: async function (newValue){
+            if(newValue == null){
+                this.errorNotEmpty= "Không được để trống!"
+            }
+            await this.takeAddressDistrict();
+        },
+        districtSelected: async function(newValue){
+            if(newValue == null){
+                this.errorNotEmpty= "Không được để trống!"
+            }
+            await this.takeAddressWard();
+        },
+        wardSelected:  function(newValue){
+            if(newValue == null){
+                this.errorNotEmpty= "Không được để trống!"
+            }
+        }
+    },
+    created() {
+        this.takeAddressProvince();
+    },
+    methods: {
+        async takeAddressProvince(){
+           try{
+            var res = await addressService.getProvince();
+            this.province = res;
+           }catch(error){
+                console.log(error);
+           }
+        },
+        async takeAddressDistrict(){
+           try{
+            var res = await addressService.getDistrict(this.provinceSelected.province_id);
+            this.district = res;
+           }catch(error){
+                console.log(error);
+           }
+        },
+        async takeAddressWard(){
+           try{
+            var res = await addressService.getWard(this.districtSelected.district_id);
+            this.ward = res;
+           }catch(error){
+                console.log(error);
+           }
+        }
+    },
+};
 </script>
 
 <style scoped>
+input[type='radio'] {
+    accent-color:#025c7d;
+}
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") white no-repeat calc(100% - 10px) !important;
+}
+.address-form-input{
+    display: flex;
+    align-items: center ;
+}
+.address-select label{
+    font-size: 14px;
+    margin:0;
+    padding-left: 20px;
+}
+.header-address-other{
+    margin: 10px 0px;
+}
+.address-select
+{
+    display: flex;
+    align-items: center;
+}
+.address-action:hover{
+    color: #025c7d;
+}
+.address-action{
+    cursor: pointer;
+    font-size: 20px;
+    color: #0f7ca4;
+}
+.address-user-location{
+    font-size: 13px;
+    font-style: italic;
+}
+.address-default{
+    margin-left: 10px;
+    border-radius: 4px;
+    padding: 2px 4px;
+    background-color: rgba(3, 140, 203, 0.2);
+}
+.address-user-name{
+    align-items: center;
+    display: flex;
+    font-size: 14px;
+    font-weight: bold;
+}
+.address-user-profile{
+    padding: 0px 10px;
+}
+.address-user img{
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    border: 1px solid #a2c5d2;
+}
+.address-user{
+    padding: 0px 20px;
+    display: flex;
+    align-items: center;
+}
+.address-select input{
+    width: 19px;
+    height: 19px;
+}
+
+.header-address-user{
+    display:flex;
+    /* justify-content: space-between; */
+    align-items: center;
+}
+.checkout-header-title{
+    color: #a2c5d2;
+    padding: 10px 0px;
+    font-size: 25px;
+    font-weight: bold;
+    
+}
 .checkout-action-other a:hover{
     color: #0f7ca4;
 }
@@ -225,13 +449,17 @@ export default {};
     margin: 5px 0px;
     padding: 5px 8px;
     width: 100%;
-    height: 50px;
+    height: 45px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     border: 1px solid #ccc;
     background-color: #fff;
 }
+.checkout-address-form textarea{
+    height: 180px !important;
+}
+.checkout-address-form select,
 .checkout-address-form textarea,
 .checkout-address-form input {
     outline: none;
@@ -240,16 +468,20 @@ export default {};
     padding: 5px 8px;
     margin: 5px 0px;
     width: 100%;
-    height: 50px;
+    height: 45px;
 }
 .checkout-payment-header,
 .checkout-address-header{
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
 }
-.iamge-logo img{
-    width: 350px;
-    height: 150px;
+.image-logo{
+    display: flex;
+    align-items: center;
+}
+.image-logo img{
+    width: 250px;
+    height: 100px;
 }
 .checkout-left{
     padding: 0;

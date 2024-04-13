@@ -17,6 +17,7 @@ namespace BE_WAREHOUSE.Core.DTOs
         public string? Gender { get; set; }
         public string? Avatar { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        public Guid CartsId { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
     }

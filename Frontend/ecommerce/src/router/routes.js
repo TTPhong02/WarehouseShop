@@ -131,7 +131,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     // const token = JSON.parse(localStorage.getItem("Token"));
-    const roles = "" ;
+    const roles = "Admin" ;
     if (to.path ==="/admin" && roles !== "Admin") {
       next("/login"); // Chuyển hướng đến trang user nếu admin cố gắng truy cập vào trang user
     } else if (to.path === "/login" && roles === "Admin") {

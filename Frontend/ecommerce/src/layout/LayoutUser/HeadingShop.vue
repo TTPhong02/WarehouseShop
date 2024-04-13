@@ -27,7 +27,7 @@
             class="col-lg-1 col-md-1 col-sm-2 mid-header-cart"
           >
             <img class="img_cart" src="../../assets/img/cart.png" alt="" />
-            <span class="number_cart">{{takeNumberOfCart()}}</span>
+            <span v-if="this.numberCart > 0" class="number_cart">{{this.numberCart}}</span>
           </router-link>
           <div
             class="col-lg-2 col-md-2 col-sm-0 mid-header-profile menu-father"
@@ -117,6 +117,7 @@
 </template>
 
 <script>
+import cartLocalStorageService from "../../js/storage/CartLocalStorage"
 import MTextSearch from "../../components/base/input/MTextSearch.vue";
 import usersService from '../../utils/UserService';
 
@@ -127,8 +128,12 @@ export default {
   },
   data() {
     return {
-      user:{}
+      user:{},
+      numberCart:0
     }
+  },
+  created() {
+    this.emitter.on("takeNumberOfCart",this.takeNumberOfCart);
   },
   mounted() {
     this.takeDataUsers();
@@ -137,11 +142,13 @@ export default {
   },
   methods: {
     takeNumberOfCart(){
-      var number = JSON.parse(localStorage.getItem("CartItems"));
-      if(number){
-        return number.length;
+      var cart = cartLocalStorageService.getCartFromLocalStorage();
+      if(cart){
+        this.numberCart = cart.length;
       }
-      return 0;
+      else{
+        this.numberCart = 0;
+      }
     },
     async takeDataUsers(){
       this.user = await JSON.parse(localStorage.getItem("User"));

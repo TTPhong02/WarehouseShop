@@ -33,7 +33,7 @@ namespace BE_WAREHOUSE.Core.Interfaces.User
         /// false - không xác thực
         /// </returns>
         /// Created By: TTPhong(06/04/2024)
-        Task<Users?> FindUserByEmailAndPassword(UserLogin userLogin);
+        Task<UserDTO?> FindUserByEmailAndPassword(UserLogin userLogin);
 
         Task<Users?> FindByEmailAsync(string email);
 

@@ -86,11 +86,12 @@ export default {
                 var data = {};
                 data.ProductId = id;
                 data.Quantity = 1;
-                data.CartsId = this.cartItems[0].CartsId;
+                data.CartsId = this.user.CartsId;
                 console.log(data);
                 await cartItemsService.insertCartItems(data);
                 var res = await cartItemsService.getByUserId(this.user.UsersId);
                 localStorage.setItem("CartItems",JSON.stringify(res.data));
+                this.emitter.emit("takeNumberOfCart");
             }
         },
         async takedataProduct(){

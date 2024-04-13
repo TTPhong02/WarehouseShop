@@ -8,15 +8,23 @@
             </div>
             <div class="s-cart-content">
                 <div class="row cart-header">
-                    <div class="col-lg-6 col-md-6 col-sm-6 cart-header-item text-left">Sản phẩm</div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 cart-header-item header-item-checkbox text-left">
+                        <div class="cart-input-checkall">
+                            <input  v-model="selectAll" type="checkbox">
+                        </div>
+                        Sản phẩm
+                    </div>
                     <div class="col-lg-2 col-md-2 col-sm-2 cart-header-item">Giá </div>
                     <div class="col-lg-1 col-md-1 col-sm-1 cart-header-item">Số lượng</div>
                     <div class="col-lg-2 col-md-2 col-sm-2 cart-header-item">Thành tiền</div>
                     <div class="col-lg-1 col-md-1 col-sm-1 cart-header-item">Thao tác</div>
                 </div>
-                <div class="cart-list-item">
+                <div class="row cart-list-item">
                     <div v-for="item in cartItems" :key="item.CartItemsId" class="row cart-item">
-                        <div class="row col-lg-6 col-md-6 col-sm-6 col-6 cart-item-product text-left">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 cart-item-product text-left">
+                            <div class="cart-input-check">
+                                <input v-model="cartItemSelected" :value="item.ProductId" type="checkbox">
+                            </div>
                             <div class="cart-product-image">
                                 <img :src="pathImage(item.ImagesPath)" alt="">
                             </div>
@@ -52,16 +60,21 @@
                     <div class="col-lg-2 col-md-2 col-sm-2 col-2  cart-total-title">
                         Tổng tiền: 
                     </div>
-                    <div class="col-lg-1 col-md-1 col-sm-1 col-1  cart-total-money produc-price">
-                        {{formatMoney(9999999)}}
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-2  cart-total-money produc-price">
+                        {{formatMoney(this.totalMoney)}}
                     </div>
                 </div>
                 <div class="row cart-action">
-                    <button class="col-lg-3 col-md-3 col-sm-3 col-3 cart-back-home">Tiếp tục mua hàng
-                    </button>
-                    <button class="col-lg-3 col-md-3 col-sm-3 col-3 cart-checkout">
+                    <router-link to="/" class="cart-back-home" >
+                        Tiếp tục mua hàng
+                    </router-link>
+                    <router-link to="/checkout" class="cart-checkout">
                         Tiến hành thanh toán
-                    </button>
+                    </router-link>
+
+                    <!-- <button class="col-lg-3 col-md-3 col-sm-3 col-3 cart-checkout">
+                        
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -70,6 +83,7 @@
 </template>
 
 <script>
+import cartLocalStorageService from "../../../js/storage/CartLocalStorage";
 import cartItemsService from "../../../utils/CartItemsService";
 import HeadingShop from '../../../layout/LayoutUser/HeadingShop.vue'
 export default {
@@ -78,17 +92,71 @@ export default {
     },
     data() {
         return {
-           users:{} ,
-           cartItems:[]
+            users:{} ,
+            cartItems:[],
+            totalMoney: 0,
+            cartItemSelected: [],
+            allSelected:false,
         }
     },
     created() {
         this.takeDataUsers();
         this.getCartItemsFormLocal();
     },
+    watch:{
+        cartItems:{
+            deep:true,
+            handler: 'totalMoneyMethod'
+        },
+    },
+    computed: {
+        selectAll: {
+            get() {
+                if (this.cartItems && this.cartItems.length > 0) { // A users array exists with at least one item
+                let allChecked = true;
+                for (const item of this.cartItems) {
+                    if (!this.cartItemSelected.includes(item.ProductId)) {
+                        allChecked = false; // If even one is not included in array
+                        }
+                        
+                        // Break out of loop if mismatch already found
+                        if(!allChecked) break;
+                    }
+
+                    return allChecked;
+                }
+                return false;
+            },
+            set(value) {
+                const checked = [];
+
+                if (value) {
+                    this.cartItems.forEach((item) => {
+                        checked.push(item.ProductId);
+                    });
+                }
+
+                this.cartItemSelected = checked;
+            }
+        }
+    },
     methods: {
+        totalMoneyMethod(){
+            this.totalMoney = 0;
+            this.cartItems.forEach(item=>{
+                if(item){
+                    this.totalMoney += item.Quantity * item.ProductPrice;
+                }
+                else{
+                    this.totalMoney = 0;
+                }
+            })
+        },
         async deleteCartItems(id){
              await cartItemsService.delete(id);
+             cartLocalStorageService.removeItemGetOutCart(id);
+             this.emitter.emit("takeNumberOfCart");
+            this.getCartItemsFormLocal();
         },
          decreaseQuantity(id){
             var data = {};
@@ -148,20 +216,33 @@ export default {
     margin: 20px 50px;
     justify-content: flex-end;
 }
+.cart-action a:hover{
+    color: #1ea2d2;
+}
+
 .cart-checkout{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     color: #fff;
-    font-size: 16px;
+    font-size: 17px;
     background-color: #a2c5d2;
     width: 200px;
     height: 50px;
 }
+
 .cart-back-home{
-        font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
     cursor: pointer;
     margin: 0px 10px;
     width: 200px;
     height: 50px;
+    color: #000;
+    background-color: #e6e5e5;
 }
 .cart-total-money{
     margin-right: 20px;
@@ -221,6 +302,12 @@ export default {
     font-size: 30px;
     cursor: pointer;
 }
+.header-item-checkbox,
+.cart-item-product{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
 .cart-item-quantity,
 .product-manage-quantity,
 .cart-item-product{
@@ -233,11 +320,14 @@ export default {
 .cart-item-sum,
 .cart-item-action,
 .cart-item-product{
+
     text-align: center;
     width: 100%;
     flex: 1;
 }
-
+.cart-input-checkall{
+    padding-right: 20px;
+}
 .cart-product-image{
     padding: 0px 20px;
 }
@@ -253,7 +343,11 @@ export default {
     width: 100%;
     padding: 20px 0px ;
 }
+.cart-input-check{
+
+}
 .cart-list-item{
+    flex-direction: column;
     border-bottom: 1px solid #ccc;
     margin: 20px 40px;
 }
@@ -282,7 +376,8 @@ export default {
     box-shadow: 0px 2px 46.41px 4.59px rgba(2,38,113,0.1);
 }
 .cart-item{
-    padding: 10px 0px 10px 10px;
+    margin: 0px;
+    padding: 10px 0px 10px 0px;
     justify-content: space-between;
     align-items: center;
 }

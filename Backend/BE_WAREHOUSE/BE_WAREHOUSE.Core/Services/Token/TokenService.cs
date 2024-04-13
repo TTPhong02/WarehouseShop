@@ -77,13 +77,14 @@ namespace BE_WAREHOUSE.Core.Services.Token
 
                 user.RefreshToken = refreshToken;
                 user.RefreshTokenExpiryTime = DateTime.Now.AddDays(refreshTokenValidityInDays);
-                await _usersRepository.UpdateToken(user, user.UsersId);
-                var userInfor = _mapper.Map<UserDTO>(user);
+                
+                var userMapper = _mapper.Map<Users>(user);
+                await _usersRepository.UpdateToken(userMapper, userMapper.UsersId);
                 return new TokenModel
                 {
                     AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
                     RefreshToken = user.RefreshToken,
-                    Users = userInfor
+                    Users = user
                 };
             }
             else
