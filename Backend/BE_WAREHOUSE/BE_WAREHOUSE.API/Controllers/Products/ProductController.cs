@@ -4,6 +4,7 @@ using BE_WAREHOUSE.Core.Interfaces.Base;
 using BE_WAREHOUSE.Core.Interfaces.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml.FormulaParsing.Excel.Functions;
 
 namespace BE_WAREHOUSE.API.Controllers.Products
 {
@@ -19,6 +20,11 @@ namespace BE_WAREHOUSE.API.Controllers.Products
         public async Task<IActionResult> GetProductNew()
         {
             var res = await _repository.GetProductNew();
+            return Ok(res);
+        }
+        [HttpPost("ListId")]
+        public async Task<IActionResult> GetProductByListId([FromBody]List<Guid> ids) {
+            var res = await _repository.GetProductByListId(ids);
             return Ok(res);
         }
     }

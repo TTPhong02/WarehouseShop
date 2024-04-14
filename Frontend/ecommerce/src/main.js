@@ -13,7 +13,7 @@ import tinyEmitter from 'tiny-emitter/instance';
 import MTooltip from "./components/base/tooltip/MTooltip.vue";
 import router from "./router/routes.js";
 import urlApi from './js/request/urlapi';
-
+import helper from './helpers/format';
 // // Import Bootstrap and BootstrapVue CSS files (order is important)
 // import 'bootstrap/dist/css/bootstrap.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -31,5 +31,6 @@ app.config.globalProperties.MISAResource = MISAResource;
 app.config.globalProperties.emitter = tinyEmitter;
 app.config.globalProperties.token = tinyEmitter;
 app.config.globalProperties.URLRequest = urlApi;
+app.config.globalProperties.helper = helper;
 app.use(router);
 app.mount('#app');

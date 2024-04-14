@@ -26,7 +26,7 @@
                         </div>
                         <div class="s-product-infor">
                             <div class="product-name">{{item.ProductName}}</div>
-                            <div class="product-price">{{formatMoney(item.ProductPrice)}}</div>                           
+                            <div class="product-price">{{this.helper.formatMoney(item.ProductPrice)}}</div>                           
                         </div>
                         <div class="product-select">
                             <div class="product-detail">
@@ -120,9 +120,6 @@ export default {
             } else {
                 return "https://localhost:7242/images/no-image.jpg";
             }
-        },
-        formatMoney(amount) {
-            return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+ " ₫";
         }
 
     },

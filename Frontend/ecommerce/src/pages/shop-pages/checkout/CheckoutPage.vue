@@ -40,11 +40,12 @@
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="fullname">Họ và tên <span class="red">*</span></label>
                 <input class="col-lg-8 col-md-8 col-sm-8 col-8 " type="text" placeholder="Họ và tên" />   
             </div>
-            
+            <span class="error-input red">{{listErrorMessage.fullname}}</span>
             <div class="row address-form-input">
-                <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="phonenumber">Số điện thoại </label>
+                <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="phonenumber">Số điện thoại <span class="red">*</span> </label>
                 <input class="col-lg-8 col-md-8 col-sm-8 col-8 " type="text" placeholder="Số điện thoại" />   
             </div>
+            <span class="error-input red">{{listErrorMessage.phonenumber}}</span>
             <div class="row address-form-select">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="">Chọn tỉnh/thành phố <span class="red">*</span></label>
                 <select v-model="provinceSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
@@ -59,6 +60,7 @@
                     </option>
                 </select>
             </div>
+            <span class="error-input red">{{listErrorMessage.province}}</span>
             <div class="row address-form-select">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="">Chọn quận/huyện <span class="red">*</span></label>
                 <select v-model="districtSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
@@ -87,10 +89,12 @@
                     </option>
                 </select>
             </div>
+            <span class="error-input red">{{listErrorMessage.district}}</span>
             <div class="row address-form-input">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="address">Số nhà/đường <span class="red">*</span></label>
                 <input class="col-lg-8 col-md-8 col-sm-8 col-8 " type="text" placeholder="Số nhà/đường" />   
             </div>
+            <span class="error-input red">{{listErrorMessage.home}}</span>
             <div class="row address-form-input">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="address">Ghi chú</label>
                 <textarea class="col-lg-8 col-md-8 col-sm-8 col-8 " placeholder="Ghi chú"></textarea>
@@ -104,7 +108,7 @@
             </div>
             <div class="checkout-label">
                 <input type="radio" checked value="COD">
-                <span for="">Giao hàng tận nơi : 30.000đ</span>
+                <span for="">Giao hàng tận nơi : {{this.helper.formatMoney(deliveryFee)}}</span>
             </div>
           </div>
           <div class="checkout-payment-method">
@@ -125,20 +129,21 @@
     </div>
     <div class="col-lg-4 col-md-4 col-sm-4 col-4 checkout-right">
         <div class="checkout-cart-header">
-            Đơn hàng (10 sản phẩm)
+            Đơn hàng ({{this.cartSelected.length}} sản phẩm)
         </div>
         <div class="checkout-cart-content">
             <div class="checkout-cart-list">
-                <div class="row checkout-cart-item">
+                <div v-for="item in cartSelected" :key="item.ProductId" class="row checkout-cart-item">
                     <div class="col-lg-2 col-md-2 col-sm-2 col-2 checkout-item-image">
-                        <img src="../../../assets/img/sanpham1.jpg" alt="">
+                        <img :src="this.helper.checkImagePath(item.ImagesPath)" alt="">
                     </div>
-                    <div class="col-lg-7 col-md-7 col-sm-7 col-7 checkout-item-infor ">
-                        <div class="checkout-item-name">Tên sản phẩm</div>
-                        <div class="checkout-item-description">Mô tả</div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 checkout-item-infor ">
+                        <div class="checkout-item-name">{{item.ProductName}}</div>
+                        <div class="checkout-item-description">Giá: {{this.helper.formatMoney(item.ProductPrice)}}</div>
+                        <div class="checkout-item-description">Số lượng: {{item.Quantity}}</div>
                     </div>
-                    <div class="col-lg-3 col-md-3 col-sm-3 col-3 checkout-item-money">
-                        <div class="checkout-item-total">999999đ</div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-4 checkout-item-money">
+                        <div class="checkout-item-total">{{this.helper.formatMoney(item.ProductPrice*item.Quantity)}}</div>
                     </div>
                 </div>
             </div>
@@ -149,17 +154,17 @@
             <div class="checkout-total-payment">
                 <div class="checkout-payment-item">
                     <div class="payment-item-title">Tạm tính</div>
-                    <div class="payment-item-content">999999đ</div>
+                    <div class="payment-item-content">{{this.helper.formatMoney(this.totalToPay - (this.totalToPay * discount))}}</div>
                 </div>
                 <div class="checkout-payment-item">
                     <div class="payment-item-title">Phí vận chuyển</div>
-                    <div class="payment-item-content">999đ</div>
+                    <div class="payment-item-content">{{this.helper.formatMoney(this.deliveryFee)}}</div>
                 </div>
             </div>
             <div class="checkout-total-total">
                 <div class="checkout-payment-item">
                     <div class="payment-item-title">Tổng cộng</div>
-                    <div class="payment-item-content">10000000đ</div>
+                    <div class="payment-item-content">{{this.helper.formatMoney(this.totalToPay + this.deliveryFee)}}</div>
                 </div>
             </div>
             <div class="checkout-action-other">
@@ -175,10 +180,14 @@
 </template>
 
 <script>
+import localStorageService from "../../../js/storage/LocalStorageService"
 import addressService from '../../../utils/ApiAddressService.js';
+// import productService from '../../../utils/ProductService';
 export default {
     data() {
         return {
+            cartSelected:[],
+            user:{},
             addressDelivery:{},
             province:[],
             district:[],
@@ -186,32 +195,54 @@ export default {
             provinceSelected:{},
             districtSelected:{},
             wardSelected:{},
-            errorNotEmpty:null
+            errorNotEmpty:null,
+            discount:0,
+            deliveryFee:30000,
+            totalToPay:null,
+            listErrorMessage:{}
         }
     },
     watch:{
         provinceSelected: async function (newValue){
             if(newValue == null){
-                this.errorNotEmpty= "Không được để trống!"
+                this.listErrorMessage.province= "Vui lòng chọn tỉnh / thành phố"
             }
             await this.takeAddressDistrict();
         },
         districtSelected: async function(newValue){
             if(newValue == null){
-                this.errorNotEmpty= "Không được để trống!"
+                this.listErrorMessage.district= "Vui lòng chọn quận / huyện "
             }
             await this.takeAddressWard();
         },
         wardSelected:  function(newValue){
             if(newValue == null){
-                this.errorNotEmpty= "Không được để trống!"
+                this.listErrorMessage.ward= "Vui lòng chọn xã / phường"
             }
         }
     },
     created() {
         this.takeAddressProvince();
+        this.takeDataFromLocalStorage();
+
     },
     methods: {
+          totalMoneyToPay(){
+            if(this.cartSelected.length > 0){
+                 this.cartSelected.forEach(element => {
+                    this.totalToPay +=  element.ProductPrice * element.Quantity;
+                });
+            }else{
+                this.totalToPay = 0;
+            }
+        },
+        async takeDataFromLocalStorage(){
+            this.user =await localStorageService.getItemFromLocalStorage("User");
+            var listIdProduct = await localStorageService.getItemFromLocalStorage("CartSelected");
+            var listCartItems = await localStorageService.getItemFromLocalStorage("CartItems");
+            this.cartSelected = await  listCartItems.filter(item => listIdProduct.includes(item.ProductId));
+            await this.totalMoneyToPay();
+        },
         async takeAddressProvince(){
            try{
             var res = await addressService.getProvince();
@@ -241,6 +272,12 @@ export default {
 </script>
 
 <style scoped>
+.checkout-item-money{
+    padding:0px
+}
+.checkout-cart-item{
+    padding: 5px 0px !important;
+}
 input[type='radio'] {
     accent-color:#025c7d;
 }
@@ -396,6 +433,7 @@ select {
     border-radius: 4px;
 }
 .checkout-cart-list{
+    max-height: 300px;
     padding: 0px 0px 20px 20px;
     border-bottom: 1px solid #ccc;
         margin-bottom: 20px;
@@ -494,5 +532,13 @@ select {
   padding: 0px 30px;
     box-shadow: 0px 2px 46.41px 4.59px rgba(2,38,113,0.1);
 }
-
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    padding-right: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 6px;
+  }
 </style>

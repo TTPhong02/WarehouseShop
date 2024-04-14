@@ -3,10 +3,12 @@ using BE_WAREHOUSE.Core.AutoMapper;
 using BE_WAREHOUSE.Core.Interfaces.Base;
 using BE_WAREHOUSE.Core.Interfaces.Cart;
 using BE_WAREHOUSE.Core.Interfaces.Category;
+using BE_WAREHOUSE.Core.Interfaces.IAddress;
 using BE_WAREHOUSE.Core.Interfaces.Image;
 using BE_WAREHOUSE.Core.Interfaces.Products;
 using BE_WAREHOUSE.Core.Interfaces.Token;
 using BE_WAREHOUSE.Core.Interfaces.User;
+using BE_WAREHOUSE.Core.Services.Addresss;
 using BE_WAREHOUSE.Core.Services.Base;
 using BE_WAREHOUSE.Core.Services.Cart;
 using BE_WAREHOUSE.Core.Services.Category;
@@ -72,6 +74,9 @@ builder.Services.AddScoped<ICartItemsRepository, CartItemsRepository>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+
+builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 

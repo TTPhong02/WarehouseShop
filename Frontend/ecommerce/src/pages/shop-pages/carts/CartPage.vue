@@ -86,6 +86,7 @@
 import cartLocalStorageService from "../../../js/storage/CartLocalStorage";
 import cartItemsService from "../../../utils/CartItemsService";
 import HeadingShop from '../../../layout/LayoutUser/HeadingShop.vue'
+import localStorageService from '../../../js/storage/LocalStorageService';
 export default {
     components:{
         HeadingShop
@@ -104,6 +105,10 @@ export default {
         this.getCartItemsFormLocal();
     },
     watch:{
+        cartItemSelected:{
+            deep:true,
+            handler:"setLocalStorageCartSelect"
+        },
         cartItems:{
             deep:true,
             handler: 'totalMoneyMethod'
@@ -135,12 +140,16 @@ export default {
                         checked.push(item.ProductId);
                     });
                 }
-
                 this.cartItemSelected = checked;
+                localStorage.setItem("CartSelected",this.cartItemSelected);
             }
         }
     },
     methods: {
+        setLocalStorageCartSelect(){
+            localStorageService.setItemToLocalStorage("CartSelected",this.cartItemSelected);
+        },
+
         totalMoneyMethod(){
             this.totalMoney = 0;
             this.cartItems.forEach(item=>{

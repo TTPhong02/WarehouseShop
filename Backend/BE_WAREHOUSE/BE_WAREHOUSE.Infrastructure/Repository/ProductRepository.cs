@@ -16,6 +16,13 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
         {
         }
 
+        public async Task<IEnumerable<Product>> GetProductByListId(List<Guid> ids)
+        {
+            var sql = $"SELECT * FROM view_product WHERE ProductId IN @ListId ";
+            var res = await _dbContext.Connection.QueryAsync<Product>(sql, new { ListId = ids });
+            return res;
+        }
+
         public async Task<IEnumerable<Product>> GetProductNew()
         {
             DateTime currentDate = DateTime.Now;
