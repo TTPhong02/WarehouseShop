@@ -1,6 +1,5 @@
 <template>
 <div>
-    <HeadingShop></HeadingShop>
     <div class="s-cart">
         <div class="container">
             <div class="s-cart-title">
@@ -23,7 +22,7 @@
                     <div v-for="item in cartItems" :key="item.CartItemsId" class="row cart-item">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-6 cart-item-product text-left">
                             <div class="cart-input-check">
-                                <input v-model="cartItemSelected" :value="item.ProductId" type="checkbox">
+                                <input v-model="cartItemSelected" :value="item.CartItemsId" type="checkbox">
                             </div>
                             <div class="cart-product-image">
                                 <img :src="pathImage(item.ImagesPath)" alt="">
@@ -85,11 +84,10 @@
 <script>
 import cartLocalStorageService from "../../../js/storage/CartLocalStorage";
 import cartItemsService from "../../../utils/CartItemsService";
-import HeadingShop from '../../../layout/LayoutUser/HeadingShop.vue'
 import localStorageService from '../../../js/storage/LocalStorageService';
 export default {
     components:{
-        HeadingShop
+        
     },
     data() {
         return {
@@ -120,7 +118,7 @@ export default {
                 if (this.cartItems && this.cartItems.length > 0) { // A users array exists with at least one item
                 let allChecked = true;
                 for (const item of this.cartItems) {
-                    if (!this.cartItemSelected.includes(item.ProductId)) {
+                    if (!this.cartItemSelected.includes(item.CartItemsId)) {
                         allChecked = false; // If even one is not included in array
                         }
                         
@@ -137,7 +135,7 @@ export default {
 
                 if (value) {
                     this.cartItems.forEach((item) => {
-                        checked.push(item.ProductId);
+                        checked.push(item.CartItemsId);
                     });
                 }
                 this.cartItemSelected = checked;
@@ -183,6 +181,7 @@ export default {
                     localStorage.setItem("CartItems",JSON.stringify(arrCartItems)); 
                 }
             });
+            
                      
         },
          increaseQuantity(id){
@@ -373,6 +372,7 @@ export default {
     border-bottom:1px solid #a2c5d2;
 }
 .s-cart{
+    margin-bottom: 30px;
     background-color: #fff;
 }
 .s-cart-title h1{

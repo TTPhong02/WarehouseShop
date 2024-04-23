@@ -41,7 +41,7 @@
               <router-link to="/register">Đăng kí</router-link>
             </div>
             <div v-if="this.user" class="header-profile-nav menu-child">
-              <div class="profile-nav-item">Thông tin tài khoản</div>
+              <router-link to="/profile" class="profile-nav-item">Thông tin tài khoản</router-link>
               <div v-on:click="logout()" class="profile-nav-item">Đăng xuất</div>
             </div>
           </div>
@@ -65,20 +65,8 @@
                 <i class="fa-solid fa-caret-down"></i>
                 <div class="menu-child">
                   <div class="menu-child-list">
-                    <router-link to="do-dien-tu" class="child-item">
-                      Đồ điện tử
-                    </router-link>
-                    <router-link to="do-dien-tu" class="child-item">
-                      Đồ điện tử
-                    </router-link>
-                    <router-link to="do-dien-tu" class="child-item">
-                      Đồ điện tử
-                    </router-link>
-                    <router-link to="do-dien-tu" class="child-item">
-                      Đồ điện tử
-                    </router-link>
-                    <router-link to="do-dien-tu" class="child-item">
-                      Đồ điện tử
+                    <router-link v-for="item in categories" :key="item.CategoriesId" :to="item.CategoriesSlug" class="child-item">
+                      {{item.CategoriesName}}
                     </router-link>
                   </div>
                 </div>
@@ -120,6 +108,7 @@
 import cartLocalStorageService from "../../js/storage/CartLocalStorage"
 import MTextSearch from "../../components/base/input/MTextSearch.vue";
 import usersService from '../../utils/UserService';
+import categoriesService from '../../utils/CategoriesService';
 
 export default {
   name: "HeadingShop",
@@ -129,16 +118,19 @@ export default {
   data() {
     return {
       user:{},
-      numberCart:0
+      numberCart:0,
+      categories:[],
     }
   },
   created() {
     this.emitter.on("takeNumberOfCart",this.takeNumberOfCart);
+    this.emitter.on("takeDataUsersHeading",this.takeDataUsers)
   },
   mounted() {
     this.takeDataUsers();
     window.addEventListener("scroll", this.handleScroll);
     this.takeNumberOfCart();
+    this.takeDataCategories();
   },
   methods: {
     takeNumberOfCart(){
@@ -149,6 +141,10 @@ export default {
       else{
         this.numberCart = 0;
       }
+    },
+    async takeDataCategories(){
+      var res = await categoriesService.getAll();
+      this.categories = res.data;
     },
     async takeDataUsers(){
       this.user = await JSON.parse(localStorage.getItem("User"));
@@ -161,6 +157,7 @@ export default {
           localStorage.removeItem("RefreshToken");
           localStorage.removeItem("User");
           localStorage.removeItem("CartItems");
+          localStorage.removeItem("CartSelected");
           window.location.reload();
       }
 

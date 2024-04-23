@@ -91,7 +91,7 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
                 var imagePath = $"/images/{imageFile.FileName}";
                 image.ImagesPath = imagePath;
             }
-            var procName = "Proc_Image_Update";
+            var procName = "Proc_Update_Images";
             var param = new DynamicParameters();
             param.Add("ImagePath", image.ImagesPath);
             param.Add("TableId", id);

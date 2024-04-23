@@ -29,10 +29,10 @@
                             <div class="product-price">{{this.helper.formatMoney(item.ProductPrice)}}</div>                           
                         </div>
                         <div class="product-select">
-                            <div class="product-detail">
+                            <router-link :to="'/product/' + item.ProductSlug" class="product-detail">
                                 <i class="fa-regular fa-eye"></i>
                                 Xem 
-                            </div>
+                            </router-link>
                             <div v-on:click="addToCart(item.ProductId)" class="product-cart">
                                 <i class="fa-solid fa-cart-plus"></i>
                                 Thêm
@@ -48,7 +48,7 @@
 
 <script>
 import cartItemsService from "../../../utils/CartItemsService"; 
-import producService from "../../../utils/ProductService"; 
+import productService from "../../../utils/ProductService"; 
 import imagesService from "../../../utils/ImagesService";
 export default {
     name:"ProductNew",
@@ -96,7 +96,7 @@ export default {
         },
         async takedataProduct(){
             try{
-                var res = await producService.getProductNew();
+                var res = await productService.getProductNew();
                 this.products = res.data;
             }catch(error){
                 console.log(error);
@@ -126,7 +126,10 @@ export default {
 }
 </script>
 
-<style>
+<style >
+.product-select a{
+    color: black !important;
+}
 .s-product-list{
     flex-wrap: wrap;
 }
@@ -175,6 +178,7 @@ export default {
     padding: 5px 0px;
 }
 .s-product-item {
+    cursor: pointer;
     margin: 10px 17px;
     background-color: #ffffff;
     display: flex;
@@ -184,6 +188,11 @@ export default {
     width: 200px;
     height: 330px;
     box-shadow: 0px 2px 46.41px 4.59px rgba(2,38,113,0.1);
+    overflow: hidden;
+}
+.s-product-image:hover img{
+    scale: 1.05;
+    transition: 0.5s;
 }
 .s-product-image img{
     width: 200px;

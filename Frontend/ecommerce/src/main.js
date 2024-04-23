@@ -6,7 +6,7 @@ import MToastMessage from './components/base/toast/MToastMessage.vue';
 import MLoading from "./components/base/loading/MLoading.vue"
 import AdminLogin from "./view/admin/AdminLogin.vue"
 import axios from 'axios';
-import MISAEnum from './helpers/enum';
+import Enum from './helpers/enum';
 import MISAResource from './helpers/resource';
 // import { createRouter,createWebHistory } from 'vue-router';
 import tinyEmitter from 'tiny-emitter/instance';
@@ -26,7 +26,7 @@ app.component("MButton",MButton);
 app.component("MLoading",MLoading);
 app.component("MTooltip",MTooltip);
 app.config.globalProperties.api = axios;
-app.config.globalProperties.MISAEnum = MISAEnum;
+app.config.globalProperties.Enum = Enum;
 app.config.globalProperties.MISAResource = MISAResource;
 app.config.globalProperties.emitter = tinyEmitter;
 app.config.globalProperties.token = tinyEmitter;

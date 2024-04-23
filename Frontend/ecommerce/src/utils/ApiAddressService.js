@@ -26,6 +26,6 @@ class AddressService {
   }
   
 }
-const addressService = new AddressService();
+const addressApiService = new AddressService();
 
-export default addressService;
+export default addressApiService;

@@ -11,6 +11,7 @@ namespace BE_WAREHOUSE.Core.Entities
         public Guid ImagesId { get; set; }
         public Guid ProductId { get; set; }
         public Guid UsersId { get; set; }
+        public Guid CategoriesId { get; set; }
         public string ImagesPath { get; set; }
     }
 }

@@ -14,6 +14,8 @@ namespace BE_WAREHOUSE.Core.Entities
         public string CategoriesDescription { get; set; }
         public string CategoriesSlug { get; set; }
         public string CreatedBy { get; set; }
+        public Guid ImagesId { get; set; }
+        public string ImagesPath { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }

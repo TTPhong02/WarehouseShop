@@ -10,6 +10,7 @@
 
 <script>
 export default {
+  name:"HomeSlide",
   data() {
     return {
       slides: [

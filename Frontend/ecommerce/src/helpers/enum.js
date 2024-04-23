@@ -1,4 +1,4 @@
-const MISAEnum = {
+const Enum = {
     Gender:{
         MALE: 0,
         FEMALE: 1,
@@ -12,7 +12,22 @@ const MISAEnum = {
         ADD : 0,
         UPDATE:1,
         VIEW:2,
+    },
+    DeliveryMethod:{    
+        Delivery: 0,
+    },
+    PaymentMethod:{
+        COD: 0,
+        VNPAY: 1,
+        MOMO:2,
+    },
+    OrderStatus:{
+        Pending:0,
+        Confirmed:1,
+        Processing:2,
+        Finished:3,
+        Cancelled:4,
     }
 }
 
-export default MISAEnum
+export default Enum;

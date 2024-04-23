@@ -10,5 +10,7 @@ namespace BE_WAREHOUSE.Core.Interfaces.IAddress
 {
     public interface IAddressRepository:IBaseRepository<Address>
     {
+        Task<IEnumerable<Address>> GetAddresByUsersId(Guid id);
+        Task<Address> GetAddresDefaultByUsersId(Guid id);
     }
 }

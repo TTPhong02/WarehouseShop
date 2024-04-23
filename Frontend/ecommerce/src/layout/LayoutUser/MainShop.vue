@@ -1,6 +1,6 @@
 <template>
   <div class="s-main">
-    <HomeSlide></HomeSlide>
+    <!-- <HomeSlide></HomeSlide> -->
     <div class="container">
         <router-view name="ShopRouterView"></router-view>
     </div>
@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import HomeSlide from "./HomeSlide.vue";
+// import HomeSlide from "./HomeSlide.vue";
 export default {
     components:{
-        HomeSlide
+        // HomeSlide
     }
 }
 </script>

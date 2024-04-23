@@ -23,6 +23,13 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
             return res;
         }
 
+        public async Task<Product> GetProductBySlug(string slug)
+        {
+            var sql = $"SELECT * FROM view_product WHERE ProductSlug = '{slug}'";
+            var res = await _dbContext.Connection.QueryFirstOrDefaultAsync<Product>(sql);
+            return res; 
+        }
+
         public async Task<IEnumerable<Product>> GetProductNew()
         {
             DateTime currentDate = DateTime.Now;

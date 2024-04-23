@@ -15,6 +15,14 @@ class UsersService extends BaseService{
         var res = await this.baseAxios.post(`${this.baseUrl}/Register`,user);
         return res;
     }
+    async update(id,user) {
+        var res = await this.baseAxios.put(`${this.baseUrl}/Update/${id}`,user,{
+            headers: {
+                "Content-Type": "multipart/form-data",
+              },
+        });
+        return res;
+    }
 }
 const usersService = new UsersService();
 export default usersService;

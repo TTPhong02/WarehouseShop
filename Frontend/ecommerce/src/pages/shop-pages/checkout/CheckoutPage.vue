@@ -6,25 +6,27 @@
           <div class="checkout-header-title">Thông tin giao hàng</div>
           <div class="header-address-user">
             <div class="address-select">
-                <input name="address-option" type="radio">
+                <input v-model="typeAddress" value="default" name="address-option" type="radio">
             </div>
             <div class="address-user">
                 <img src="../../../assets/img/logo-home-address.png" alt="">
                 <div class="address-user-profile">
                     <div class="address-user-name">
-                        Trần Thanh Phong
+                        {{addressDefaultUser.ReminiscentName}}
                         <div class="address-default">Mặc định</div>
                     </div>
-                    <div class="address-user-location">Số 16 / Xóm 6 , Thôn Lã Côi , Xẫ Yên Viên, H.Gia Lâm, TP. Hà Nội</div>
+                    <div class="address-user-location">{{addressDefaultUser.HomeNumber}}, {{addressDefaultUser.Ward}}, {{addressDefaultUser.District}}, {{addressDefaultUser.Province}}</div>
                 </div>
                 <div class="address-action">
-                    <i class="fa-solid fa-user-pen"></i>
+                    <router-link to="/profile/address">
+                        <i class="fa-solid fa-user-pen"></i>
+                    </router-link>
                 </div>
             </div>
           </div>
           <div class="header-address-other">
             <div class="address-select">
-                <input name="address-option" type="radio">
+                <input v-model="typeAddress" value="other" name="address-option" type="radio">
                 <label for="">Giao hàng đến địa chỉ khác</label>
             </div>
           </div>
@@ -38,17 +40,18 @@
           <div class="checkout-address-form">
             <div class="row address-form-input">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="fullname">Họ và tên <span class="red">*</span></label>
-                <input class="col-lg-8 col-md-8 col-sm-8 col-8 " type="text" placeholder="Họ và tên" />   
+                <input v-model="order.ReminiscentName" class="col-lg-8 col-md-8 col-sm-8 col-8 " type="text" placeholder="Họ và tên" />   
             </div>
             <span class="error-input red">{{listErrorMessage.fullname}}</span>
             <div class="row address-form-input">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="phonenumber">Số điện thoại <span class="red">*</span> </label>
-                <input class="col-lg-8 col-md-8 col-sm-8 col-8 " type="text" placeholder="Số điện thoại" />   
+                <input v-model="order.PhoneNumber" class="col-lg-8 col-md-8 col-sm-8 col-8 " type="text" placeholder="Số điện thoại" />   
             </div>
             <span class="error-input red">{{listErrorMessage.phonenumber}}</span>
             <div class="row address-form-select">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="">Chọn tỉnh/thành phố <span class="red">*</span></label>
-                <select v-model="provinceSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
+                <select v-model="order.ProvinceSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
+                    <option value="" selected>---Chọn tỉnh/thành phố---</option>
                     <option v-for="item in province" 
                     :key="item.province_id" 
                     :value="{
@@ -64,6 +67,7 @@
             <div class="row address-form-select">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="">Chọn quận/huyện <span class="red">*</span></label>
                 <select v-model="districtSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
+                    <option value="" selected>---Chọn quận/huyện---</option>
                     <option v-for="item in district" 
                     :key="item.district_id" 
                     :value="{
@@ -78,7 +82,8 @@
             <div class="row address-form-select">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="">Chọn xã/phường <span class="red">*</span></label>
                 <select v-model="wardSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
-                    <option v-for="item in ward" 
+                    <option value="" selected >---Chọn xã/phường---</option>
+                    <option v-for="item  in ward" 
                     :key="item.ward_id" 
                     :value="{
                         ward_id: item.ward_id,
@@ -92,12 +97,12 @@
             <span class="error-input red">{{listErrorMessage.district}}</span>
             <div class="row address-form-input">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="address">Số nhà/đường <span class="red">*</span></label>
-                <input class="col-lg-8 col-md-8 col-sm-8 col-8 " type="text" placeholder="Số nhà/đường" />   
+                <input v-model="order.HomeNumber" class="col-lg-8 col-md-8 col-sm-8 col-8 " type="text" placeholder="Số nhà/đường" />   
             </div>
             <span class="error-input red">{{listErrorMessage.home}}</span>
             <div class="row address-form-input">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="address">Ghi chú</label>
-                <textarea class="col-lg-8 col-md-8 col-sm-8 col-8 " placeholder="Ghi chú"></textarea>
+                <textarea v-model="order.Note" class="col-lg-8 col-md-8 col-sm-8 col-8 " placeholder="Ghi chú"></textarea>
             </div>
           </div>
         </div>
@@ -107,7 +112,7 @@
                 Vận chuyển
             </div>
             <div class="checkout-label">
-                <input type="radio" checked value="COD">
+                <input type="radio" v-model="this.deliveryMethod" :value="this.Enum.DeliveryMethod.Delivery">
                 <span for="">Giao hàng tận nơi : {{this.helper.formatMoney(deliveryFee)}}</span>
             </div>
           </div>
@@ -116,12 +121,16 @@
                 Thanh toán
             </div>
             <div class="checkout-label">
-                <input name="payment-method" type="radio" value="COD">
+                <input name="payment-method" v-model="this.paymentMethod" type="radio" :value="this.Enum.PaymentMethod.COD">
                 <span for="">Thanh toán khi giao hàng (COD)</span>
             </div>
             <div class="checkout-label">
-                <input name="payment-method" type="radio" value="momo">
+                <input name="payment-method" v-model="this.paymentMethod" type="radio" :value="this.Enum.PaymentMethod.MOMO">
                 <span for="">Momo </span>
+            </div>
+            <div class="checkout-label">
+                <input name="payment-method" v-model="this.paymentMethod" type="radio" :value="this.Enum.PaymentMethod.VNPAY">
+                <span for="">VNPay</span>
             </div>
           </div>
         </div>
@@ -172,7 +181,7 @@
                 <i class="fa-solid fa-chevron-left"></i>    
                 Quay về giỏ hàng
                 </router-link>
-                <button>Đặt hàng</button>
+                <button @click="checkout()">Đặt hàng</button>
             </div>
         </div>
     </div>
@@ -181,11 +190,18 @@
 
 <script>
 import localStorageService from "../../../js/storage/LocalStorageService"
-import addressService from '../../../utils/ApiAddressService.js';
-// import productService from '../../../utils/ProductService';
+import addressService from '../../../utils/AddressService';
+import addressApiService from '../../../utils/ApiAddressService.js';
+import ordersService from '../../../utils/OrdersService';
+import cartItemsService from '../../../utils/CartItemsService';
+
 export default {
     data() {
         return {
+            paymentMethod:null,
+            deliveryMethod:null,
+            order:{},
+            typeAddress:null,
             cartSelected:[],
             user:{},
             addressDelivery:{},
@@ -199,10 +215,23 @@ export default {
             discount:0,
             deliveryFee:30000,
             totalToPay:null,
-            listErrorMessage:{}
+            listErrorMessage:{},
+            addressDefaultUser:{}
         }
     },
     watch:{
+        typeAddress(newValue){
+           if(newValue == "default"){
+                this.order.ReminiscentName = this.addressDefaultUser.ReminiscentName;
+                this.order.PhoneNumber = this.addressDefaultUser.PhoneNumber;
+                this.addressDelivery.HomeNumber = this.addressDefaultUser.HomeNumber;
+                this.addressDelivery.Province = this.addressDefaultUser.Province;
+                this.addressDelivery.District = this.addressDefaultUser.District;
+                this.addressDelivery.Ward = this.addressDefaultUser.Ward;
+           }else{
+                this.order={};
+           }
+        },
         provinceSelected: async function (newValue){
             if(newValue == null){
                 this.listErrorMessage.province= "Vui lòng chọn tỉnh / thành phố"
@@ -227,7 +256,36 @@ export default {
 
     },
     methods: {
-          totalMoneyToPay(){
+        async checkout(){
+            try{
+                var orderData = {}
+                orderData.OrderDetails = this.cartSelected;
+                var listIdProduct = await localStorageService.getItemFromLocalStorage("CartSelected");
+                orderData.CartItemsId = listIdProduct;
+                this.order.DeliveryMethod =  this.deliveryMethod;
+                this.order.PaymentMethod = this.paymentMethod;
+                this.order.DeliveryAddress = this.addressDelivery.HomeNumber + "," +this.addressDelivery.Ward +"," + this.addressDelivery.District +"," + this.addressDelivery.Province   ;
+                this.order.TotalAmount = this.totalToPay + this.deliveryFee;
+                this.order.FeeShipping = this.deliveryFee;
+                this.order.UsersId = this.user.UsersId;
+                orderData.Orders = this.order;
+                console.log(orderData); 
+                var res = await ordersService.checkout(orderData);
+                console.log(res.data);
+                if(res.data > 0){
+                    this.$router.push("/profile/address");
+                    this.cartSelected = [];
+                    localStorageService.removeItemLocalStorage("CartSelected")
+                    var cartItems = await cartItemsService.getByUserId(this.user.UsersId);
+                    await localStorage.setItem("CartItems",JSON.stringify(cartItems.data)); 
+                    await this.emitter.emit("takeNumberOfCart");
+                }
+            }catch(error){
+                console.log(error);
+            }
+            
+        },
+        totalMoneyToPay(){
             if(this.cartSelected.length > 0){
                  this.cartSelected.forEach(element => {
                     this.totalToPay +=  element.ProductPrice * element.Quantity;
@@ -237,15 +295,16 @@ export default {
             }
         },
         async takeDataFromLocalStorage(){
-            this.user =await localStorageService.getItemFromLocalStorage("User");
-            var listIdProduct = await localStorageService.getItemFromLocalStorage("CartSelected");
+            this.user = await localStorageService.getItemFromLocalStorage("User");
+            var listIdCartItemsId = await localStorageService.getItemFromLocalStorage("CartSelected");
             var listCartItems = await localStorageService.getItemFromLocalStorage("CartItems");
-            this.cartSelected = await  listCartItems.filter(item => listIdProduct.includes(item.ProductId));
+            this.cartSelected = await  listCartItems.filter(item => listIdCartItemsId.includes(item.CartItemsId));
             await this.totalMoneyToPay();
+            this.takeDataAddressDefault();
         },
         async takeAddressProvince(){
            try{
-            var res = await addressService.getProvince();
+            var res = await addressApiService.getProvince();
             this.province = res;
            }catch(error){
                 console.log(error);
@@ -253,7 +312,7 @@ export default {
         },
         async takeAddressDistrict(){
            try{
-            var res = await addressService.getDistrict(this.provinceSelected.province_id);
+            var res = await addressApiService.getDistrict(this.provinceSelected.province_id);
             this.district = res;
            }catch(error){
                 console.log(error);
@@ -261,11 +320,20 @@ export default {
         },
         async takeAddressWard(){
            try{
-            var res = await addressService.getWard(this.districtSelected.district_id);
+            var res = await addressApiService.getWard(this.districtSelected.district_id);
             this.ward = res;
            }catch(error){
                 console.log(error);
            }
+        },
+        async takeDataAddressDefault(){
+            try{
+                var res = await addressService.getAddressDefaultById(this.user.UsersId);
+                this.addressDefaultUser = res;
+            }
+            catch(error){
+                console.log(error);
+            }
         }
     },
 };
@@ -304,10 +372,10 @@ select {
     display: flex;
     align-items: center;
 }
-.address-action:hover{
+.address-action a:hover{
     color: #025c7d;
-}
-.address-action{
+} 
+.address-action  a {
     cursor: pointer;
     font-size: 20px;
     color: #0f7ca4;

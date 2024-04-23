@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CLyQKWJ7hpIU6zUtkBS4MQUKCFFxx0lRoH0rDsu3ZnA=",
+  "Hash": "oLHxUj9ABbXN2JTE1KhDKhhm66jo9d01Q+XVpJuDVEI=",
   "Source": "BE_WAREHOUSE.API",
   "BasePath": "_content/BE_WAREHOUSE.API",
   "Mode": "Default",
@@ -17,12 +17,12 @@
   ],
   "Assets": [
     {
-      "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\1.png",
+      "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\anh-danh-muc-do-dien-gia-dung.jpg",
       "SourceId": "BE_WAREHOUSE.API",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\",
       "BasePath": "_content/BE_WAREHOUSE.API",
-      "RelativePath": "images/1.png",
+      "RelativePath": "images/anh-danh-muc-do-dien-gia-dung.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -31,7 +31,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\1.png"
+      "OriginalItemSpec": "wwwroot\\images\\anh-danh-muc-do-dien-gia-dung.jpg"
     },
     {
       "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\quat-cam-tay.jpg",

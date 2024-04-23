@@ -122,6 +122,8 @@ namespace BE_WAREHOUSE.Infrastructure.DbContext
                     return "DM";
                 case "Product":
                     return "SP";
+                case "Orders":
+                    return "OD";
                 default:
                     return "";
             }

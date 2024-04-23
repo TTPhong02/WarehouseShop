@@ -1,19 +1,19 @@
 <template>
   <div class="layout">
     <HeadingShop></HeadingShop>
-    <MainShop></MainShop>
+    <router-view name="ShopRouterView"></router-view>
     <FooterShop></FooterShop>
   </div>
 </template>
 
 <script>
 import HeadingShop from "./HeadingShop.vue";
-import MainShop from './MainShop.vue';
+// import MainShop from './MainShop.vue';
 import FooterShop from './FooterShop.vue';
 export default {
   name:'UserLayout',
   components:{
-    HeadingShop,MainShop,FooterShop
+    HeadingShop,FooterShop
   }
 }
 </script>

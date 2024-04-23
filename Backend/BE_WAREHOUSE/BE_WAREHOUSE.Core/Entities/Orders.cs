@@ -10,14 +10,23 @@ namespace BE_WAREHOUSE.Core.Entities
     {
         public Guid OrdersId { get; set; }
         public Guid UsersId { get; set; }
-        public DateTime DeliveryDate { get; set; }
-        public string DeliveryMethod { get; set; }
+        public string? OrdersCode { get; set; }
+        public int OrdersStatus { get; set; }
+        public int DeliveryMethod { get; set; }
+        public DateTime? DeliveryDate { get; set; }
         public string DeliveryAddress { get; set; }
-        public string DeliveryStatus { get; set; }
-        public string Fullname { get; set; }
+        public int? DeliveryStatus { get; set; }
+        public int PaymentMethod { get; set; }
+        public int? PaymentStatus { get; set; }  
+        public string ReminiscentName { get; set; }
         public string PhoneNumber { get; set; }
-        public string PaymentMethod { get; set; }
-        public int OrdersDate { get; set; }
+        public double TotalAmount { get; set; }
+        public double FeeShipping { get; set; }
+        public string? Note { get; set; }
+        public string? CreatedBy { get; set; }
+        public string? ModifiedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
     }
 }

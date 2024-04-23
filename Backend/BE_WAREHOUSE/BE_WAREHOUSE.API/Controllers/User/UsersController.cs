@@ -22,6 +22,12 @@ namespace BE_WAREHOUSE.API.Controllers.User
             _tokenService = tokenService;
             _usersRepository = usersRepository;
         }
+        [HttpPut("Update/{id}")]
+        public async Task<IActionResult> UpdatePasswordAsync([FromForm] string dataJson, IFormFile? imageFile, Guid id)
+        {
+            var res = await _usersService.UpdateServiceAsync(dataJson, imageFile, id);
+            return Ok(res);
+        }
         [HttpPost("Login")]
         public async Task<IActionResult> Login(UserLogin userLogin)
         {

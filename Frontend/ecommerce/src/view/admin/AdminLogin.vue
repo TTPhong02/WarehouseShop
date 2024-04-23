@@ -1,20 +1,8 @@
 <template>
   <div class="admin-container">
-    <div class="p-language">
-        <div class="box">
-            <div @click="this.menuLanguage = !this.menuLanguage" class="box-item">
-                <div class="icon-flag-vietnam"></div>
-                <div class="p-language-text">Tiếng Việt</div>
-            </div>
-            <div v-if="menuLanguage" class="p-language-menu">
-                <div @click="this.menuLanguage = !this.menuLanguage" class="p-language-menu-item">Tiếng Anh</div>
-                <div @click="this.menuLanguage = !this.menuLanguage" class="p-language-menu-item">Tiếng Việt</div>
-            </div>
-        </div>
-    </div>
     <div class="p-login">
         <div class="p-login-header">
-            <div class="icon-amis-platform2"></div>
+            <img src="../../assets/img/logo.png" alt="">
         </div>
         <div class="p-login-form">
             <div class="p-login-form__input">
@@ -24,7 +12,7 @@
                 class="input"
                 :class="{'invalid': errors.phoneNumber  } " 
                 type="text" 
-                v-model="account.phoneNumber" 
+                v-model="users.email" 
                 placeholder="Số điện thoại/email"
                 @keydown.enter="validateForm()"
                 >
@@ -38,7 +26,7 @@
                     class="input "
                     :class="{'invalid': errors.password} "  
                     :type="showPass ? 'text' : 'password'" 
-                    v-model="account.password" 
+                    v-model="users.password" 
                     placeholder="Mật khẩu"
                     @keydown.enter="validateForm()"
                     >
@@ -72,7 +60,7 @@
 </template>
 
 <script>
-// import MTextfield from "../components/base/input/MTextfield.vue";
+import usersService from "../../utils/UserService";
 export default {
     name:'AdminLogin',
     components:{
@@ -80,11 +68,10 @@ export default {
     },
     data() {
         return {
-            account:{},
+            users:{},
             showPass: false,
             errors:{},
             errorMessageLogin:null,
-            menuLanguage:false
         }
     },
     // mounted() {
@@ -103,7 +90,7 @@ export default {
         handleFocus(input) {
             // Chỉ thực hiện hành động nếu input chưa được focus trước đó
             if (input === 'username') {
-                delete(this.errors.phoneNumber);
+                delete(this.errors.email);
                 this.errorMessageLogin="";
             }else{
                 delete(this.errors.password);
@@ -115,17 +102,17 @@ export default {
          * Author by : TTPhong(22/02/2024)
          */
         validateForm(){
-            if(this.account.phoneNumber === null || this.account.phoneNumber === undefined || this.account.phoneNumber === ""){
-                this.errors.phoneNumber = this.MISAResource["VN"].UsernameNotEmpty;
+            if(this.users.email === null || this.users.email === undefined || this.users.email === ""){
+                this.errors.email = this.MISAResource["VN"].UsernameNotEmpty;
             }else{
-                delete(this.errors.phoneNumber);
+                delete(this.errors.email);
             }
-            if(this.account.password === null || this.account.password === undefined || this.account.password === ""){
+            if(this.users.password === null || this.users.password === undefined || this.users.password === ""){
                 this.errors.password = this.MISAResource["VN"].PasswordNotEmpty;
             }else{
                 delete(this.errors.password);
             }
-            if(!this.errors.password && !this.errors.phoneNumber){
+            if(!this.errors.password && !this.errors.email){
                 this.login();
             }
         },
@@ -133,23 +120,24 @@ export default {
          * Hàm thực hiện đăng nhập vào hệ thống
          * Author by: TTPhong(22/02/2024)
          */
-        login(){
+        async login(){
             try{
-                this.api.post(`${this.URLRequest}Account`,this.account)
-                .then(res=>{
-                    switch (res.status) {
-                        case 200:
-                            localStorage.setItem("Token",JSON.stringify(res.data.Token))
-                            localStorage.setItem("User",JSON.stringify(res.data.User))
-                            location.reload();
-                            this.$router.push("/employee");  
-                            break;
-                    }
-                })
-                .catch(error=>{ 
-                    this.errorMessageLogin = Object.values(error.response.data.Errors).join(""); 
-                })
+                var res = await usersService.login(this.users);
+                switch (res.status) {
+                    case 201:
+                        localStorage.setItem("AccessToken",JSON.stringify(res.data.Data.AccessToken));
+                        localStorage.setItem("RefreshToken",JSON.stringify(res.data.Data.RefreshToken));
+                        localStorage.setItem("User",JSON.stringify(res.data.Data.Users));
+                        this.$router.push("/");
+                        break;                   
+                }
             }catch(error){
+                switch (error.response.status) {
+                    case 400:
+                        this.errorMessageLogin = error.response.data.Errors[0];
+                        break;
+                }
+                console.log(error);
                 this.emitter.emit("handleApiError",error);
             }
         }
@@ -166,6 +154,10 @@ export default {
         background: #fff;
         position: relative;
         box-shadow: 0 12px 20px rgba(0,0,0,.12);
+    }
+    .p-login-header img{
+        width: 200px;
+        height: 100px;
     }
     .p-login-header{
         display: flex;
