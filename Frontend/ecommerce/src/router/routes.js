@@ -1,10 +1,10 @@
 import {createRouter,createWebHistory} from "vue-router";
 import AdminLayout from "../layout/LayoutAdmin/AdminLayout.vue";
-import ProductList from "../view/admin/ProductList.vue";
-import CategoryList from "../view/admin/CategoryList.vue";
+import ProductList from "../pages/admin-pages/product-management/ProductList.vue";
+import CategoryList from "../pages/admin-pages/categories-management//CategoryList.vue";
 import MHomePage from "../view/admin/HomePage.vue";
-import UserList from "../view/admin/UserList.vue";
-import OrderList from "../view/admin/OrderList.vue";
+import UserList from "../pages/admin-pages/account-management//UserList.vue";
+import OrderList from "../pages/admin-pages/orders-management/OrderList.vue";
 import AdminLogin from "../view/admin/AdminLogin.vue";
 import UserLogin from "../view/user/UserLogin.vue";
 import UserLayout from "../layout/LayoutUser/UserLayout.vue";
@@ -94,35 +94,35 @@ const routes = [
         meta:{ requiresAuth: true },
         children:[
             {
-                path:"home",
+                path:"",
                 components:{
                     // default:DefaultLayout,
                     ContentRouterView: MHomePage,
                 },              
             },
             {
-                path:"orders",
+                path:"orders-management",
                 components:{
                     // default:DefaultLayout,
                     ContentRouterView: OrderList,
                 },              
             },
             {
-                path:"products",
+                path:"products-management",
                 components:{
                     // default:DefaultLayout,
                     ContentRouterView: ProductList,
                 },              
             },
             {
-                path:"categories",
+                path:"categories-management",
                 components:{
                     // default:DefaultLayout,
                     ContentRouterView: CategoryList,
                 },              
             },
             {
-                path:"users",
+                path:"account-management",
                 components:{
                     // default:DefaultLayout,
                     ContentRouterView: UserList,
@@ -159,12 +159,13 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     // const token = JSON.parse(localStorage.getItem("Token"));
-    const roles = localStorageService.getItemFromLocalStorage("User");
-    if (to.path ==="/admin" && roles.Role !== "Admin") {
+    var user = localStorageService.getItemFromLocalStorage("User");
+    if (to.path ==="/admin" && user?.Role !== "Admin") {
       next("/login"); // Chuyển hướng đến trang user nếu admin cố gắng truy cập vào trang user
-    } else if (to.path === "/" && roles.Role === "Admin") {
+    } else if (to.path === "/" && user?.Role === "Admin") {
       next("/admin");
-    }else{
+    }
+    else{
         next();
     }
 });

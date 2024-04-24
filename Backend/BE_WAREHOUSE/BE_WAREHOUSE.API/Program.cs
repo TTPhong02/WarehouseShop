@@ -6,6 +6,7 @@ using BE_WAREHOUSE.Core.Interfaces.Category;
 using BE_WAREHOUSE.Core.Interfaces.IAddress;
 using BE_WAREHOUSE.Core.Interfaces.Image;
 using BE_WAREHOUSE.Core.Interfaces.Order;
+using BE_WAREHOUSE.Core.Interfaces.Payment.VNPay;
 using BE_WAREHOUSE.Core.Interfaces.Products;
 using BE_WAREHOUSE.Core.Interfaces.Token;
 using BE_WAREHOUSE.Core.Interfaces.User;
@@ -15,6 +16,7 @@ using BE_WAREHOUSE.Core.Services.Cart;
 using BE_WAREHOUSE.Core.Services.Category;
 using BE_WAREHOUSE.Core.Services.Image;
 using BE_WAREHOUSE.Core.Services.Order;
+using BE_WAREHOUSE.Core.Services.Payment.VNPay;
 using BE_WAREHOUSE.Core.Services.Products;
 using BE_WAREHOUSE.Core.Services.Token;
 using BE_WAREHOUSE.Core.Services.User;
@@ -85,6 +87,8 @@ builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
 
 builder.Services.AddScoped<IOrderDetailsService, OrderDetailsService>();
 builder.Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
+
+builder.Services.AddScoped<IVnPayServices, VnPayService>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 

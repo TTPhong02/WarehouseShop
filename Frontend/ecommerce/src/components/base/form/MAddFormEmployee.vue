@@ -2,67 +2,44 @@
 <div>
 
     <div id="popup-sign"  pdialog class="p-popup-sign">
-        <div class="p-popup__header">Thông tin nhân viên
-            <button @click="CloseAddFormEmployee" class="p-dialog__button--close icon-button-close"></button>  
-            <!-- <img id="btnCloseAddForm" class="close-popup-sign"  src="../assets/img/dialog_design_guideline/Layer 2.png" alt="closeicon"> -->
+        <div class="p-popup__header">Thông tin sản phẩm
+            <button @click="closeForm" class="p-dialog__button--close icon-button-close"></button>  
         </div>
         <form >
             <div class="p-popup__form">
-                <div class="item-id">
-                    <MTextfield  ref="employeeCode" typeInput="text" textPlaceHolder="Mã nhân viên" name="Mã nhân viên" textLabel="Mã nhân viên" v-model="employee.EmployeeCode" :message="dialog.errors.employeeCode" :required ="true"> </MTextfield>
+                <div class="item-image">
+                    <MTextfield  ref="image" typeInput="file" textPlaceHolder="Hình ảnh" name="Hình ảnh" textLabel="Hình ảnh" v-model="image" :message="dialog.errors.image" :required ="true"> </MTextfield>
                 </div>
+                <div class="item-code">
+                    <MTextfield  ref="ProductCode" typeInput="text" textPlaceHolder="Mã sản phẩm   " name="Mã sản phẩm" textLabel="Mã sản phẩm" v-model="product.ProductCode" :message="dialog.errors.ProductCode" :required ="true"> </MTextfield>
+                </div>
+                <div class="item-price">
+                    <MTextfield  ref="ProductPrice" :message="dialog.errors.ProductPrice"  typeInput="number" textPlaceHolder="Giá sản phẩm" textLabel="Giá sản phẩm" v-model="product.ProductPrice" :required ="true"> </MTextfield>                
+                </div>
+                <div class="item-brand-name">
+                    <MTextfield  ref="ProductBrandName" :message="dialog.errors.ProductBrandName"  typeInput="text" textPlaceHolder="Tên hãng" textLabel="Tên hãng" v-model="product.ProductBrandName" :required ="true"> </MTextfield>
+                </div>
+                
                 <div class="item-name">
-                    <MTextfield  ref="employeeFullName" typeInput="text" textPlaceHolder="Họ và tên đầy đủ" name="Họ và tên" idInput="txtEmployeeFullName" textLabel="Họ và tên" v-model="employee.FullName" :message="dialog.errors.fullName" :required ="true"> </MTextfield>
+                    <MTextfield  ref="ProductName" typeInput="text" textPlaceHolder="Tên sản phẩm" name="Tên sản phẩm"  textLabel="Tên sản phẩm" v-model="product.ProductName" :message="dialog.errors.ProductName" :required ="true"> </MTextfield>
                 </div>
-                <div class="item-date">
-                    <MTextfieldDate idInput="txtEmployeeDateOfBirth" textLabel="Ngày sinh" v-model="employee.DateOfBirth"></MTextfieldDate>
-                </div>
-                <div class="item-gender">
-                    <MRadioGender v-model="employee.Gender"></MRadioGender>
-                </div>
-                <div class="item-department">
-                    <MCombobox ref="employeeDepartment" textLabel="Đơn vị" :messageInvalid="dialog.errors.department" :required="true"  :dataCombobox="dataCombobox.department.departments.departmentName"  @selected="onComboboxDepartmentSelected" v-model="dataCombobox.department.selectedItem"></MCombobox>
-                </div>   
-                <div class="item-card">
-                    <MTextfield  ref="employeeIdentityNumber" :message="dialog.errors.identityNumber"  typeInput="text" textPlaceHolder="Số CMTND"  idInput="txtEmployeeCard" textLabel="Số CMTND" v-model="employee.IdentityNumber"> </MTextfield>
-                </div>
-                <div class="item-date">
-                    <MTextfieldDate idInput="txtEmployeeDateCard" textLabel="Ngày cấp" v-model="employee.IdentityDate"></MTextfieldDate>
-                </div>
-                <div class="item-position">
-                    <MCombobox  textLabel="Chức danh"  :dataCombobox="dataCombobox.position.positions.positionsName"  @selected="onComboboxPositionSelected" v-model="dataCombobox.position.selectedItem"></MCombobox>
-                </div>
-                <div class="item-place">
-                    <MTextfield typeInput="text" textPlaceHolder="Nơi cấp"  idInput="txtEmployeePlace" textLabel="Nơi cấp" v-model="employee.IdentityPlace"> </MTextfield>
-                </div>
-                 <div class="item-address">
-                    <MTextfield typeInput="text" textPlaceHolder="Địa chỉ"  idInput="txtEmployeeAddress" textLabel="Địa chỉ" v-model="employee.Address"> </MTextfield>
-                </div>
-                <div class="item-phone">
-                    <MTextfield typeInput="text" textPlaceHolder="Số điện thoại"  idInput="txtEmployeePhoneNumber" textLabel="Số điện thoại" v-model="employee.PhoneNumber"> </MTextfield>
-                </div>  
-                <div class="item-phone">
-                    <MTextfield typeInput="text" textPlaceHolder="Số điện thoại cố định"  idInput="txtEmployeePhoneNumber" textLabel="Số điện thoại cố định"  v-model="employee.PhoneNumberFixed"> </MTextfield>
+                <div class="item-categories">
+                    <MCombobox ref="Categories" textLabel="Danh mục" :messageInvalid="dialog.errors.Categories" :required="true"  :dataCombobox="dataCombobox.Categories.CategoriesName"  @selected="onComboboxSelected" v-model="dataCombobox.Categories.selectedItem"></MCombobox>
                 </div> 
-                <div class="item-email" >
-                    <MTextfield  ref="employeeEmail" typeInput="email"  textPlaceHolder="example@gmail.com"  idInput="txtEmployeeEmail" textLabel="Email" v-model="employee.Email" :message="dialog.errors.email" > </MTextfield >
-                </div>    
-                <div class="item-bankid">
-                    <MTextfield typeInput="text" textPlaceHolder="Số tài khoản"  idInput="txtEmployeeAddress" textLabel="Số tài khoản ngân hàng" v-model="employee.BankAccount"> </MTextfield>
+                <div class="item-slug">
+                    <MTextfield  ref="ProductSlug" typeInput="text" textPlaceHolder="Slug sản phẩm" name="Slug sản phẩm"  textLabel="Slug sản phẩm" v-model="product.ProductSlug" :message="dialog.errors.ProductSlug" :required ="true"> </MTextfield>
                 </div>
-                <div class="item-bankname">
-                    <MTextfield typeInput="text" textPlaceHolder="Tên ngân hàng"  idInput="txtEmployeeAddress" textLabel="Tên ngân hàng" v-model="employee.BankName"> </MTextfield>
-                </div>
-                <div class="item-bankplace">
-                    <MTextfield typeInput="text" textPlaceHolder="Chi nhánh ngân hàng"  idInput="txtEmployeeAddress" textLabel="Chi nhánh ngân hàng" v-model="employee.BankAddress"> </MTextfield>
-                </div>
+                  
+                
+                
                 <div class="p-popup-sign__button">
                     <div class="p-popup__button--left" >
-                        <MButton className="p-button2" text="Hủy" @click="CloseAddFormEmployee"></MButton>          
+                        <MButton className="p-button2" text="Hủy" @click="closeForm"></MButton>          
                     </div>
                     <div class="p-popup__button--right" >
-                        <MButton className="p-button1" text="Cất" @click="checkInvalid(true)"></MButton> 
-                        <MButton className="p-button1" text="Cất và thêm" @click="checkInvalid(false)" ></MButton> 
+                        <MButton className="p-button1" :text="this.formMode === this.Enum.FormMode.ADD? 'Thêm mới': 'Sửa thông tin'
+              " @click="checkInvalid(true)"></MButton> 
+                        <MButton v-if="this.formMode == this.Enum.FormMode.ADD" className="p-button1" text="Cất và thêm" @click="checkInvalid(false)" ></MButton> 
                     </div>
                 </div>
 
@@ -70,80 +47,34 @@
             
         </form>
     
-    <!-- <MToastDone :title="toast.title" :text="toast.text"></MToastDone> -->
+
     </div>
     <MDialog :text="dialog.text" :iconDialog="dialog.icon" v-if="dialog.showDialog" :dialogResFalse="btnSetFalseResponseDialog" :dialogResTrue="btnSetTrueResponseDialog" :title="dialog.title" :errors="dialog.errors" ></MDialog>
-    <!-- <MToastMessage v-model="toast.showToast" :color="toast.textColor"  :icon="toast.icon" :title="toast.title" :text="toast.text"></MToastMessage> -->
+
 </div>
 </template>
 <script>
-import MRadioGender from '../input/MRadioGender.vue';
+import categoriesService from '../../../utils/CategoriesService';
+import productService from '../../../utils/ProductService';
 import MCombobox from '../input/MCombobox.vue';
-import MTextfield from '../input/MTextfield.vue';
-import MTextfieldDate from '../input/MTextfieldDate.vue';  
- 
+import MTextfield from '../input/MTextfield.vue'; 
 export default {
     name:"MAddFormEmployee",
     props:[       
         "closeAddForm"
     ],
     components:{
-        MTextfield,MTextfieldDate,MCombobox,MRadioGender
+        MTextfield,MCombobox
     },
     created() {
-        this.takeNewEmployeeCode();
-        /**
-         * Hàm thực hiện lấy dữ liệu chức danh
-         * Author: TTPhong(22/01/2024)
-         */
-            this.api.get(`${this.URLRequest}Departments`)
-            .then(res=>{  
-                var data  = res.data  
-                for (let i = 0; i < data.length; i++) {
-                    this.dataCombobox.department.departments.departmentName.push(data[i].DepartmentName);   
-                    this.dataCombobox.department.departments.departmentId.push(data[i].DepartmentId);                 
-                }   
-            })
-            .catch(error=>{
-                // const response = error.response;
-                this.emitter.emit("handleApiError",error);
-                // const status = response.status;
-                // switch(status){
-                //     case 404 :
-                //         this.toast.title= this.MISAResource["VN"].Failed;
-                //         this.toast.text = this.MISAResource["VN"].InvalidLink;
-                //         this.toast.icon = this.MISAResource["VN"].IconWarningSmall;
-                //         this.toast.textColor = 'red',
-                //         this.btnShowToast();
-                //         break;
-                //     default:
-                //         break;
-                // }
-            })
-        /**
-         * Hàm thực hiện lấy dữ liệu vị trí
-         * Author: TTPhong(22/01/2024)
-         */
-            this.api.get(`${this.URLRequest}Positions`)
-            .then(res=>{  
-                var data  = res.data  
-                for (let i = 0; i < data.length; i++) {
-                    this.dataCombobox.position.positions.positionsName.push(data[i].PositionsName);   
-                    this.dataCombobox.position.positions.positionsId.push(data[i].PositionsId);                 
-                }   
-            })
-            .catch(error=>{
-                this.emitter.emit("handleApiError",error);
-            })
+        this.takeDataCombobox();
+        this.takeNewCode();
     },   
-    watch:{
-        employee: {
-            handler: 'watchChangeForm',
-            deep: true
-        },
-    },
     data() {
         return {
+            formMode:null,
+            imageFile:null,
+            product:{},
             isChangeForm:false,
             inputInValid:[],  
             dialog:{
@@ -162,59 +93,22 @@ export default {
                 textColor:''
             },
             dataCombobox : {
-                gender:{
-                    genders: ['Nam', 'Nữ', "Khác"],
-                    selectedItem: '',
-                },
-                department:{                   
-                    departments:{
-                        departmentId:[],
-                        departmentName:[],
-                    },
-                    selectedItem:null,
-                },
-                position:{
-                    positions:{
-                        positionsId:[],
-                        positionsName:[]
-                    },
+                Categories:{                   
+                    CategoriesId:[],
+                    CategoriesName:[],
                     selectedItem:null,
                 }
-            },
-            employee:{
-                CreatedDate: null,
-                CreatedBy: null,
-                ModifiedDate: null,
-                ModifiedBy: null,
-                EmployeeCode: null,
-                FullName: null,
-                DateOfBirth: null,
-                Gender: null,
-                IdentityNumber: null,
-                IdentityDate: null,
-                IdentityPlace: null,
-                Email: null,
-                PhoneNumber: null,
-                PhoneNumberFixed: null,
-                Salary: null,
-                JoinDate: null,
-                WorkStatus: null,
-                Address: null,
-                BankAccount:null,
-                BankName: null,
-                BankAddress: null,
-                DepartmentId: null,
-                PositionsId: null,
             }
         }
     },
     methods: {
-        /**
-         * Hàm thưc hiện gán biến thay đổi form bằng true
-         * Author 26/01/2024
-         */
-        watchChangeForm(){
-            this.isChangeForm = true;           
+        async takeDataCombobox(){
+           var res = await categoriesService.getAll();
+           const list = res.data;
+           list.forEach(element => {
+               this.dataCombobox.Categories.CategoriesName.push(element.CategoriesName);
+               this.dataCombobox.Categories.CategoriesId.push(element.CategoriesId);
+           });
         },
         /**
          * Hàm thực hiện focus vào ô đầu tiên
@@ -237,13 +131,9 @@ export default {
          * Hàm thực hiện lấy mã nhân viên mới 
          * Author: TTPhong(22/01/2024)
          */
-        takeNewEmployeeCode(){
-            this.api.get(`${this.URLRequest}Employees/GetMaxEmployeeCode`)
-            .then(res=>{
-                this.employee.EmployeeCode = res.data;
-            }).catch(error=>{
-                this.emitter.emit("handleApiError",error);
-            })
+        async takeNewCode(){
+            var res = await productService.getNewCode();
+            this.product.ProductCode = res.data;
         },
         /**
          * Hàm thực hiện xóa hêt dữ liệu dialog
@@ -288,23 +178,11 @@ export default {
          * Hàm set dữ liệu combobox Department
          *  Author: TTPhong(22/01/2024)
          */
-        onComboboxDepartmentSelected(selectedCombobox) {
-            for (let i = 0; i < this.dataCombobox.department.departments.departmentName.length; i++) {
-                if(selectedCombobox === this.dataCombobox.department.departments.departmentName[i]){
-                    this.dataCombobox.department.selectedItem = selectedCombobox;
-                    this.employee.DepartmentId = this.dataCombobox.department.departments.departmentId[i];
-                } 
-            }
-        },
-        /**
-         * Hàm set dữ liệu combobox Positions
-         *  Author: TTPhong(22/01/2024)
-         */
-        onComboboxPositionSelected(selectedCombobox) {
-            for (let i = 0; i < this.dataCombobox.position.positions.positionsName.length; i++) {
-                if(selectedCombobox === this.dataCombobox.position.positions.positionsName[i]){
-                    this.dataCombobox.position.selectedItem = selectedCombobox;
-                    this.employee.PositionsId = this.dataCombobox.position.positions.positionsId[i];
+        onComboboxSelected(selectedCombobox) {
+            for (let i = 0; i < this.dataCombobox.Categories.CategoriesName.length; i++) {
+                if(selectedCombobox === this.dataCombobox.Categories.CategoriesName[i]){
+                    this.dataCombobox.Categories.selectedItem = selectedCombobox;
+                    this.product.CategoriesId = this.dataCombobox.Categories.CategoriesId[i];
                 } 
             }
         },
@@ -319,7 +197,7 @@ export default {
          * Hàm thực hiện đóng Form thêm mới
          * Author: TTPhong (06/12/2023)
          */
-        CloseAddFormEmployee(){
+        closeForm(){
             if(this.isChangeForm === true ){
                 this.dialog.title = this.MISAResource["VN"].DataChanged;
                 this.dialog.text = this.MISAResource["VN"].QuestionTextChangedFormData;
@@ -364,63 +242,95 @@ export default {
          */
         checkInvalid(closeForm){
             try {
-                                //1.Check mã nhân viên
-                if(this.employee.EmployeeCode === "" ||this.employee.EmployeeCode === null || this.employee.EmployeeCode === undefined){
-                    this.dialog.errors.employeeCode = this.MISAResource["VN"].EmployeeCodeNotEmpty;
-                    if(!this.checkElementFromArray(this.inputInValid, "employeeCode")){
-                        this.inputInValid.push("employeeCode");
+                //Check mã 
+                if(this.Product.ProductCode === "" ||this.Product.ProductCode === null || this.Product.ProductCode === undefined){
+                    this.dialog.errors.ProductCode = this.MISAResource["VN"].ProductCodeNotEmpty;
+                    if(!this.checkElementFromArray(this.inputInValid, "ProductCode")){
+                        this.inputInValid.push("ProductCode");
                     }
                 }else{
-                   delete(this.dialog.errors.employeeCode);
+                   delete(this.dialog.errors.ProductCode);
                    this.inputInValid=[];
                 }
-                //2.Check họ tên nhân viên
-                if(this.employee.FullName === "" ||this.employee.FullName === null || this.employee.FullName === undefined){
-                    this.dialog.errors.fullName = this.MISAResource["VN"].FullNameNotEmpty;
-                     if(!this.checkElementFromArray(this.inputInValid, "employeeFullName")){
-                        this.inputInValid.push("employeeFullName");
+                //1.Check tên
+                if(this.Product.ProductName === "" ||this.Product.ProductName === null || this.Product.ProductName === undefined){
+                    this.dialog.errors.ProductName = this.MISAResource["VN"].ProductNameNotEmpty;
+                     if(!this.checkElementFromArray(this.inputInValid, "ProductName")){
+                        this.inputInValid.push("ProductName");
                     }
                 }else{
-                    delete(this.dialog.errors.fullName);
-                    this.removeElementFromArray(this.inputInValid, "employeeFullName") ;
+                    delete(this.dialog.errors.ProductName);
+                    this.removeElementFromArray(this.inputInValid, "ProductName") ;
                 }
-                //5.Check đơn vị
-                if(this.dataCombobox.department.selectedItem === "" ||this.dataCombobox.department.selectedItem === null ||this.dataCombobox.department.selectedItem === undefined){
-                    this.dialog.errors.department = this.MISAResource["VN"].DepartmentNotEmpty;
-                     if(!this.checkElementFromArray(this.inputInValid, "employeeDepartment")){
-                        this.inputInValid.push("employeeDepartment");
+                //2.Check BrandName
+                if(this.Product.ProductBrandName === "" ||this.Product.ProductBrandName === null || this.Product.ProductBrandName === undefined){
+                    this.dialog.errors.ProductBrandName = this.MISAResource["VN"].ProductBrandNameNotEmpty;
+                     if(!this.checkElementFromArray(this.inputInValid, "ProductBrandName")){
+                        this.inputInValid.push("ProductBrandName");
                     }
                 }else{
-                    delete( this.dialog.errors.department);
-                    this.removeElementFromArray(this.inputInValid, "employeeDepartment") ;
+                    delete(this.dialog.errors.ProductBrandName);
+                    this.removeElementFromArray(this.inputInValid, "ProductBrandName") ;
+                }
+                //3.CheckPrice
+                if(this.Product.ProductPrice === "" ||this.Product.ProductPrice === null || this.Product.ProductPrice === undefined){
+                    this.dialog.errors.ProductPrice = this.MISAResource["VN"].ProductPriceNotEmpty;
+                    if(!this.checkElementFromArray(this.inputInValid, "ProductPrice")){
+                        this.inputInValid.push("ProductPrice");
+                    }
+                }else{
+                   delete(this.dialog.errors.ProductPrice);
+                   this.inputInValid=[];
+                }
+                //4.Check Slug
+                if(this.Product.ProductSlug === "" ||this.Product.ProductSlug === null || this.Product.ProductSlug === undefined){
+                    this.dialog.errors.ProductSlug = this.MISAResource["VN"].ProductSlugNotEmpty;
+                    if(!this.checkElementFromArray(this.inputInValid, "ProductSlug")){
+                        this.inputInValid.push("ProductSlug");
+                    }
+                }else{
+                   delete(this.dialog.errors.ProductSlug);
+                   this.inputInValid=[];
                 }
 
-                if(this.dialog.errors.employeeCode || this.dialog.errors.fullName || this.dialog.errors.department){
+                //5.Check Categories
+                if(this.dataCombobox.Categories.selectedItem === "" ||this.dataCombobox.Categories.selectedItem === null ||this.dataCombobox.Categories.selectedItem === undefined){
+                    this.dialog.errors.Categories = this.MISAResource["VN"].CategoriesNotEmpty;
+                     if(!this.checkElementFromArray(this.inputInValid, "Categories")){
+                        this.inputInValid.push("Categories");
+                    }
+                }else{
+                    delete( this.dialog.errors.Categories);
+                    this.removeElementFromArray(this.inputInValid, "Categories") ;
+                }
+
+                if(this.dialog.errors.ProductCode || this.dialog.errors.ProductName || this.dialog.errors.Categories|| this.dialog.errors.ProductBrandName|| this.dialog.errors.ProductPrice|| this.dialog.errors.ProductSlug){
                     this.dialog.title= this.MISAResource["VN"].InvalidData;
                     this.dialog.icon = this.MISAResource["VN"].IconWarning;
                     this.btnShowDialog();
                 }else{
-                    this.addEmployee(closeForm);
+                    if(this.formMode == this.Enum.FormMode.ADD){
+                        this.onAdd(closeForm);
+                    }
+                    if(this.formMode == this.Enmu.FormMode.UPDATE){
+                        this.onUpdate(closeForm)
+                    }
                 }
             } catch (error) {
                 console.error(error);
             }
         },
         /**
-         * Hàm thực hiện thêm nhân viên
+         * Hàm thực hiện thêm 
          *  Author: TTPhong(22/01/2024)
          */
-        addEmployee(closeForm){
-            const employeeData = this.employee;
-            console.log(employeeData);
-            const headers = {
-                'Content-Type': 'application/json',
-                'accept': "*/*",
-            }
-            this.api.post(`${this.URLRequest}Employees`,employeeData,headers)
-            .then(response => {
-                console.log(response);
-                if(response.data.Data === 1){
+        async onAdd(closeForm){
+            try{
+                var formData = new FormData();
+                formData.append("imageFile", this.imageFile);
+                formData.append("dataJson", JSON.stringify(this.product));
+                var res = await productService.post(formData);
+                if(res.data.Data === 1){
                     this.toast.title = this.MISAResource["VN"].Success;
                     this.toast.text = this.MISAResource["VN"].AddSuccess;
                     this.toast.icon = this.MISAResource["VN"].IconSuccessSmall;
@@ -430,15 +340,13 @@ export default {
                         if(closeForm === true){
                             this.closeAddForm();     
                         }else{
-                            this.employee={};
-                            this.dataCombobox.department.selectedItem="";
-                            this.dataCombobox.position.selectedItem="";
+                            this.product={};
+                            this.dataCombobox.Categories.selectedItem="";
                         }
                         this.takeNewEmployeeCode();
                     }, 2000);
                 }
-            })
-            .catch(error =>{
+            }catch(error ){
                 const response = error.response;
                 const status = response.status;
                 this.emitter.emit("handleApiError",error);
@@ -447,14 +355,58 @@ export default {
                         this.dialog.title= this.MISAResource["VN"].InvalidData;
                         this.inputInValid = [];
                         this.inputInValid.push("employeeCode");
-                        this.dialog.text = response.data.Errors + " " + this.employee.EmployeeCode ;
+                        this.dialog.text = response.data.Errors ;
                         this.dialog.icon = this.MISAResource["VN"].IconDangerous;    
                         break;
                     default:
                         break;
                 }
                 this.btnShowDialog();
-            })
+            }
+
+        },
+        /**
+         * Hàm thực hiện thêm 
+         *  Author: TTPhong(22/01/2024)
+         */
+        async onUpdate(closeForm){
+            try{
+                var formData = new FormData();
+                formData.append("dataJson", JSON.stringify(this.product));
+                var res = await productService.put(formData);
+                if(res.data.Data === 1){
+                    this.toast.title = this.MISAResource["VN"].Success;
+                    this.toast.text = this.MISAResource["VN"].AddSuccess;
+                    this.toast.icon = this.MISAResource["VN"].IconSuccessSmall;
+                    this.emitter.emit("onShowToastMessage", this.toast.title, this.toast.text,this.toast.icon,this.toast.textColor)
+                    setTimeout(() => {
+                        this.emitter.emit('loadDataPagingEmployee');
+                        if(closeForm === true){
+                            this.closeAddForm();     
+                        }else{
+                            this.product={};
+                            this.dataCombobox.Categories.selectedItem="";
+                        }
+                        this.takeNewEmployeeCode();
+                    }, 2000);
+                }
+            }catch(error ){
+                const response = error.response;
+                const status = response.status;
+                this.emitter.emit("handleApiError",error);
+                switch(status){
+                    case 400:
+                        this.dialog.title= this.MISAResource["VN"].InvalidData;
+                        this.inputInValid = [];
+                        this.inputInValid.push("employeeCode");
+                        this.dialog.text = response.data.Errors ;
+                        this.dialog.icon = this.MISAResource["VN"].IconDangerous;    
+                        break;
+                    default:
+                        break;
+                }
+                this.btnShowDialog();
+            }
 
         },
     },
@@ -528,28 +480,22 @@ export default {
     column-gap: 20px;
     row-gap: 18px;
     grid-template-columns: 250px 350px 250px 250px;
-    grid-template-rows: 66px 66px 66px 66px 66px 66px 66px;
+    grid-template-rows: 100px 100px 100px 100px ;
 }
 
-.item-money,.item-department,.item-position{
+.item-name,.item-slug{
     grid-column-start: 1;
     grid-column-end: 3;
 }
-.item-place{
+.item-categories{
     grid-column-start: 3;
     grid-column-end: 5;
 }
-.item-bankid{
-    grid-column-start: 1;
-    grid-column-end: 2;
-}
-.item-address{
-    grid-column-start: 1;
-    grid-column-end: 5;
-}
+
 .p-radiobutton2__option--item{
     display: flex;
     align-items: center;
     column-gap: 8px;
 }
+
 </style>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BE_WAREHOUSE.Core.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,13 +12,13 @@ namespace BE_WAREHOUSE.Core.Entities
         public Guid OrdersId { get; set; }
         public Guid UsersId { get; set; }
         public string? OrdersCode { get; set; }
-        public int OrdersStatus { get; set; }
+        public OrderStatus OrdersStatus { get; set; }
         public int DeliveryMethod { get; set; }
         public DateTime? DeliveryDate { get; set; }
         public string DeliveryAddress { get; set; }
         public int? DeliveryStatus { get; set; }
         public int PaymentMethod { get; set; }
-        public int? PaymentStatus { get; set; }  
+        public PaymentStatus? PaymentStatus { get; set; }  
         public string ReminiscentName { get; set; }
         public string PhoneNumber { get; set; }
         public double TotalAmount { get; set; }

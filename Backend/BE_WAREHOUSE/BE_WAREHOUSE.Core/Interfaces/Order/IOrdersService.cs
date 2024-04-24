@@ -10,7 +10,7 @@ namespace BE_WAREHOUSE.Core.Interfaces.Order
 {
     public interface IOrdersService : IBaseService<Orders>
     {
-        public Task<int> CheckoutService(OrderData orderData);
+        public Task<Orders> CheckoutService(OrderData orderData);
         public Task<IEnumerable<Orders>> GetOrderByUsersId(Guid UsersId);
     }
 }

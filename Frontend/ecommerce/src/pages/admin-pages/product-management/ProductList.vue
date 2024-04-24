@@ -2,12 +2,10 @@
     <div>
         <div class="p-home__main--header">
             <div class="p-home__main--header--title">
-                Nhân viên
-                <img src="../../assets/img/popup_design_guideline/Layer 2.png" alt="icondown">
+                Quản lý sản phẩm
             </div>
             <div class="p-home__main--header--button">
-                <button  @click="btnShowFormAddEmployee" id="showAddForm" class="p-button1-plus show-popup-sign tooltip">
-                    <span class="tooltiptext">Thêm mới</span>
+                <button  @click="btnShowForm" id="showAddForm" class="p-button1-plus show-popup-sign ">
                     <i class="fa-solid fa-plus"></i>
                         Thêm mới
                 </button>
@@ -24,21 +22,18 @@
                 </div>
                 <div class="p-home__main--action--button">
                     <MTextSearch :searchEmployee="searchEmployee" v-model="filter.paging.searchString"></MTextSearch>
-                    <button @click="btnShowFormImport" class="p-button3 icon-import tooltip "> 
-                            <span class="tooltiptext">Nhập khẩu</span>
+                    <button @click="btnShowFormImport" class="p-button3 icon-import  "> 
                     </button>
-                    <button @click="exportEmployee()" class=" p-button3 icon-export tooltip">
-                            <span class="tooltiptext">Xuất khẩu</span>
+                    <button @click="exportEmployee()" class=" p-button3 icon-export ">
                     </button>
                     
-                    <button   id="p-btnLoadData" @click="this.emitter.emit('loadDataPagingEmployee')"  class="p-button3 icon-load tooltip">
-                        <span class="tooltiptext">Tải lại</span>
+                    <button   id="p-btnLoadData" @click="this.emitter.emit('loadDataPagingEmployee')"  class="p-button3 icon-load ">
                     </button>
                 </div>
             </div>
             <div class="p-home__main--table">
                 <div class="p-grid">
-                    <MCategoryDetail :filterParent="filter" ref="nextPageRef" refsPreviousPage="previousPageRef"  @totalRecord="hanldeDataPagingTotalRecord"  @totalPage="hanldeDataPagingTotalPage"  @employees="handleListEmployee"  @checkedIDs="handleListChecked" :showFormDuplicate="btnShowFormDuplicateEmployee" :showFormUpdate="btnShowFormUpdateEmployee"  ></MCategoryDetail>
+                    <MProductDetail :filterParent="filter" ref="nextPageRef" refsPreviousPage="previousPageRef"  @totalRecord="hanldeDataPagingTotalRecord"  @totalPage="hanldeDataPagingTotalPage"  @employees="handleListEmployee"  @checkedIDs="handleListChecked" :showFormDuplicate="btnShowFormDuplicateEmployee" :showFormUpdate="btnShowFormUpdateEmployee"  ></MProductDetail>
                 </div>
                 <div class="p-footertable">
                     <div class="left p-footertable__total">
@@ -57,53 +52,39 @@
                     </div>
                 </div>            
             </div>
-        <MAddFormEmployee  v-if="showForm" :closeAddForm="btnCloseFormAddCustomer" ></MAddFormEmployee>
-        <div v-if="showUpdateForm">
-            <MUpdateFormEmployee  r :idEmployee="employee.EmployeeId" :closeFormUpdate="btnCloseFormUpdateEmployee"  ></MUpdateFormEmployee>
-        </div>
-        <div v-if="showDuplicateForm">
-            <MDuplicateFormEmployee  :idEmployee="employee.EmployeeId" :closeFormDuplicate="btnCloseFormDuplicateEmployee"  ></MDuplicateFormEmployee>
-        </div>
+        <ProductForm  v-if="showForm" :FormMode="this.FormMode" :closeForm="btnCloseForm" ></ProductForm>
         <MDialog  v-if="dialog.showDialog" :dialogResFalse="btnSetFalseResponseDialog" :dialogResTrue="btnSetTrueResponseDialog" :text="dialog.text" :title="dialog.title" :errors="dialog.errors" :iconDialog="dialog.icon"></MDialog>
-        <!-- <MToastMessage v-model="toast.showToast" :color="toast.textColor" :icon="toast.icon" :title="toast.title" :text="toast.text"></MToastMessage> -->
-        <!-- <MImportCheckListVue  v-if="importCheckList" :closeImportList="btnCloseImportList" :employeeCheckedList="listCheckedImport"></MImportCheckListVue> -->
         <MImport :closeFormImport="btnCloseFormImport" v-if="isImport"></MImport>
     </div>
 </template>
 <script>
-import MCategoryDetail from "@/components/base/table/MCategoryDetail.vue";
-import  MAddFormEmployee  from "@/components/base/form/MAddFormEmployee.vue";
-import MUpdateFormEmployee from  "@/components/base/form/MUpdateFormEmployee.vue";
-import MDuplicateFormEmployee from  "@/components/base/form/MDuplicateFormEmployee.vue";
+import MProductDetail from "./MProductDetail.vue";
 import MTextSearch  from '@/components/base/input/MTextSearch.vue';
 import MDialog  from '@/components/base/dialog/MDialog.vue';
 import MCombobox from '@/components/base/input/MCombobox.vue';
 import MImport from '@/components/import/MImport.vue'
+import ProductForm from './ProductForm.vue';
 // import saveAs from 'file-saver';
 
 export default {
-    name: "CategoryList",
+    name: "ProductList",
     components: {
-        MAddFormEmployee,
-        MCategoryDetail,
-        MUpdateFormEmployee,
-        MDuplicateFormEmployee,
+        ProductForm,
+        MProductDetail,
         MTextSearch,
         MDialog,
         MCombobox,
-        // MImportCheckListVue
         MImport
     },
     data(){
         return{   
+            FormMode:null,
             isImport:false,
             fileImport: null,
             textSearch:null,
             isLoading:true,
             showForm : false,
             showToast: false,
-            showUpdateForm: false,
-            showDuplicateForm: false,
             listChecked : [],
             employee:{
                 EmployeeId : null,
@@ -318,13 +299,6 @@ export default {
             this.employee.EmployeeId = id;
         },
         /**
-         * Hàm thực hiện ẩn form sửa
-         * Author: TTPhong (06/12/2023) 
-         */
-        btnCloseFormUpdateEmployee(){
-            this.showUpdateForm = false;
-        },
-        /**
          * Hàm thực hiện hiển thị form sửa
          * Author: TTPhong (06/12/2023) 
          */
@@ -332,26 +306,21 @@ export default {
             this.showDuplicateForm = true;
             this.employee.EmployeeId = id;
         },
-        /**
-         * Hàm thực hiện ẩn form sửa
-         * Author: TTPhong (06/12/2023) 
-         */
-        btnCloseFormDuplicateEmployee(){
-            this.showDuplicateForm = false;
-        },
+
         
         /**
          * Hàm thực hiện hiển thị form thêm mới
          * Author: TTPhong (06/12/2023) 
          */
-        btnShowFormAddEmployee(){
+        btnShowForm(){
             this.showForm = true;
+            this.FormMode = this.Enum.FormMode.ADD
         },
         /**
          * Hàm thực hiện ẩn form thêm mới
          * Author: TTPhong (06/12/2023) 
          */
-        btnCloseFormAddCustomer(){
+        btnCloseForm(){
             this.showForm = false;
         },
         /**
@@ -372,6 +341,13 @@ export default {
 }
 </script>
 <style scoped>
+.p-home__main--header--title{
+    display: flex !important; 
+    align-items: center !important;
+    column-gap: 12px !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+}
 .p-button3{
     padding: 0 !important;
         background-color: rgba(255, 255, 255, 0.1);

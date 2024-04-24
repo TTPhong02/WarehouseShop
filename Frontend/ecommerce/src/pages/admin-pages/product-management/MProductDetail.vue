@@ -12,7 +12,8 @@
                     <th>Tên sản phẩm</th>
                     <th>Tên hãng</th>
                     <th>Giá tiền</th>
-                    <th>Số lượng</th>
+                    <th>Số lượng trong kho</th>
+                    <th>Số lượng đã bán</th>
                     <th>Mô tả</th>
                     <th>Mã danh mục</th>
                     <th>Tên danh mục</th>
@@ -28,6 +29,7 @@
                     <td>{{item.ProductBrandName}}</td>
                     <td>{{item.ProductPrice}}</td>
                     <td>{{item.ProductStock}}</td>
+                    <td>{{item.ProductSold}}</td>
                     <td>{{item.ProductDescription}}</td>
                     <td>{{item.CategoriesCode}}</td>
                     <td>{{item.CategoriesName}}</td>
@@ -153,9 +155,7 @@ export default {
     created() {
         this.token = localStorage.getItem("Token");
         this.dialog = this.dialogData;
-        this.filter = this.filterParent;
-        this.loadDataDepartment();
-        this.loadDataPositions();
+        this.filter = this.filterParent; 
         this.emitter.on("loadDataPagingEmployee",this.loadDataPagingEmployee);
         this.emitter.on("deselectAll",this.deselectAll);  
         this.emitter.on("nextPageEmployee",this.nextPageEmployee);
@@ -231,40 +231,6 @@ export default {
                     this.emitter.emit("hiddenLoading")
                 }, 1000);
             })
-        },
-        /**
-         * Hàm lấy tên thông tin datacombobox đơn vị
-         * Author: TTPhong(22/01/2024)
-         */
-        async loadDataDepartment(){
-            await this.api.get(`${this.URLRequest}Departments`)
-            .then(response=>{
-                this.department = response.data;
-                //  this.department.departmentId = response.data.DepartmentId
-                //  this.department.departmentName = response.data.DepartmentName
-            })
-            .catch(error=>{
-                console.log(error);
-                this.emitter.emit("handleApiError",error);
-            })
-        },
-         /**
-         * Hàm lấy thông tin datacombobox Chức danh 
-         * Author: TTPhong(22/01/2024)
-         */
-        async loadDataPositions(){
-            try{
-                await this.api.get(`${this.URLRequest}Positions`)
-                .then(response=>{
-                     this.positions = response.data;
-                })
-                .catch(error=>{
-                    this.emitter.emit("handleApiError",error);
-                })
-
-            }catch(error){
-                console.error(error);
-            }
         },
          /**
          * Hàm lấy tên đơn vị 
@@ -346,56 +312,6 @@ export default {
         btnShowDuplicateForm(id){
             this.showFormDuplicate(id);
         },
-        
-        
-        /**
-        * Hàm thực hiện Format dữ liệu ngày tháng năm
-        * Author: TTPhong (06/12/2023)
-        */
-        formatDate(string){
-            try{
-                let date = new Date(string);
-                let day = date.getDate();
-                let month = date.getMonth() + 1;
-                let year = date.getFullYear();
-                let formattedDay = (day < 10) ? `0${day}` : `${day}`;
-                let formattedMonth = (month < 10) ? `0${month}` : `${month}`;
-                return`${formattedDay}/${formattedMonth}/${year}`;
-            }catch(error){
-                console.error(error);
-            }
-        },
-        /**
-        * Hàm thực hiện Format dữ liệu tiền
-        * Author: TTPhong (06/12/2023)
-        */
-       formatMoney(string) {
-            try{
-                    const moneyValue = parseFloat(string);
-                    return Math.round(moneyValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            }catch(error){
-                console.error(error);
-            }
-        },
-        /**
-         * Hàm thực hiện Format giới tính 
-         * Author: TTPhong (06/12/2023)
-         */
-        formatGender(value){
-            try{
-                if(value === 1){
-                    return "Nam";
-                }else if(value === 0) 
-                {
-                    return "Nữ";
-                }
-                 return "Khác";   
-                    
-            }catch(error){
-                console.error(error);
-            }
-        }
-
     }
 }
 </script>

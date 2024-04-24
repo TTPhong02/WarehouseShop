@@ -11,7 +11,6 @@ const Enum = {
     FormMode:{
         ADD : 0,
         UPDATE:1,
-        VIEW:2,
     },
     DeliveryMethod:{    
         Delivery: 0,

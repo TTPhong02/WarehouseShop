@@ -194,6 +194,7 @@ import addressService from '../../../utils/AddressService';
 import addressApiService from '../../../utils/ApiAddressService.js';
 import ordersService from '../../../utils/OrdersService';
 import cartItemsService from '../../../utils/CartItemsService';
+import vnPayService from '../../../utils/VnPayService'
 
 export default {
     data() {
@@ -269,11 +270,21 @@ export default {
                 this.order.FeeShipping = this.deliveryFee;
                 this.order.UsersId = this.user.UsersId;
                 orderData.Orders = this.order;
-                console.log(orderData); 
                 var res = await ordersService.checkout(orderData);
                 console.log(res.data);
-                if(res.data > 0){
-                    this.$router.push("/profile/address");
+                if(res.data){
+                    if(this.order.PaymentMethod == this.Enum.PaymentMethod.VNPAY){
+                        var dataOrder = {}
+                        dataOrder.OrderType = "Online";
+                        dataOrder.Amount = this.order.TotalAmount;
+                        dataOrder.OrderDescription = this.order.Note
+                        dataOrder.OrderId = res.data.OrdersId;
+                        var urlDirect = await vnPayService.createPaymentUrl(dataOrder);
+                        location.href = urlDirect.data;
+                        return ;
+                    }else{
+                        this.$router.push("/profile/address");
+                    }
                     this.cartSelected = [];
                     localStorageService.removeItemLocalStorage("CartSelected")
                     var cartItems = await cartItemsService.getByUserId(this.user.UsersId);

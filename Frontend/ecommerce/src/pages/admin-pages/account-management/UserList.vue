@@ -3,7 +3,7 @@
         <div class="p-home__main--header">
             <div class="p-home__main--header--title">
                 Nhân viên
-                <img src="../../assets/img/popup_design_guideline/Layer 2.png" alt="icondown">
+                <img src="../../../assets/img/popup_design_guideline/Layer 2.png" alt="icondown">
             </div>
             <div class="p-home__main--header--button">
                 <button  @click="btnShowFormAddEmployee" id="showAddForm" class="p-button1-plus show-popup-sign tooltip">
@@ -38,7 +38,7 @@
             </div>
             <div class="p-home__main--table">
                 <div class="p-grid">
-                    <MOrderDetail :filterParent="filter" ref="nextPageRef" refsPreviousPage="previousPageRef"  @totalRecord="hanldeDataPagingTotalRecord"  @totalPage="hanldeDataPagingTotalPage"  @employees="handleListEmployee"  @checkedIDs="handleListChecked" :showFormDuplicate="btnShowFormDuplicateEmployee" :showFormUpdate="btnShowFormUpdateEmployee"  ></MOrderDetail>
+                    <MUserDetail :filterParent="filter" ref="nextPageRef" refsPreviousPage="previousPageRef"  @totalRecord="hanldeDataPagingTotalRecord"  @totalPage="hanldeDataPagingTotalPage"  @employees="handleListEmployee"  @checkedIDs="handleListChecked" :showFormDuplicate="btnShowFormDuplicateEmployee" :showFormUpdate="btnShowFormUpdateEmployee"  ></MUserDetail>
                 </div>
                 <div class="p-footertable">
                     <div class="left p-footertable__total">
@@ -71,7 +71,7 @@
     </div>
 </template>
 <script>
-import MOrderDetail from "@/components/base/table/MOrderDetail.vue";
+import MUserDetail from "@/components/base/table/MUserDetail.vue";
 import  MAddFormEmployee  from "@/components/base/form/MAddFormEmployee.vue";
 import MUpdateFormEmployee from  "@/components/base/form/MUpdateFormEmployee.vue";
 import MDuplicateFormEmployee from  "@/components/base/form/MDuplicateFormEmployee.vue";
@@ -82,10 +82,10 @@ import MImport from '@/components/import/MImport.vue'
 // import saveAs from 'file-saver';
 
 export default {
-    name: "OrderList",
+    name: "UserList",
     components: {
         MAddFormEmployee,
-        MOrderDetail,
+        MUserDetail,
         MUpdateFormEmployee,
         MDuplicateFormEmployee,
         MTextSearch,

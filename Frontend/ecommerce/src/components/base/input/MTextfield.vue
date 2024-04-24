@@ -29,7 +29,7 @@ export default {
     name: String,
     required: Boolean,
     message: String,
-    modelValue: [String, Number],
+    modelValue: [String, Number,File],
   },
   created() {
     this.inputChild = this.modelValue;

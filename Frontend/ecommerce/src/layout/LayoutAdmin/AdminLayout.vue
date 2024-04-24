@@ -2,7 +2,7 @@
     <div>
         <MHeadingAdmin></MHeadingAdmin>
         <MSidebarAdmin></MSidebarAdmin>
-        <MMainAdmin></MMainAdmin>
+        <MMainAdmin ></MMainAdmin>
     </div>
 </template>
 

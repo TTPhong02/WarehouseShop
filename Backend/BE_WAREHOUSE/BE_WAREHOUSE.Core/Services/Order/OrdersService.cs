@@ -29,7 +29,7 @@ namespace BE_WAREHOUSE.Core.Services.Order
             _cartItemsRepository = cartItemsRepository;
         }
 
-        public async Task<int> CheckoutService(OrderData orderData)
+        public async Task<Orders> CheckoutService(OrderData orderData)
         {
             var orderDetail = orderData.OrderDetails;
             var cartItemId = orderData.CartItemsId;
@@ -65,14 +65,11 @@ namespace BE_WAREHOUSE.Core.Services.Order
                 }
                 if(count == orderDetail.Count)
                 {
-                    var resDelete = await _cartItemsRepository.DeleteAnyAsync(cartItemId);
-                    if(resDelete > 0)
-                    {
-                        return resDelete;
-                    }
+                    await _cartItemsRepository.DeleteAnyAsync(cartItemId);
+                    
                 }
             }
-            return 0;
+            return orders;
         }
 
         public async Task<IEnumerable<Orders>> GetOrderByUsersId(Guid UsersId)

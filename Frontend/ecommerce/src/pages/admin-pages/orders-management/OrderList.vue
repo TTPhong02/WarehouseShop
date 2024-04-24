@@ -2,10 +2,12 @@
     <div>
         <div class="p-home__main--header">
             <div class="p-home__main--header--title">
-                Quản lý sản phẩm
+                Nhân viên
+                <img src="../../../assets/img/popup_design_guideline/Layer 2.png" alt="icondown">
             </div>
             <div class="p-home__main--header--button">
-                <button  @click="btnShowFormAddEmployee" id="showAddForm" class="p-button1-plus show-popup-sign ">
+                <button  @click="btnShowFormAddEmployee" id="showAddForm" class="p-button1-plus show-popup-sign tooltip">
+                    <span class="tooltiptext">Thêm mới</span>
                     <i class="fa-solid fa-plus"></i>
                         Thêm mới
                 </button>
@@ -22,18 +24,21 @@
                 </div>
                 <div class="p-home__main--action--button">
                     <MTextSearch :searchEmployee="searchEmployee" v-model="filter.paging.searchString"></MTextSearch>
-                    <button @click="btnShowFormImport" class="p-button3 icon-import  "> 
+                    <button @click="btnShowFormImport" class="p-button3 icon-import tooltip "> 
+                            <span class="tooltiptext">Nhập khẩu</span>
                     </button>
-                    <button @click="exportEmployee()" class=" p-button3 icon-export ">
+                    <button @click="exportEmployee()" class=" p-button3 icon-export tooltip">
+                            <span class="tooltiptext">Xuất khẩu</span>
                     </button>
                     
-                    <button   id="p-btnLoadData" @click="this.emitter.emit('loadDataPagingEmployee')"  class="p-button3 icon-load ">
+                    <button   id="p-btnLoadData" @click="this.emitter.emit('loadDataPagingEmployee')"  class="p-button3 icon-load tooltip">
+                        <span class="tooltiptext">Tải lại</span>
                     </button>
                 </div>
             </div>
             <div class="p-home__main--table">
                 <div class="p-grid">
-                    <MProductDetail :filterParent="filter" ref="nextPageRef" refsPreviousPage="previousPageRef"  @totalRecord="hanldeDataPagingTotalRecord"  @totalPage="hanldeDataPagingTotalPage"  @employees="handleListEmployee"  @checkedIDs="handleListChecked" :showFormDuplicate="btnShowFormDuplicateEmployee" :showFormUpdate="btnShowFormUpdateEmployee"  ></MProductDetail>
+                    <MOrderDetail :filterParent="filter" ref="nextPageRef" refsPreviousPage="previousPageRef"  @totalRecord="hanldeDataPagingTotalRecord"  @totalPage="hanldeDataPagingTotalPage"  @employees="handleListEmployee"  @checkedIDs="handleListChecked" :showFormDuplicate="btnShowFormDuplicateEmployee" :showFormUpdate="btnShowFormUpdateEmployee"  ></MOrderDetail>
                 </div>
                 <div class="p-footertable">
                     <div class="left p-footertable__total">
@@ -66,7 +71,7 @@
     </div>
 </template>
 <script>
-import MProductDetail from "@/components/base/table/MProductDetail.vue";
+import MOrderDetail from "@/components/base/table/MOrderDetail.vue";
 import  MAddFormEmployee  from "@/components/base/form/MAddFormEmployee.vue";
 import MUpdateFormEmployee from  "@/components/base/form/MUpdateFormEmployee.vue";
 import MDuplicateFormEmployee from  "@/components/base/form/MDuplicateFormEmployee.vue";
@@ -77,10 +82,10 @@ import MImport from '@/components/import/MImport.vue'
 // import saveAs from 'file-saver';
 
 export default {
-    name: "ProductList",
+    name: "OrderList",
     components: {
         MAddFormEmployee,
-        MProductDetail,
+        MOrderDetail,
         MUpdateFormEmployee,
         MDuplicateFormEmployee,
         MTextSearch,
@@ -367,13 +372,6 @@ export default {
 }
 </script>
 <style scoped>
-.p-home__main--header--title{
-    display: flex !important; 
-    align-items: center !important;
-    column-gap: 12px !important;
-    font-size: 24px !important;
-    font-weight: 700 !important;
-}
 .p-button3{
     padding: 0 !important;
         background-color: rgba(255, 255, 255, 0.1);

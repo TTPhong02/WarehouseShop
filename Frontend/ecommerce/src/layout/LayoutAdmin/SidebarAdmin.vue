@@ -1,41 +1,51 @@
 <template>
     <div :class="{'p-home__sidebar':true , 'small-sidebar':isHidden} ">
-            <div class="p-sidebar">
-                <div class="p-sidebar__list">
-                    <router-link to="/admin/home" class="p-sidebar__list--item">
-                        <div class="p-sidebar__list--item--icon icon-sidebar-home"></div>
-                        <!-- <img src="../assets/img/add.png" alt="addicon"> -->
-                        <div v-if="!isHidden" class="p-sidebar__list--item--title">Tổng quan</div>                      
-                    </router-link>
-                    <router-link to="/admin/orders" class="p-sidebar__list--item">
-                        <div class="p-sidebar__list--item--icon icon-sidebar-chart"></div>
-                        <!-- <img src="../assets/img/add.png" alt="addicon"> -->
-                        <div v-if="!isHidden" class="p-sidebar__list--item--title">Quản lý Đơn hàng</div>
-                    </router-link>
-                    <router-link to="/admin/products" class="p-sidebar__list--item">
-                        <div class="p-sidebar__list--item--icon icon-sidebar-customer"></div>
-                        <!-- <img src="../assets/img/add.png" alt="addicon"> -->
-                        <div v-if="!isHidden" class="p-sidebar__list--item--title">Quản lý sản phẩm</div>
-                    </router-link>
-                    <router-link to="/admin/categories" class="p-sidebar__list--item">
-                        <div class="p-sidebar__list--item--icon icon-sidebar-setting"></div>
-                        <!-- <img src="../assets/img/add.png" alt="addicon"> -->
-                        <div v-if="!isHidden" class="p-sidebar__list--item--title">Quản lý danh mục sản phẩm</div>
-                    </router-link>
-                    <router-link to="/admin/users" class="p-sidebar__list--item">
-                        <div class="p-sidebar__list--item--icon icon-sidebar-setting"></div>
-                        <!-- <img src="../assets/img/add.png" alt="addicon"> -->
-                        <div v-if="!isHidden" class="p-sidebar__list--item--title">Quản lý tài khoản</div>
-                    </router-link>
-                </div>
-                <div id="shorter" class="p-sidebar__shorter ">
-                    <div @click="btnSmallSidebar"  class="p-sidebar__shorter--item">
-                        <div class="p-sidebar__shorter--item--icon icon-prev"></div>
-                        <div v-if="!isHidden"  class="p-sidebar__list--item--title">Thu gọn</div>
+        <div class="p-sidebar">
+            <div class="p-sidebar__list">
+                <router-link to="/admin" class="p-sidebar__list--item">
+                    <div class="p-sidebar__list--item--icon">
+                        <i class="fa-solid fa-chart-simple"></i>
                     </div>
+                    <!-- <img src="../assets/img/add.png" alt="addicon"> -->
+                    <div v-if="!isHidden" class="p-sidebar__list--item--title">Tổng quan</div>                      
+                </router-link>
+                <router-link to="/admin/orders-management" class="p-sidebar__list--item">
+                    <div class="p-sidebar__list--item--icon ">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                    </div>
+                    <!-- <img src="../assets/img/add.png" alt="addicon"> -->
+                    <div v-if="!isHidden" class="p-sidebar__list--item--title">Quản lý đơn hàng</div>
+                </router-link>
+                <router-link to="/admin/products-management" class="p-sidebar__list--item">
+                    <div class="p-sidebar__list--item--icon ">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <!-- <img src="../assets/img/add.png" alt="addicon"> -->
+                    <div v-if="!isHidden" class="p-sidebar__list--item--title">Quản lý sản phẩm</div>
+                </router-link>
+                <router-link to="/admin/categories-management" class="p-sidebar__list--item">
+                    <div class="p-sidebar__list--item--icon ">
+                        <i class="fa-solid fa-outdent"></i>
+                    </div>
+                    <!-- <img src="../assets/img/add.png" alt="addicon"> -->
+                    <div v-if="!isHidden" class="p-sidebar__list--item--title">Quản lý danh mục</div>
+                </router-link>
+                <router-link to="/admin/account-management" class="p-sidebar__list--item">
+                    <div class="p-sidebar__list--item--icon ">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <!-- <img src="../assets/img/add.png" alt="addicon"> -->
+                    <div v-if="!isHidden" class="p-sidebar__list--item--title">Quản lý tài khoản</div>
+                </router-link>
+            </div>
+            <div id="shorter" class="p-sidebar__shorter ">
+                <div @click="btnSmallSidebar"  class="p-sidebar__shorter--item">
+                    <div class="p-sidebar__shorter--item--icon icon-prev"></div>
+                    <div v-if="!isHidden"  class="p-sidebar__list--item--title">Thu gọn</div>
                 </div>
-            </div>  
-        </div>
+            </div>
+        </div>  
+    </div>
 </template>
 <script>
 export default {
@@ -65,10 +75,7 @@ a{
     width: 65px !important;
     transition: 0.5s;
 }
-.router-link-active{
-    background-color: #3f4b5d;
-    border-radius: 4px;
-}
+
 .p-sidebar{
     height: 100%;
     display: flex;
@@ -106,7 +113,9 @@ a{
 .p-sidebar__shorter--item--icon{
     margin-left: 18px;
 }
+.p-sidebar__list--item--icon i{
+    font-size: 20px;
+}
 .p-sidebar__list--item--icon{
-    margin-left: 12px;
 }
 </style>
