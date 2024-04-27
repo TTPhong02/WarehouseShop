@@ -1,5 +1,9 @@
 const MISAResource = {
     VN : {
+        "CategoriesNameNotEmpty" : "Tên danh mục không được để trống ",
+        "CategoriesCodeNotEmpty" : "Mã danh mục không được để trống ",
+        "CategoriesSlugNotEmpty" : "Slug danh mục không được để trống ",
+        "CategoriesDescriptionNotEmpty" : "Mô tả danh mục không được để trống ",
         "ProductNameNotEmpty" : "Tên sản phẩm không được để trống ",
         "ProductCodeNotEmpty" : "Mã sản phẩm không được để trống ",
         "ProductPriceNotEmpty" : "Giá sản phẩm không được để trống ",
@@ -7,7 +11,10 @@ const MISAResource = {
         "ProductStockNotEmpty" : "Số lượng sản phẩm không được để trống ",
         "ProductSlugNotEmpty" : "Slug sản phẩm không được để trống ",
         "ProductDescriptionNotEmpty" : "Mô tả sản phẩm không được để trống ",
-        "ImageFileNotEmpty" : "Ảnh sản phẩm không được để trống ",
+        "ProductSoldNotSmallThanZero":"Số lượng đã bán không thể nhỏ hơn 0",
+        "ProductStockNotSmallThanZero":"Số lượng trong kho không thể nhỏ hơn 0",
+        "ProductPriceNotSmallThanZero":"Giá đã bán không thể nhỏ hơn 0",
+        "ImageFileNotEmpty" : "Ảnh không được để trống ",
         "CategoriesNotEmpty" : "Danh mục sản phẩm không được để trống ",
         "FullNameNotEmpty" : "Họ tên không được để trống",
         "EmailNotEmpty" : "Email không được để trống",

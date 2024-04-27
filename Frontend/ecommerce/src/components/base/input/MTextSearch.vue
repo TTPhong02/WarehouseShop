@@ -1,7 +1,7 @@
 <template>
     <div class="p-textfield1">
         <input @keydown="handleEnter"  class="p-textfield1__input" id="name" type="text" placeholder="Tìm kiếm" name="name" v-model="inputChild" >
-        <div @click="btnSearch()" class="p-textfield1-icon icon-search">
+        <div @click="onSearch()" class="p-textfield1-icon icon-search">
         </div>
     </div>
 </template>
@@ -12,7 +12,7 @@ export default {
         "text",
         "className",
         "modelValue",
-        "searchEmployee"
+        "searchMethod"
     ],
     created() {
     this.inputChild = this.modelValue;
@@ -36,8 +36,8 @@ export default {
      * Hàm thực hiện gọi sự kiện tìm kiếm khi nhấn vào icon search
      *  Author: TTPhong(22/01/2024)
      */
-        btnSearch(){
-            this.searchEmployee();
+        onSearch(){
+            this.searchMethod();
         },
             /**
      * Hàm thực hiện gọi sự kiện tìm kiếm khi nhấn enter
@@ -45,7 +45,7 @@ export default {
      */
         handleEnter(event){
             if(event.keyCode === 13){
-                this.searchEmployee();
+                this.searchMethod();
             }
         }
     },

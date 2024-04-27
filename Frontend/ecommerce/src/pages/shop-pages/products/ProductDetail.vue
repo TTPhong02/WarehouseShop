@@ -18,7 +18,7 @@
             <div class="product-detail-infor">
                 <div>
                     <div class="detail-infor-title">Mô tả: <span class="detail-infor-content">{{this.product.ProductDescription}}</span></div>
-                    <div class="detail-infor-title">Số lượng tỏng kho: <span class="detail-infor-content">{{this.product.ProductStock}}</span></div>
+                    <div class="detail-infor-title">Số lượng trong kho: <span class="detail-infor-content">{{this.product.ProductStock}}</span></div>
                     <div class="detail-infor-title">Đã bán: <span class="detail-infor-content">{{this.product.ProductSold}}</span></div>
                     <div class="detail-infor-title">Nhà sản xuất: <span class="detail-infor-content">{{this.product.ProductBrandName}}</span></div>
                 </div>

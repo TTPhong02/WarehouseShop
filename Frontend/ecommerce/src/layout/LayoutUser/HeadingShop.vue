@@ -153,11 +153,12 @@ export default {
       var res = await usersService.logout(this.user.Email);
       switch (res.status) {
         case 201:
-          localStorage.removeItem("AccessToken");
-          localStorage.removeItem("RefreshToken");
-          localStorage.removeItem("User");
-          localStorage.removeItem("CartItems");
-          localStorage.removeItem("CartSelected");
+          localStorage.clear();
+          // localStorage.removeItem("AccessToken");
+          // localStorage.removeItem("RefreshToken");
+          // localStorage.removeItem("User");
+          // localStorage.removeItem("CartItems");
+          // localStorage.removeItem("CartSelected");
           window.location.reload();
       }
 

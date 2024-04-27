@@ -1,6 +1,6 @@
 <template>
     <div :class="{'p-home__sidebar':true , 'small-sidebar':isHidden} ">
-        <div class="p-sidebar">
+        <div class="p-sidebar-admin">
             <div class="p-sidebar__list">
                 <router-link to="/admin" class="p-sidebar__list--item">
                     <div class="p-sidebar__list--item--icon">
@@ -76,7 +76,8 @@ a{
     transition: 0.5s;
 }
 
-.p-sidebar{
+.p-sidebar-admin{
+    background-color: #041434;
     height: 100%;
     display: flex;
     flex-direction: column;

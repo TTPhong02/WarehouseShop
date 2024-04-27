@@ -8,10 +8,16 @@
         <form >
             <div class="p-popup__form">
                 <div class="item-image">
-                    <MTextfield  ref="image" typeInput="file" textPlaceHolder="Hình ảnh" name="Hình ảnh" textLabel="Hình ảnh" v-model="image" :message="dialog.errors.image" :required ="true"> </MTextfield>
+                    <MTextfieldFile  ref="image" textPlaceHolder="Hình ảnh" name="Hình ảnh" textLabel="Hình ảnh" @file-selected="handleFileSelected" :message="dialog.errors.image" :required ="true"> </MTextfieldFile>
                 </div>
                 <div class="item-code">
                     <MTextfield  ref="ProductCode" typeInput="text" textPlaceHolder="Mã sản phẩm   " name="Mã sản phẩm" textLabel="Mã sản phẩm" v-model="Product.ProductCode" :message="dialog.errors.ProductCode" :required ="true"> </MTextfield>
+                </div>
+                <div class="item-categories">
+                    <MCombobox ref="Categories" textLabel="Danh mục" :messageInvalid="dialog.errors.Categories" :required="true"  :dataCombobox="dataCombobox.Categories.CategoriesName"  @selected="onComboboxSelected" v-model="dataCombobox.Categories.selectedItem"></MCombobox>
+                </div> 
+                <div class="item-name">
+                    <MTextfield  ref="ProductName" typeInput="text" textPlaceHolder="Tên sản phẩm" name="Tên sản phẩm"  textLabel="Tên sản phẩm" v-model="Product.ProductName" :message="dialog.errors.ProductName" :required ="true"> </MTextfield>
                 </div>
                 <div class="item-price">
                     <MTextfield  ref="ProductPrice" :message="dialog.errors.ProductPrice"  typeInput="number" textPlaceHolder="Giá sản phẩm" textLabel="Giá sản phẩm" v-model="Product.ProductPrice" :required ="true"> </MTextfield>                
@@ -19,28 +25,25 @@
                 <div class="item-brand-name">
                     <MTextfield  ref="ProductBrandName" :message="dialog.errors.ProductBrandName"  typeInput="text" textPlaceHolder="Tên hãng" textLabel="Tên hãng" v-model="Product.ProductBrandName" :required ="true"> </MTextfield>
                 </div>
-                
-                <div class="item-name">
-                    <MTextfield  ref="ProductName" typeInput="text" textPlaceHolder="Tên sản phẩm" name="Tên sản phẩm"  textLabel="Tên sản phẩm" v-model="Product.ProductName" :message="dialog.errors.ProductName" :required ="true"> </MTextfield>
-                </div>
-                <div class="item-categories">
-                    <MCombobox ref="Categories" textLabel="Danh mục" :messageInvalid="dialog.errors.Categories" :required="true"  :dataCombobox="dataCombobox.Categories.CategoriesName"  @selected="onComboboxSelected" v-model="dataCombobox.Categories.selectedItem"></MCombobox>
-                </div> 
                 <div class="item-slug">
                     <MTextfield  ref="ProductSlug" typeInput="text" textPlaceHolder="Slug sản phẩm" name="Slug sản phẩm"  textLabel="Slug sản phẩm" v-model="Product.ProductSlug" :message="dialog.errors.ProductSlug" :required ="true"> </MTextfield>
+                </div>
+                <div class="item-stock">
+                    <MTextfield  ref="ProductStock" :message="dialog.errors.ProductStock"  typeInput="number" textPlaceHolder="Số lượng sản phẩm" textLabel="Số lượng sản phẩm" v-model="Product.ProductStock" :required ="true"> </MTextfield>                
+                </div>
+                <div class="item-sold">
+                    <MTextfield  ref="ProductSold" :message="dialog.errors.ProductSold"  typeInput="number" textPlaceHolder="Số lượng đã bán" textLabel="Số lượng đã bán" v-model="Product.ProductSold"> </MTextfield>                
                 </div>
                 <div class="item-description">
                     <MTextfield  ref="ProductDescription" typeInput="text" textPlaceHolder="Mô tả sản phẩm" name="Mô tả sản phẩm"  textLabel="Mô tả sản phẩm" v-model="Product.ProductDescription" :message="dialog.errors.ProductDescription" :required ="true"> </MTextfield>
                 </div>
-                
-                
                 <div class="p-popup-sign__button">
                     <div class="p-popup__button--left" >
                         <MButton className="p-button2" text="Hủy" @click="btncloseForm"></MButton>          
                     </div>
                     <div class="p-popup__button--right" >
                         <MButton className="p-button1" :text="this.FormMode == this.Enum.FormMode.ADD ? 'Thêm mới': 'Sửa thông tin'
-              " @click="checkInvalid(false)"></MButton> 
+              " @click="checkInvalid()"></MButton> 
                     </div>
                 </div>
 
@@ -59,23 +62,24 @@ import categoriesService from '../../../utils/CategoriesService';
 import productService from '../../../utils/ProductService';
 import MCombobox from '../../../components/base/input/MCombobox.vue';
 import MTextfield from '../../../components/base/input/MTextfield.vue'; 
+import MTextfieldFile from '../../../components/base/input/MTextfieldFile.vue'; 
 export default {
-    name:"MAddFormEmployee",
+    name:"ProductForm",
     props:[       
-        "closeForm","FormMode"
+        "closeForm","FormMode","IdEntity"
     ],
     components:{
-        MTextfield,MCombobox
+        MTextfield,MCombobox,MTextfieldFile
     },
     created() {
+        this.checkFormMode();
         this.takeDataCombobox();
-        this.takeNewCode();
+
     },
     data() {
         return {
             ImageFile:null,
             Product:{},
-            isChangeForm:false,
             inputInValid:[],  
             dialog:{
                 showDialog : false,
@@ -84,13 +88,6 @@ export default {
                 icon: "",
                 text: "",
                 errors:{}
-            },
-            toast:{
-                showToast: false,
-                title:'',
-                text:'',
-                icon:'',
-                textColor:''
             },
             dataCombobox : {
                 Categories:{                   
@@ -102,6 +99,20 @@ export default {
         }
     },
     methods: {
+        async checkFormMode(){
+            if(this.FormMode === this.Enum.FormMode.UPDATE){
+                var res = await productService.getById(this.IdEntity);
+                this.Product = res.data;
+                this.dataCombobox.Categories.selectedItem = this.Product.CategoriesName;
+            }else{
+                this.dataCombobox.Categories.selectedItem = null;
+                this.Product={}
+                await this.takeNewCode();
+            }
+        },
+        handleFileSelected(file) {
+            this.ImageFile = file;
+        },
         async takeDataCombobox(){
            var res = await categoriesService.getAll();
            const list = res.data;
@@ -182,26 +193,11 @@ export default {
             }
         },
         /**
-         * Hàm thực hiện hiển thị toast
-         * Author: TTPhong(06/12/2023)
-         */
-        btnShowToast(){
-            this.toast.showToast = true;
-        },
-        /**
          * Hàm thực hiện đóng Form thêm mới
          * Author: TTPhong (06/12/2023)
          */
         btncloseForm(){
-            if(this.isChangeForm === true ){
-                this.dialog.title = this.MISAResource["VN"].DataChanged;
-                this.dialog.text = this.MISAResource["VN"].QuestionTextChangedFormData;
-                this.dialog.icon = this.MISAResource["VN"].IconWarning;
-                this.btnShowDialog();
-            }else{
-
                 this.closeForm();
-            }
 
         },
         /**
@@ -235,18 +231,13 @@ export default {
          * Hàm kiểm tra dữ liệu khi nhập vào
          *  Author: TTPhong(22/01/2024)
          */
-        checkInvalid(closeForm){
-            console.log(this.ImageFile);
+        checkInvalid(){
             try {
                 //Check ảnh 
-                if(this.ImageFile === "" || this.ImageFile === null || this.ImageFile === undefined){
+                if(this.ImageFile === "" && this.FormMode === this.Enum.FormMode.ADD || this.ImageFile === null && this.FormMode === this.Enum.FormMode.ADD || this.ImageFile === undefined && this.FormMode === this.Enum.FormMode.ADD){
                     this.dialog.errors.ImageFile = this.MISAResource["VN"].ImageFileNotEmpty;
-                    if(!this.checkElementFromArray(this.inputInValid, "ImageFile")){
-                        this.inputInValid.push("ImageFile");
-                    }
                 }else{
                    delete(this.dialog.errors.ImageFile);
-                   this.inputInValid=[];
                 }
 
                 //Check mã 
@@ -260,29 +251,18 @@ export default {
                    this.inputInValid=[];
                 }
 
-                //3.CheckPrice
-                if(this.Product.ProductPrice === "" ||this.Product.ProductPrice === null || this.Product.ProductPrice === undefined){
-                    this.dialog.errors.ProductPrice = this.MISAResource["VN"].ProductPriceNotEmpty;
-                    if(!this.checkElementFromArray(this.inputInValid, "ProductPrice")){
-                        this.inputInValid.push("ProductPrice");
+                //Check danh mục
+                if(this.dataCombobox.Categories.selectedItem === "" ||this.dataCombobox.Categories.selectedItem === null ||this.dataCombobox.Categories.selectedItem === undefined){
+                    this.dialog.errors.Categories = this.MISAResource["VN"].CategoriesNotEmpty;
+                     if(!this.checkElementFromArray(this.inputInValid, "Categories")){
+                        this.inputInValid.push("Categories");
                     }
                 }else{
-                   delete(this.dialog.errors.ProductPrice);
-                   this.inputInValid=[];
+                    delete( this.dialog.errors.Categories);
+                    this.removeElementFromArray(this.inputInValid, "Categories") ;
                 }
 
-                //2.Check BrandName
-                if(this.Product.ProductBrandName === "" ||this.Product.ProductBrandName === null || this.Product.ProductBrandName === undefined){
-                    this.dialog.errors.ProductBrandName = this.MISAResource["VN"].ProductBrandNameNotEmpty;
-                     if(!this.checkElementFromArray(this.inputInValid, "ProductBrandName")){
-                        this.inputInValid.push("ProductBrandName");
-                    }
-                }else{
-                    delete(this.dialog.errors.ProductBrandName);
-                    this.removeElementFromArray(this.inputInValid, "ProductBrandName") ;
-                }
-
-                //1.Check tên
+                //Check tên
                 if(this.Product.ProductName === "" ||this.Product.ProductName === null || this.Product.ProductName === undefined){
                     this.dialog.errors.ProductName = this.MISAResource["VN"].ProductNameNotEmpty;
                      if(!this.checkElementFromArray(this.inputInValid, "ProductName")){
@@ -293,15 +273,31 @@ export default {
                     this.removeElementFromArray(this.inputInValid, "ProductName") ;
                 }
 
-                //5.Check Categories
-                if(this.dataCombobox.Categories.selectedItem === "" ||this.dataCombobox.Categories.selectedItem === null ||this.dataCombobox.Categories.selectedItem === undefined){
-                    this.dialog.errors.Categories = this.MISAResource["VN"].CategoriesNotEmpty;
-                     if(!this.checkElementFromArray(this.inputInValid, "Categories")){
-                        this.inputInValid.push("Categories");
+                //CheckPrice
+                if(this.Product.ProductPrice === "" ||this.Product.ProductPrice === null || this.Product.ProductPrice === undefined){
+                    this.dialog.errors.ProductPrice = this.MISAResource["VN"].ProductPriceNotEmpty;
+                    if(!this.checkElementFromArray(this.inputInValid, "ProductPrice")){
+                        this.inputInValid.push("ProductPrice");
+                    }
+                }else if(this.Product.ProductPrice < 0){
+                    this.dialog.errors.ProductPrice = this.MISAResource["VN"].ProductPriceNotSmallThanZero;
+                    if(!this.checkElementFromArray(this.inputInValid, "ProductPrice")){
+                        this.inputInValid.push("ProductPrice");
                     }
                 }else{
-                    delete( this.dialog.errors.Categories);
-                    this.removeElementFromArray(this.inputInValid, "Categories") ;
+                   delete(this.dialog.errors.ProductPrice);
+                   this.inputInValid=[];
+                }
+
+                //Check BrandName
+                if(this.Product.ProductBrandName === "" ||this.Product.ProductBrandName === null || this.Product.ProductBrandName === undefined){
+                    this.dialog.errors.ProductBrandName = this.MISAResource["VN"].ProductBrandNameNotEmpty;
+                     if(!this.checkElementFromArray(this.inputInValid, "ProductBrandName")){
+                        this.inputInValid.push("ProductBrandName");
+                    }
+                }else{
+                    delete(this.dialog.errors.ProductBrandName);
+                    this.removeElementFromArray(this.inputInValid, "ProductBrandName") ;
                 }
 
                 //4.Check Slug
@@ -314,7 +310,32 @@ export default {
                    delete(this.dialog.errors.ProductSlug);
                    this.inputInValid=[];
                 }
-                //4.Check Slug
+
+                //check số lượng kho
+                if(this.Product.ProductStock === "" ||this.Product.ProductStock === null || this.Product.ProductStock === undefined){
+                    this.dialog.errors.ProductStock = this.MISAResource["VN"].ProductStockNotEmpty;
+                    if(!this.checkElementFromArray(this.inputInValid, "ProductStock")){
+                        this.inputInValid.push("ProductStock");
+                    }
+                }else if(this.Product.ProductStock < 0){
+                    this.dialog.errors.ProductStock = this.MISAResource["VN"].ProductStockNotSmallThanZero;
+                    if(!this.checkElementFromArray(this.inputInValid, "ProductStock")){
+                        this.inputInValid.push("ProductStock");
+                    }
+                }else{
+                   delete(this.dialog.errors.ProductStock);
+                   this.inputInValid=[];
+                }
+
+                //Check số lượng bán
+                if(this.Product.ProductSold < 0){
+                    this.dialog.errors.ProductSold = this.MISAResource["VN"].ProductSoldNotSmallThanZero;
+                    if(!this.checkElementFromArray(this.inputInValid, "ProductSold")){
+                        this.inputInValid.push("ProductSold");
+                    }
+                }
+
+                //Check mô tả
                 if(this.Product.ProductDescription === "" ||this.Product.ProductDescription === null || this.Product.ProductDescription === undefined){
                     this.dialog.errors.ProductDescription = this.MISAResource["VN"].ProductDescriptionNotEmpty;
                     if(!this.checkElementFromArray(this.inputInValid, "ProductDescription")){
@@ -325,16 +346,16 @@ export default {
                    this.inputInValid=[];
                 }
 
-                if(this.dialog.errors.ProductCode || this.dialog.errors.ProductName || this.dialog.errors.Categories|| this.dialog.errors.ProductBrandName|| this.dialog.errors.ProductPrice|| this.dialog.errors.ProductSlug|| this.dialog.errors.ProductDescription){
+                if(this.dialog.errors.ProductStock ||this.dialog.errors.ProductSold || this.dialog.errors.ImageFile || this.dialog.errors.ProductCode || this.dialog.errors.ProductName || this.dialog.errors.Categories|| this.dialog.errors.ProductBrandName|| this.dialog.errors.ProductPrice|| this.dialog.errors.ProductSlug|| this.dialog.errors.ProductDescription){
                     this.dialog.title= this.MISAResource["VN"].InvalidData;
                     this.dialog.icon = this.MISAResource["VN"].IconWarning;
                     this.btnShowDialog();
                 }else{
                     if(this.FormMode == this.Enum.FormMode.ADD){
-                        this.onAdd(closeForm);
+                        this.onAdd();
                     }
                     if(this.FormMode == this.Enum.FormMode.UPDATE){
-                        this.onUpdate(closeForm)
+                        this.onUpdate()
                     }
                 }
             } catch (error) {
@@ -345,27 +366,19 @@ export default {
          * Hàm thực hiện thêm 
          *  Author: TTPhong(22/01/2024)
          */
-        async onAdd(closeForm){
+        async onAdd(){
             try{
                 var formData = new FormData();
                 formData.append("imageFile", this.ImageFile);
-                formData.append("dataJson", JSON.stringify(this.product));
+                formData.append("dataJson", JSON.stringify(this.Product));
                 var res = await productService.post(formData);
                 if(res.data.Data === 1){
-                    this.toast.title = this.MISAResource["VN"].Success;
-                    this.toast.text = this.MISAResource["VN"].AddSuccess;
-                    this.toast.icon = this.MISAResource["VN"].IconSuccessSmall;
-                    this.emitter.emit("onShowToastMessage", this.toast.title, this.toast.text,this.toast.icon,this.toast.textColor)
-                    setTimeout(() => {
-                        this.emitter.emit('loadDataPagingEmployee');
-                        if(closeForm === true){
-                            this.closeForm();     
-                        }else{
-                            this.Product={};
-                            this.dataCombobox.Categories.selectedItem="";
-                        }
-                        this.takeNewEmployeeCode();
-                    }, 2000);
+                    this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Thêm mới thành công !")
+                    this.emitter.emit('loadDataPagingProduct');
+                    this.Product={};
+                    this.dataCombobox.Categories.selectedItem="";
+                    this.closeForm();     
+
                 }
             }catch(error ){
                 const response = error.response;
@@ -390,28 +403,22 @@ export default {
          * Hàm thực hiện thêm 
          *  Author: TTPhong(22/01/2024)
          */
-        async onUpdate(closeForm){
+        async onUpdate(){
             try{
                 var formData = new FormData();
-                formData.append("dataJson", JSON.stringify(this.product));
-                var res = await productService.put(formData);
+                formData.append("dataJson", JSON.stringify(this.Product));
+                var res = await productService.put(this.IdEntity,formData);
                 if(res.data.Data === 1){
-                    this.toast.title = this.MISAResource["VN"].Success;
-                    this.toast.text = this.MISAResource["VN"].AddSuccess;
-                    this.toast.icon = this.MISAResource["VN"].IconSuccessSmall;
-                    this.emitter.emit("onShowToastMessage", this.toast.title, this.toast.text,this.toast.icon,this.toast.textColor)
-                    setTimeout(() => {
-                        this.emitter.emit('loadDataPagingEmployee');
-                        if(closeForm === true){
-                            this.closeForm();     
-                        }else{
-                            this.Product={};
-                            this.dataCombobox.Categories.selectedItem="";
-                        }
-                        this.takeNewEmployeeCode();
-                    }, 2000);
+                    this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Cập nhật thành công !")
+                    this.emitter.emit('loadDataPagingProduct');
+                    this.closeForm();     
+                    this.Product={};
+                    this.dataCombobox.Categories.selectedItem="";
+
+
                 }
-            }catch(error ){
+            }catch(error){
+                console.log(error);
                 const response = error.response;
                 const status = response.status;
                 this.emitter.emit("handleApiError",error);
@@ -419,7 +426,7 @@ export default {
                     case 400:
                         this.dialog.title= this.MISAResource["VN"].InvalidData;
                         this.inputInValid = [];
-                        this.inputInValid.push("employeeCode");
+                        this.inputInValid.push("ProductCode");
                         this.dialog.text = response.data.Errors ;
                         this.dialog.icon = this.MISAResource["VN"].IconDangerous;    
                         break;
@@ -501,14 +508,14 @@ export default {
     column-gap: 20px;
     row-gap: 18px;
     grid-template-columns: 250px 350px 250px 250px;
-    grid-template-rows: 100px 100px 100px 100px ;
+    grid-template-rows: 80px 80px 80px 80px ;
 }
-
+.item-description,
 .item-name,.item-slug{
     grid-column-start: 1;
     grid-column-end: 3;
 }
-.item-description,
+
 .item-categories{
     grid-column-start: 3;
     grid-column-end: 5;

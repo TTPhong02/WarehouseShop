@@ -2,9 +2,10 @@ import {createRouter,createWebHistory} from "vue-router";
 import AdminLayout from "../layout/LayoutAdmin/AdminLayout.vue";
 import ProductList from "../pages/admin-pages/product-management/ProductList.vue";
 import CategoryList from "../pages/admin-pages/categories-management//CategoryList.vue";
-import MHomePage from "../view/admin/HomePage.vue";
 import UserList from "../pages/admin-pages/account-management//UserList.vue";
 import OrderList from "../pages/admin-pages/orders-management/OrderList.vue";
+import OverviewAdmin from "../pages/admin-pages/overview-management/OverviewAdmin.vue";
+import MOrdersDetail from "../pages/admin-pages/orders-management/MOrdersDetail.vue";
 import AdminLogin from "../view/admin/AdminLogin.vue";
 import UserLogin from "../view/user/UserLogin.vue";
 import UserLayout from "../layout/LayoutUser/UserLayout.vue";
@@ -96,8 +97,7 @@ const routes = [
             {
                 path:"",
                 components:{
-                    // default:DefaultLayout,
-                    ContentRouterView: MHomePage,
+                    ContentRouterView: OverviewAdmin,
                 },              
             },
             {
@@ -105,7 +105,14 @@ const routes = [
                 components:{
                     // default:DefaultLayout,
                     ContentRouterView: OrderList,
-                },              
+                }          
+            },
+            {
+                path:'orders-management/:id',
+                components:{
+                    ContentRouterView: MOrdersDetail
+                },
+                props: true,
             },
             {
                 path:"products-management",

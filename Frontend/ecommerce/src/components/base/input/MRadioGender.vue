@@ -3,15 +3,15 @@
         <label>Giới tính</label>
         <div class="p-radiobutton2__option">
             <div class="p-radiobutton2__option--item">
-                <input v-model="inputChild" type="radio" name="radioCustomerGender" id="radioCustomerGender" value="1">
-                <label for="radioCustomerGender" >Nam</label>
+                <input v-model="inputChild" type="radio" name="radioGender"  value="0">
+                <label for="radioGender" >Nam</label>
             </div>
             <div class="p-radiobutton2__option--item">
-                <input v-model="inputChild" type="radio" name="radioCustomerGender" id="radioCustomerGender" value="0">
-            <label for="radioCustomerGender">Nữ</label>
+                <input v-model="inputChild" type="radio" name="radioGender" value="1">
+            <label for="radioGender">Nữ</label>
             </div>
             <div class="p-radiobutton2__option--item">
-                <input v-model="inputChild" type="radio" name="radioCustomerGender" id="radioCustomerGender" value="2">
+                <input v-model="inputChild" type="radio" name="radioGender" value="2">
                 <label for="radioCustomerGender">Khác</label>
             </div>
         </div>
@@ -42,6 +42,7 @@ export default({
          *  Author: TTPhong(22/01/2024)
          */
         modelValue(newValue){
+            console.log(newValue);
             this.inputChild = newValue;
         }
     }

@@ -3,6 +3,7 @@
     <HeadingShop></HeadingShop>
     <router-view name="ShopRouterView"></router-view>
     <FooterShop></FooterShop>
+    <MToastMessage></MToastMessage>
   </div>
 </template>
 
@@ -10,10 +11,12 @@
 import HeadingShop from "./HeadingShop.vue";
 // import MainShop from './MainShop.vue';
 import FooterShop from './FooterShop.vue';
+import MToastMessage from '../../components/base/toast/MToastMessage.vue';
 export default {
   name:'UserLayout',
   components:{
-    HeadingShop,FooterShop
+    HeadingShop,FooterShop,
+    MToastMessage
   }
 }
 </script>

@@ -10,5 +10,6 @@ namespace BE_WAREHOUSE.Core.Interfaces.Order
 {
     public interface IOrderDetailsRepository:IBaseRepository<OrderDetails>
     {
+        Task<IEnumerable<OrderDetails>> GetByIdOrders(Guid id);
     }
 }

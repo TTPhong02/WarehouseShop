@@ -34,7 +34,7 @@ namespace BE_WAREHOUSE.Infrastructure.DbContext
         public async Task<T?> GetByIdAsync<T>(Guid id)
         {
             var className = typeof(T).Name;
-            var sql = $"SELECT * FROM {className} where {className}Id = @{className}Id";
+            var sql = $"SELECT * FROM view_{className} where {className}Id = @{className}Id";
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add($"@{className}Id", id);
             var res = await Connection.QueryFirstOrDefaultAsync<T>(sql, param:dynamicParameters);

@@ -71,7 +71,10 @@ export default {
     box-shadow: 0px 0px 30px 0px #d3dcdc ;
 }
 .categories-item-image img {
-    width: 300px;
+    width: 267px;
     height: 180px;
+}
+.categories-item{
+    padding: 0px 10px;
 }
 </style>

@@ -106,4 +106,15 @@ namespace BE_WAREHOUSE.Core.Enum
         /// </summary>
         NULL = 0,
     }
+    public enum Gender
+    {
+        Male = 0,
+        Female = 1,
+        Other = 2,
+    }
+    public enum AccountStatus
+    {
+        Active = 1,
+        Unactive = 0,
+    }
 }

@@ -18,5 +18,6 @@ namespace BE_WAREHOUSE.Core.Entities
         public string ProductDescription { get; set; }
         public Double Discount { get; set; }
         public int Quantity { get; set; }
+        public string ImagesPath { get; set; }
     }
 }

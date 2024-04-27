@@ -6,7 +6,7 @@
           <div class="checkout-header-title">Thông tin giao hàng</div>
           <div class="header-address-user">
             <div class="address-select">
-                <input v-model="typeAddress" value="default" name="address-option" type="radio">
+                <input v-model="typeAddress"  value="default" name="address-option" type="radio">
             </div>
             <div class="address-user">
                 <img src="../../../assets/img/logo-home-address.png" alt="">
@@ -50,8 +50,7 @@
             <span class="error-input red">{{listErrorMessage.phonenumber}}</span>
             <div class="row address-form-select">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="">Chọn tỉnh/thành phố <span class="red">*</span></label>
-                <select v-model="order.ProvinceSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
-                    <option value="" selected>---Chọn tỉnh/thành phố---</option>
+                <select v-model="provinceSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
                     <option v-for="item in province" 
                     :key="item.province_id" 
                     :value="{
@@ -67,7 +66,6 @@
             <div class="row address-form-select">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="">Chọn quận/huyện <span class="red">*</span></label>
                 <select v-model="districtSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
-                    <option value="" selected>---Chọn quận/huyện---</option>
                     <option v-for="item in district" 
                     :key="item.district_id" 
                     :value="{
@@ -82,7 +80,6 @@
             <div class="row address-form-select">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 " for="">Chọn xã/phường <span class="red">*</span></label>
                 <select v-model="wardSelected" class="col-lg-8 col-md-8 col-sm-8 col-8 " name="" id="">
-                    <option value="" selected >---Chọn xã/phường---</option>
                     <option v-for="item  in ward" 
                     :key="item.ward_id" 
                     :value="{
@@ -237,6 +234,7 @@ export default {
             if(newValue == null){
                 this.listErrorMessage.province= "Vui lòng chọn tỉnh / thành phố"
             }
+            console.log("Chọn r");
             await this.takeAddressDistrict();
         },
         districtSelected: async function(newValue){
@@ -254,11 +252,25 @@ export default {
     created() {
         this.takeAddressProvince();
         this.takeDataFromLocalStorage();
-
     },
     methods: {
         async checkout(){
             try{
+                if(this.typeAddress == "other"){
+                    var address = {};
+                    address.UsersId = this.user.UsersId;
+                    address.Province = this.provinceSelected.province_name;
+                    address.Ward = this.wardSelected.ward_name;
+                    address.District = this.districtSelected.district_name;
+                    address.HomeNumber = this.order.HomeNumber;
+                    address.ReminiscentName = this.order.ReminiscentName;
+                    address.PhoneNumber = this.order.PhoneNumber;
+                    address.AddressDefault = 0;
+                    const formData = new FormData();
+                    formData.append("dataJson",JSON.stringify(address));
+                    await addressService.post(formData);
+                    
+                }
                 var orderData = {}
                 orderData.OrderDetails = this.cartSelected;
                 var listIdProduct = await localStorageService.getItemFromLocalStorage("CartSelected");
@@ -271,8 +283,8 @@ export default {
                 this.order.UsersId = this.user.UsersId;
                 orderData.Orders = this.order;
                 var res = await ordersService.checkout(orderData);
-                console.log(res.data);
                 if(res.data){
+                    
                     if(this.order.PaymentMethod == this.Enum.PaymentMethod.VNPAY){
                         var dataOrder = {}
                         dataOrder.OrderType = "Online";
@@ -283,7 +295,10 @@ export default {
                         location.href = urlDirect.data;
                         return ;
                     }else{
-                        this.$router.push("/profile/address");
+                        this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Đặt hàng thành công !")
+                        setTimeout(() => {
+                            this.$router.push("/profile/order");
+                        }, 3000);
                     }
                     this.cartSelected = [];
                     localStorageService.removeItemLocalStorage("CartSelected")

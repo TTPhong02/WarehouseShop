@@ -1,15 +1,18 @@
-<template>
-    <span id="toast1" class="p-message1">
+<template >
+    <span v-if="showToast" id="toast" class="p-message1">
         <div class="p-message1__icon">
-            <div :class="icon">
-                </div>
-            <!-- <img src="./assets/img/Combo-spec-normal/Layer 2.png" alt="icongreen"> -->
+            <div class="icon-toast">
+                <i v-if="this.type == this.Enum.ToastType.SUCCESS" style="color:green" class=" fa-solid fa-circle-check"></i>
+                <i v-if="this.type == this.Enum.ToastType.FAILED" style="color:red" class="fa-solid fa-circle-exclamation"></i>
+                <i v-if="this.type == this.Enum.ToastType.WARNING" style="color:gold" class="fa-solid fa-triangle-exclamation"></i>
+            </div>
         </div>
-        <div :class="{'p-message1__title':true, 'red' : isFailed}">{{title}}</div>
-        <div class="p-message1__text">{{text}}</div>
+        <div class="p-message1__text">
+            {{this.text}}
+        </div>
         <!-- <div class="p-message1__action">Hoàn tác</div> -->
         <div class="p-message1__closeicon">
-            <img src="../../../assets/img/dialog_design_guideline/Layer 2.png" alt="iconclose">
+            <i @click="hiddenToast()" class="fa-solid fa-xmark"></i>
         </div>
     </span>
 </template>
@@ -17,44 +20,30 @@
 <script>
 export default {
     name:"MToastMessage",
-    props:[
-        "title",
-        "text",
-        "modelValue",
-        "icon",
-        "color"
-    ],
-    updated() {
-       if(this.color != ""){
-            this.isFailed = true;
-            console.log(this.color);
-        } 
+    created() {
+        this.emitter.on("showToast",this.onShowToastMessage);
     },
     data() {
         return {
-            showToast: '',
-            isFailed:false
+            type:null,
+            showToast: false,
+            isFailed:false,
+            text:null, 
         }
     },
     methods: {
-        
-    },
-    watch:{
-        
-        // modelValue(newValue){
-        //     if(newValue === true){
-        //         this.showToast = this.modelValue;
-        //         setTimeout(() => {
-        //             this.showToast = false;
-        //             this.$emit("update:modelValue", false);
-        //         }, 2900);
-        //     }else{
-        //         this.showToast = false;
-        //     }
-        // },
-
+        onShowToastMessage(type, text) {
+            this.showToast = true;
+            this.type = type;
+            this.text = text;
+            setTimeout(() => {
+                this.showToast = false;
+            }, 2900);
+        },
+        hiddenToast(){
+            this.showToast = false;
+        }
     }
-    
 }
 </script>
 
@@ -68,8 +57,7 @@ export default {
 }
 .p-message1{
     display: flex;
-    width: 450px;
-    max-width: 650px;
+    max-width: 550px;
     align-items: center;
     justify-content: space-between;
     background-color: #fff;
@@ -98,7 +86,8 @@ export default {
     font-weight: 700;
 }
 .p-message1__text{
-   padding-left: 8px;
+    font-weight: bold;
+   padding:0px 20px;
 }
 .p-message1__action{
 
@@ -111,20 +100,24 @@ export default {
     padding: 0 16px;
     cursor: pointer;
 }
-.p-message1__closeicon img{
-    width: 24px;
-    height: 24px;
+.p-message1__closeicon:hover i{
+    font-weight: bold;
+    color: cornflowerblue;
+}
+.p-message1__closeicon i{
+    font-size: 18px;
     vertical-align: middle;
 }
 .p-message1__left, .p-message1__right{
     display: flex;
 }
-#toast1{
+#toast{
+    z-index: 1000000;
     position: fixed;
     top:10%;
     right: 30px;
     -webkit-animation: fadein 0.5s , fadeout 0.5s 2.5s;
-    animation:fadein 0.5s , fadeout 0.5s 2.5s ; 
+    animation: fadein 0.5s , fadeout 0.5s 2.5s ; 
 }
 
 

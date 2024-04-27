@@ -55,6 +55,9 @@ export default {
         this.checkListDropOrAbove();
         this.selectedItem = this.modelValue;
     },
+    mounted() {
+        console.log(this.dataCombobox);
+    },
     data() {
         return {
             selectedItem: null,
@@ -178,6 +181,9 @@ export default {
 </script>
 
 <style scoped>
+.required {
+    color : red;
+}
 input:focus{
     outline: none;
 }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "oLHxUj9ABbXN2JTE1KhDKhhm66jo9d01Q+XVpJuDVEI=",
+  "Hash": "Zzd8IEfk54C4MgFGMQKwFQKwSHXlimOO9A6a+gTXAIc=",
   "Source": "BE_WAREHOUSE.API",
   "BasePath": "_content/BE_WAREHOUSE.API",
   "Mode": "Default",
@@ -17,6 +17,40 @@
   ],
   "Assets": [
     {
+      "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\anh-danh-muc-binh-nuoc.jpg",
+      "SourceId": "BE_WAREHOUSE.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\",
+      "BasePath": "_content/BE_WAREHOUSE.API",
+      "RelativePath": "images/anh-danh-muc-binh-nuoc.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\anh-danh-muc-binh-nuoc.jpg"
+    },
+    {
+      "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\anh-danh-muc-do-bep-gia-dung.jpg",
+      "SourceId": "BE_WAREHOUSE.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\",
+      "BasePath": "_content/BE_WAREHOUSE.API",
+      "RelativePath": "images/anh-danh-muc-do-bep-gia-dung.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\anh-danh-muc-do-bep-gia-dung.jpg"
+    },
+    {
       "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\anh-danh-muc-do-dien-gia-dung.jpg",
       "SourceId": "BE_WAREHOUSE.API",
       "SourceType": "Discovered",
@@ -32,6 +66,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\anh-danh-muc-do-dien-gia-dung.jpg"
+    },
+    {
+      "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\anh-danh-muc-hop-dung-thuc-an.jpg",
+      "SourceId": "BE_WAREHOUSE.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\",
+      "BasePath": "_content/BE_WAREHOUSE.API",
+      "RelativePath": "images/anh-danh-muc-hop-dung-thuc-an.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\anh-danh-muc-hop-dung-thuc-an.jpg"
+    },
+    {
+      "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\anh-quat-cay.jpg",
+      "SourceId": "BE_WAREHOUSE.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\",
+      "BasePath": "_content/BE_WAREHOUSE.API",
+      "RelativePath": "images/anh-quat-cay.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\anh-quat-cay.jpg"
     },
     {
       "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\quat-cam-tay.jpg",
@@ -66,6 +134,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\quat-de-ban-mini.jpg"
+    },
+    {
+      "Identity": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\quat-dieu-hoa-mini-hoi-nuoc.jpg",
+      "SourceId": "BE_WAREHOUSE.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\",
+      "BasePath": "_content/BE_WAREHOUSE.API",
+      "RelativePath": "images/quat-dieu-hoa-mini-hoi-nuoc.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\quat-dieu-hoa-mini-hoi-nuoc.jpg"
     }
   ]
 }

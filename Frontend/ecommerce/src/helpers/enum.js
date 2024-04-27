@@ -1,4 +1,9 @@
 const Enum = {
+    ToastType:{
+        FAILED:0,
+        SUCCESS:1,
+        WARNING:2,
+    },
     Gender:{
         MALE: 0,
         FEMALE: 1,
@@ -26,6 +31,19 @@ const Enum = {
         Processing:2,
         Finished:3,
         Cancelled:4,
+    },
+    PaymentStatus:{
+        PENDING_PAID:0,
+        PAID:1
+    },
+    DeliveryStatus:{
+        PENDING_DELIVERY:0,
+        DELIVERING :1,
+        DELIVERED:2
+    },
+    AccountStatus:{
+        Active:1,
+        Unactive:0
     }
 }
 

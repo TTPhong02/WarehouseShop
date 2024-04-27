@@ -11,7 +11,37 @@ export default {
 }
 </script>
 <style >
-    .p-button1-plus{
+.processing{
+    background-color: #7bd15c !important;
+       border-radius: 4px ;
+    min-width: 80px;
+    height: 36px;
+    font-size: 14px;
+    color:#fff;
+    border: unset;
+    padding: 0px 16px 0px 12px;
+    cursor: pointer;    
+    outline: unset;
+}
+.processing:hover{
+    background-color: #179506 !important;
+}
+.cancel{
+    background-color: #d04444 !important;
+       border-radius: 4px ;
+    min-width: 80px;
+    height: 36px;
+    font-size: 14px;
+    color:#fff;
+    border: unset;
+    padding: 0px 16px 0px 12px;
+    cursor: pointer;    
+    outline: unset;
+}
+.cancel:hover{
+    background-color: #c80202 !important;
+}
+.p-button1-plus{
     background-color: #a2c5d2 !important;
     border-radius: 4px ;
     min-width: 80px;

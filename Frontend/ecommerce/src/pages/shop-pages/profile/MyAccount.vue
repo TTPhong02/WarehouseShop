@@ -55,22 +55,22 @@
             <div class="row account-infor-item">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 ">Mật khẩu hiện tại <span class="red">*</span></label>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-8 infor-item-input">
-                    <input v-model="this.user.CurrentPasswrod"  class="col-lg-8 col-md-8 col-sm-8 col-8" type="text">
-                    <span v-if="this.errorValidate.CurrentPassword" class="p-input__validate--error">{{this.errorValidate.CurrentPassword}}</span>
+                    <input v-model="this.user.CurrentPassword"  class="col-lg-8 col-md-8 col-sm-8 col-8" type="password">
+                    <span v-if="this.errorValidate.CurrentPassword" class="p-input__validate--error red">{{this.errorValidate.CurrentPassword}}</span>
                 </div>
             </div>
             <div class="row account-infor-item">
                 <label  class="col-lg-4 col-md-4 col-sm-4 col-4 ">Mật khẩu mới <span class="red">*</span></label>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-8 infor-item-input">
-                    <input v-model="this.user.NewPassword" class="col-lg-8 col-md-8 col-sm-8 col-8" type="text">
-                    <span v-if="this.errorValidate.NewPassword" class="p-input__validate--error">{{this.errorValidate.NewPassword}}</span>
+                    <input v-model="this.user.NewPassword" class="col-lg-8 col-md-8 col-sm-8 col-8" type="password">
+                    <span v-if="this.errorValidate.NewPassword" class="p-input__validate--error red">{{this.errorValidate.NewPassword}}</span>
                 </div>
             </div>
             <div class="row account-infor-item">
                 <label class="col-lg-4 col-md-4 col-sm-4 col-4 ">Nhập lại mật khẩu mới <span class="red">*</span></label>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-8 infor-item-input">
-                    <input v-model="this.checkPassword" class="col-lg-8 col-md-8 col-sm-8 col-8" type="text">
-                    <span v-if="this.errorValidate.checkPassword" class="p-input__validate--error">{{this.errorValidate.checkPassword}}</span>
+                    <input v-model="this.checkPassword" class="col-lg-8 col-md-8 col-sm-8 col-8" type="password">
+                    <span v-if="this.errorValidate.checkPassword" class="p-input__validate--error red">{{this.errorValidate.checkPassword}}</span>
                 </div>
             </div>
         </div> 
@@ -101,7 +101,7 @@ export default {
             return ''; // Trả về chuỗi trống nếu không có ngày tháng sinh
         }
     },
-    created() {
+    mounted() {
         this.takeDataUser();
     },
     methods: {
@@ -143,32 +143,32 @@ export default {
             }else{
                 delete(this.errorValidate.checkPassword);
             } 
-            console.log(this.checkPassword);  
-            console.log(this.user.NewPassword); 
-            if(this.checkPassword != ""  && this.NewPassword != "" && this.checkPassword != this.NewPassword){
+            if(this.checkPassword != ""  && this.user.NewPassword != "" && this.checkPassword != this.user.NewPassword){
                 this.errorValidate.checkPassword = "Mật khẩu nhập lại không giống";
             }
-            if( this.checkPassword === this.NewPassword){
+            if( this.checkPassword === this.user.NewPassword){
                 delete(this.errorValidate.checkPassword);
             }
                        
         },
         takeDataUser(){
             this.user = localStorageService.getItemFromLocalStorage("User");
-            // console.log(this.user);
         },
         async updateUser(){
             try{
                 const formData = new FormData();
-                console.log(this.user);
                 formData.append("dataJson",JSON.stringify(this.user));
                 if(this.isChangePassword == true){
                     this.validateDataNoPassword();
                     this.validateDataPassword();
+                    console.log(this.user.CurrentPassword);
+                    console.log(this.user.NewPassword);
+                    console.log(this.checkPassword);
                     if(Object.keys(this.errorValidate).length === 0){
                         var resPassword = await usersService.update(this.user.UsersId,formData);
                         switch (resPassword.data.StatusCode) {
                             case 200:
+                                this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Cập nhật thành công !")
                                 var user1 = await usersService.getById(this.user.UsersId);
                                 localStorageService.setItemToLocalStorage("User",user1.data);
                                 this.takeDataUser();
@@ -184,6 +184,7 @@ export default {
                         var res = await usersService.update(this.user.UsersId,formData);
                         switch (res.data.StatusCode) {
                             case 200:
+                                this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Cập nhật thành công");
                                 var user = await usersService.getById(this.user.UsersId);
                                 localStorageService.setItemToLocalStorage("User",user.data);
                                 this.emitter.emit("takeDataUsersHeading");
@@ -203,6 +204,9 @@ export default {
 </script>
 
 <style scoped>
+.requied{
+    color:red;
+}
 .infor-item-input{
     padding: 0px;
     display: flex;
@@ -236,7 +240,8 @@ export default {
     height: 20px !important;
 }
 .account-infor-item input[type="date"],
-.account-infor-item input[type="text"]{
+.account-infor-item input[type="text"],
+.account-infor-item input[type="password"]{
     height: 35px;
     padding: 5px 8px;
 }

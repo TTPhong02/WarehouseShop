@@ -1,6 +1,9 @@
 import Enum from "./enum";
 const helper = {
     formatMoney(amount) {
+        if(amount == undefined){
+            return "0"+"₫";
+        }
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+ " ₫";
     },
     checkImagePath(valueId) {
@@ -14,11 +17,11 @@ const helper = {
     formatGender(gender){
         if(gender != null || gender != undefined){
             switch (gender) {
-                case Enum.Gender.Male:
+                case Enum.Gender.MALE:
                     return "Nam";
-                case Enum.Gender.Female:
+                case Enum.Gender.FEMALE:
                     return "Nữ";
-                case Enum.Gender.Other:    
+                case Enum.Gender.OTHER:    
                     return "Khác"
                 default:
                     return "Khác";
@@ -43,9 +46,66 @@ const helper = {
             }
         }
     },
+    formatPaymentMethod(method){
+        if(method != null || method != undefined){
+            switch (method) {
+                case Enum.PaymentMethod.COD:
+                    return "Thanh toán khi nhận";
+                case Enum.PaymentMethod.MOMO:
+                    return "MOMO";
+                case Enum.PaymentMethod.VNPAY:
+                return "VNPay";
+                default:
+                    return "Khác";
+            }
+        }
+    },
+    formatPaymentStatus(status){
+        if(status != null || status != undefined){
+            switch (status) {
+                case Enum.PaymentStatus.PAID:
+                    return "Đã thanh toán";
+                case Enum.PaymentStatus.PENDING_PAID:
+                    return "Chờ thanh toán";
+                default:
+                    return "Khác";
+            }
+        }
+    },
+    formatDeliveryStatus(status){
+        if(status != null || status != undefined){
+            switch (status) {
+                case Enum.DeliveryStatus.PENDING_DELIVERY:
+                    return "Chờ vận chuyển";
+                case Enum.DeliveryStatus.DELIVERING:
+                    return "Đang vận chuyển";
+                    case Enum.DeliveryStatus.DELIVERED:
+                    return "Đã vận chuyển";
+                default:
+                    return "Khác";
+            }
+        }
+    },
+    formatAccountStatus(status){
+        if(status != null || status != undefined){
+            switch (status) {
+                case Enum.AccountStatus.Active:
+                    return "Đang hoạt động";
+                case Enum.AccountStatus.Unctive:
+                    return "Dừng hoạt động";
+                default:
+                    return "Dừng hoạt động";
+            }
+        }
+    },
     formatDate(date){
-        date = String(date).substring(0,10);
-        return date;    
+        if(date){
+
+            date = String(date).substring(0,10);
+            return date;    
+        }else{
+            return "";
+        }
     }
 }
 export default helper ;

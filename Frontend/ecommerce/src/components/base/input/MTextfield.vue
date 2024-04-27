@@ -115,7 +115,6 @@ label {
   height: 36px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  margin-top: 8px;
 }
 .p-textfield2__box input:focus {
   width: 254px;
@@ -154,7 +153,6 @@ label {
   width: 276px;
   border: 1px solid #e6e6e6;
   padding: 0 12px;
-  margin-top: 8px;
 }
 .p-textfield1 input:focus {
   height: 36px;
@@ -217,7 +215,6 @@ input::-webkit-calendar-picker-indicator {
   height: 36px;
   border: 1px solid #e6e6e6;
   padding: 0 12px;
-  margin-top: 8px;
 }
 .p-textfield3 input:focus {
   height: 36px;
