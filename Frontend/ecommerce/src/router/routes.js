@@ -21,6 +21,7 @@ import MyOrder from "../pages/shop-pages/profile/MyOrder.vue";
 import MainProduct from "../pages/shop-pages/products/MainProduct.vue"
 import ProductDetail from "../pages/shop-pages/products/ProductDetail.vue"
 import localStorageService from "@/js/storage/LocalStorageService";
+import AnalysisAdmin from '../pages/admin-pages/analysis-management/AnalysisAdmin.vue'
 const routes = [
     {
         path:"/",
@@ -133,6 +134,13 @@ const routes = [
                 components:{
                     // default:DefaultLayout,
                     ContentRouterView: UserList,
+                },              
+            },
+            {
+                path:"analysis-management",
+                components:{
+                    // default:DefaultLayout,
+                    ContentRouterView: AnalysisAdmin,
                 },              
             },
         ]

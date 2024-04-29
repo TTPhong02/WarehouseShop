@@ -4,10 +4,17 @@
             <div class="p-sidebar__list">
                 <router-link to="/admin" class="p-sidebar__list--item">
                     <div class="p-sidebar__list--item--icon">
-                        <i class="fa-solid fa-chart-simple"></i>
+                        <i class="fa-solid fa-chart-pie"></i>
                     </div>
                     <!-- <img src="../assets/img/add.png" alt="addicon"> -->
                     <div v-if="!isHidden" class="p-sidebar__list--item--title">Tổng quan</div>                      
+                </router-link>
+                <router-link to="/admin/analysis-management" class="p-sidebar__list--item">
+                    <div class="p-sidebar__list--item--icon ">
+                        <i class="fa-solid fa-chart-simple"></i>
+                    </div>
+                    <!-- <img src="../assets/img/add.png" alt="addicon"> -->
+                    <div v-if="!isHidden" class="p-sidebar__list--item--title">Thống kê </div>
                 </router-link>
                 <router-link to="/admin/orders-management" class="p-sidebar__list--item">
                     <div class="p-sidebar__list--item--icon ">
@@ -37,6 +44,7 @@
                     <!-- <img src="../assets/img/add.png" alt="addicon"> -->
                     <div v-if="!isHidden" class="p-sidebar__list--item--title">Quản lý tài khoản</div>
                 </router-link>
+
             </div>
             <div id="shorter" class="p-sidebar__shorter ">
                 <div @click="btnSmallSidebar"  class="p-sidebar__shorter--item">

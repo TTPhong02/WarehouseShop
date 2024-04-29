@@ -8,7 +8,7 @@
             <div class="date-picker-overview">
               <p>Năm</p>
               <div class="date-picker-input flex justify-content-center">
-                <Calendar v-model="this.date" view="year" dateFormat="yy" />
+                <Calendar v-model="this.dateFilter" view="year" dateFormat="yy" />
               </div>
             </div>
           </div>
@@ -128,15 +128,14 @@ export default {
   components:{Calendar,Chart  },
   data() {
     return {
-      date:null,
+      dateFilter:null,
       chartDataRevenue:null,
       chartOptionsRevenue:null,
       chartDataProduct:null,
       chartOptionsProduct:null,
       chartDataUser:null,
       chartOptionsUser:null,
-      chartDataCategories:null,
-      chartOptionsCategories:null,
+
     }
   },
   mounted() {
@@ -144,40 +143,9 @@ export default {
     this.chartOptionsRevenue = this.setChartOptionsRevenue();
     this.chartDataProduct = this.setChartDataProduct();
     this.chartOptionsProduct = this.setChartOptionsProduct();
-    this.chartDataCategories = this.setChartDataCategories();
-    this.chartOptionsCategories = this.setChartOptionsCategories();
+
   },
   methods: {
-        setChartDataCategories() {
-            const documentStyle = getComputedStyle(document.body);
-
-            return {
-                labels: ['Đồ điện tử', 'Đồ hộp đựng ', 'C'],
-                datasets: [
-                    {
-                        data: [540, 325, 702],
-                        backgroundColor: [documentStyle.getPropertyValue('--cyan-500'), documentStyle.getPropertyValue('--orange-500'), documentStyle.getPropertyValue('--gray-500')],
-                        hoverBackgroundColor: [documentStyle.getPropertyValue('--cyan-400'), documentStyle.getPropertyValue('--orange-400'), documentStyle.getPropertyValue('--gray-400')]
-                    }
-                ]
-            };
-        },
-        setChartOptionsCategories() {
-            const documentStyle = getComputedStyle(document.documentElement);
-            const textColor = documentStyle.getPropertyValue('--text-color');
-
-            return {
-                plugins: {
-                    legend: {
-                      position:'right',
-                        labels: {
-                            usePointStyle: true,
-                            color: textColor
-                        }
-                    }
-                }
-            };
-        },
         setChartDataProduct() {
             const documentStyle = getComputedStyle(document.body);
 

@@ -106,6 +106,29 @@ const helper = {
         }else{
             return "";
         }
-    }
+    },
+    formatDateTime(date, displayOnForm) {
+        try {
+          if (date) {
+            //chuyển về dũ liệu date trong js
+            let dob = new Date(date);
+            let day = dob.getDate() < 10 ? `0${dob.getDate()}` : dob.getDate();
+            let month =
+              dob.getMonth() + 1 < 10
+                ? `0${dob.getMonth() + 1}`
+                : dob.getMonth() + 1;
+            let year = dob.getFullYear();
+            if (displayOnForm) {
+              return `${year}-${month}-${day}`;
+            } else {
+              return `${day}/${month}/${year}`;
+            }
+          } else {
+            return "";
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      },
 }
 export default helper ;
