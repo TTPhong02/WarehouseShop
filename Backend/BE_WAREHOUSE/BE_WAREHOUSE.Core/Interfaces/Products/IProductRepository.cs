@@ -13,5 +13,6 @@ namespace BE_WAREHOUSE.Core.Interfaces.Products
         Task<IEnumerable<Product>> GetProductNew();
         Task<IEnumerable<Product>> GetProductByListId(List<Guid> ids);
         Task<Product> GetProductBySlug(string slug);
+        Task<IEnumerable<Product>> GetProductHot();
     }
 }

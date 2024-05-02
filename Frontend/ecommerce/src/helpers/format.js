@@ -107,6 +107,22 @@ const helper = {
             return "";
         }
     },
+    formatMonth(date){
+        if(date){
+            date = String(date).substring(5,7);
+            return "Tháng " + date;    
+        }else{
+            return "";
+        }
+    },
+    formatYear(date){
+        if(date){
+            date = String(date).substring(0,4);
+            return "Năm " + date;    
+        }else{
+            return "";
+        }
+    },
     formatDateTime(date, displayOnForm) {
         try {
           if (date) {

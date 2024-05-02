@@ -7,6 +7,10 @@ class ProductService extends BaseService{
         const res = await this.baseAxios.get(`${this.baseUrl}/ProductNew`);
         return res;
     }
+    async getProductHot() {
+        const res = await this.baseAxios.get(`${this.baseUrl}/ProductHot`);
+        return res;
+    }
     async getProductByListId(data) {
         const res = await this.baseAxios.post(`${this.baseUrl}/ListId`,data);
         return res;

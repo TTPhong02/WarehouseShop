@@ -30,6 +30,13 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
             return res; 
         }
 
+        public async Task<IEnumerable<Product>> GetProductHot()
+        {
+            var sql = "SELECT ProductSold, ProductName FROM Product ORDER BY ProductSold DESC LIMIT 5";
+            var res = await _dbContext.Connection.QueryAsync<Product>(sql);
+            return res;
+        }
+
         public async Task<IEnumerable<Product>> GetProductNew()
         {
             DateTime currentDate = DateTime.Now;

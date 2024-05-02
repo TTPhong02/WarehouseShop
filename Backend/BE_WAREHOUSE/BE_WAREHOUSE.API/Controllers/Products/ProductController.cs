@@ -28,6 +28,12 @@ namespace BE_WAREHOUSE.API.Controllers.Products
             var res = await _repository.GetProductBySlug(slug);
             return Ok(res);
         }
+        [HttpGet("ProductHot")]
+        public async Task<IActionResult> GetProductHot()
+        {
+            var res = await _repository.GetProductHot();
+            return Ok(res);
+        }
         [HttpPost("ListId")]
         public async Task<IActionResult> GetProductByListId([FromBody]List<Guid> ids) {
             var res = await _repository.GetProductByListId(ids);

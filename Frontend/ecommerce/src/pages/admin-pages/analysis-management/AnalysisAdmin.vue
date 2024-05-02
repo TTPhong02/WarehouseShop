@@ -22,7 +22,6 @@
                         <span>Bắt đầu/kết thúc :</span>
                         <Calendar  selectionMode="range"  v-model="this.typeFilter.dateSelect" :view="this.typeFilter.typeDateCombobox" :dateFormat="this.typeFilter.dateFormat" />
                     </div>
-                    <span>{{this.typeFilter.dateSelect}}</span>
                     <MButton @click="setChartDataBar()" className="p-button1" text="Lọc"></MButton>
                 </div>
                 <div class="card analyis-chart-bar">
@@ -152,37 +151,54 @@ export default {
         },
     },
     created() {
-                this.getTotalRevenue();
+        this.getTotalRevenue();
         const date = new Date();
         this.typeFilter.dateSelect.push(date) ;
+        this.typeFilter.typeFilterSelected = "Năm";
     },
     mounted() {
-
-        this.typeFilter.typeFilterSelected = "Năm";
         this.setChartDataBar();
         this.chartOptionsBar = this.setChartOptionsBar();
         this.chartDataLine = this.setChartDataLine();
         this.chartOptionsLine = this.setChartOptionsLine();
     },
     methods: {
+        async getListOrderByTime(){
+            if(this.typeFilter.typeFilterSelected == "Năm" && this.typeFilter.dateSelect.length == 1){
+                var date = [];
+                date[1] = this.typeFilter.dateSelect[0];
+                var endDate = new Date(this.typeFilter.dateSelect[0]);
+                endDate.setFullYear(endDate.getFullYear()-9);
+                date[0] = endDate;     
+                var res = await ordersService.getOrderbyTime(date);
+                this.listOrder = res.data;
+                this.totalRevenueByTime = 0;
+                this.listOrder.forEach(element => {
+                    this.totalRevenueByTime += element.TotalAmount;
+                });
+            }
+            else{
+                var resA = await ordersService.getOrderbyTime(this.typeFilter.dateSelect);
+                this.listOrder = resA.data;
+                this.listOrder.forEach(element => {
+                    this.totalRevenueByTime += element.TotalAmount;
+                });
+            }
+        },
         async getTotalRevenue(){
             var res = await ordersService.getTotalRevenue();
             this.totalRevenue = res.data;
         },
         async setChartDataBar() {
             const documentStyle = getComputedStyle(document.documentElement);
-            var dataOrder = await ordersService.getOrderbyTime(this.typeFilter.dateSelect);
-            this.listOrder = dataOrder.data;
-            this.listOrder.forEach(element => {
-                this.totalRevenueByTime += element.TotalAmount;
-            });
+            this.getListOrderByTime();
             if(this.typeFilter.typeFilterSelected == "Năm"){
                 var res = await ordersService.getRevenueByYear(this.typeFilter.dateSelect);
                 const listData = res.data;
                 var dataLabel = [];
                 var dataRevenue=[];
                 listData.forEach(element => {
-                    dataLabel.push(this.helper.formatDate(element.DateLabel));
+                    dataLabel.push(this.helper.formatYear(element.DateLabel));
                     dataRevenue.push(element.Revenue);
                 });
                 this.chartDataBar = {
@@ -205,7 +221,7 @@ export default {
                 var dataLabelMonth = [];
                 var dataRevenueMonth=[];
                 listData.forEach(element => {
-                    dataLabelMonth.push(this.helper.formatDate(element.DateLabel));
+                    dataLabelMonth.push(this.helper.formatMonth(element.DateLabel));
                     dataRevenueMonth.push(element.Revenue);
                 });
                 this.chartDataBar = {

@@ -19,6 +19,11 @@ class OrdersService extends BaseService{
         const res = await this.baseAxios.post(`${this.baseUrl}/RevenueMonth`,data);
         return res;
     }
+    async getRevenueByMonthOfYear(date){
+        console.log(date);
+        const res = await this.baseAxios.get(`${this.baseUrl}/RevenueMonthOfYear/${date}`);
+        return res;
+    }
     async getRevenueByDate(data){
         const res = await this.baseAxios.post(`${this.baseUrl}/RevenueDate`,data);
         return res;
@@ -29,6 +34,22 @@ class OrdersService extends BaseService{
     }
     async getTotalRevenue(){
         const res = await this.baseAxios.get(`${this.baseUrl}/Revenue`);
+        return res;
+    }
+    async getTotalRevenueByDate(date){
+        const res = await this.baseAxios.get(`${this.baseUrl}/RevenueTotalDate/${date}`);
+        return res;
+    }
+    async getTotalNumberOrder(type){
+        const res = await this.baseAxios.get(`${this.baseUrl}/TotalOrder/${type}`);
+        return res;
+    }
+    async getUserMostOrder(){
+        const res = await this.baseAxios.get(`${this.baseUrl}/UserMostOrder`);
+        return res;
+    }
+    async getOrderByStatus(status){
+        const res = await this.baseAxios.get(`${this.baseUrl}/OrderStatus/${status}`);
         return res;
     }
 }

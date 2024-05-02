@@ -4,12 +4,9 @@
       <div class="col-lg-8 col-md-8 dol-sm-8 col-8 s-overview-left">
         <div class="overview-left-main">
           <div class="overview-header">
-            <p>Phân tích doanh thu</p>           
+            <p>Biểu đồ doanh thu</p>           
             <div class="date-picker-overview">
-              <p>Năm</p>
-              <div class="date-picker-input flex justify-content-center">
-                <Calendar v-model="this.dateFilter" view="year" dateFormat="yy" />
-              </div>
+              <p>Năm {{this.dateFilter.getFullYear()}}</p>
             </div>
           </div>
           <div class="overview-revenue">
@@ -17,21 +14,21 @@
                 <i class="fa-solid fa-sack-dollar"></i>
                 <div class="overview-revenue-text">
                   <strong>Tổng doanh thu</strong>
-                  <div>{{this.helper.formatMoney(500000000)}}</div>
+                  <div>{{this.helper.formatMoney(this.totalRevenue)}}</div>
                 </div>
               </div>
               <div class="overview-revenue-item">
                 <i class="fa-solid fa-sack-dollar"></i>
                 <div class="overview-revenue-text">
-                  <strong>Doanh thu năm {{date}}</strong>
-                  <div>{{this.helper.formatMoney(500000000)}}</div>
+                  <strong>Doanh thu năm nay</strong>
+                  <div>{{this.helper.formatMoney(this.totalRevenueOfYear)}}</div>
                 </div>
               </div>
               <div class="overview-revenue-item">
                 <i class="fa-solid fa-sack-dollar"></i>
                 <div class="overview-revenue-text">
-                  <strong>Doanh thu theo quý</strong>
-                  <div>{{this.helper.formatMoney(500000000)}}</div>
+                  <strong>Doanh thu hôm nay</strong>
+                  <div>{{this.helper.formatMoney(this.totalRevenueOfDate)}}</div>
                 </div>
               </div>
             </div>
@@ -42,31 +39,13 @@
         <div class=" overview-left-under">
           <div class="col-lg-6 col-md-6 col-sm-6 col-6 left-under-user">
             <p class="under-user-title">Khách hàng thân thiết</p>
-            <div class="under-user"> 
+            <div v-for="item in listUserMostOrder" :key="item.UsersId" class="under-user"> 
               <div class="under-user-infor">
-                <img src="../../../assets/img/cart.png" alt="">  
-                <div>Trần thanh phong</div>   
+                <i class="fa-solid fa-crown"></i>
+                <div>{{item.Fullname}}</div>   
               </div> 
               <div>
-                Tích lũy: {{this.helper.formatMoney(50000000)}}
-              </div>      
-            </div>
-            <div class="under-user"> 
-              <div class="under-user-infor">
-                <img src="../../../assets/img/cart.png" alt="">  
-                <div>Trần thanh phong</div>   
-              </div> 
-              <div>
-                Tích lũy: {{this.helper.formatMoney(50000000)}}
-              </div>      
-            </div>
-            <div class="under-user"> 
-              <div class="under-user-infor">
-                <img src="../../../assets/img/cart.png" alt="">  
-                <div>Trần thanh phong</div>   
-              </div> 
-              <div>
-                Tích lũy: {{this.helper.formatMoney(50000000)}}
+                Tích lũy: {{this.helper.formatMoney(item.TotalPurchaseAmount)}}
               </div>      
             </div>
           </div>
@@ -75,14 +54,14 @@
               <i class="fa-solid fa-cart-flatbed-suitcase"></i>
               <div class="under-order-text">
                 <p>Tổng số đơn hàng</p>
-                <div>500</div>
+                <div>{{this.totalOrder}}</div>
               </div>
             </div>
             <div class="under-order-item">
               <i class="fa-solid fa-cart-flatbed-suitcase"></i>
               <div class="under-order-text">
-                <p>Đơn hàng đang chờ xác nhận</p>
-                <div>500</div>
+                <p>Đơn hàng ngày hôm nay</p>
+                <div>{{this.totalOrderNow}}</div>
               </div>
             </div>
           </div>
@@ -98,20 +77,13 @@
               </div>
         </div>
         <div class="overview-right-under">
-          <div class="overview-noti">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <div>Bạn vừa có đơn hàng mới</div> 
-            <router-link to="/admin/orders-management">Xem</router-link>        
+          <div class="right-under-header">
+            Thông báo đơn hàng
           </div>
-          <div class="overview-noti">
+          <div v-for="item in listOrder" :key="item.OrdersId"  class="overview-noti">
             <i class="fa-solid fa-bag-shopping"></i>
-            <div>Bạn vừa có đơn hàng mới</div> 
+            <div>Bạn có đơn hàng mới chờ xác nhận</div> 
             <router-link to="/admin/orders-management">Xem</router-link>        
-          </div>
-          <div class="overview-noti">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <div>Bạn vừa có đơn hàng mới</div> 
-            <router-link to="/admin/orders-management">Xem</router-link>       
           </div>
         </div>
       </div>
@@ -122,12 +94,20 @@
 </template>
 
 <script>
-import Calendar from 'primevue/calendar';
 import Chart from 'primevue/chart';
+import ordersService from '../../../utils/OrdersService';
+import productService from '../../../utils/ProductService';
 export default {
-  components:{Calendar,Chart  },
+  components:{Chart},
   data() {
     return {
+      listOrder:null,
+      totalOrder:null,
+      totalOrderNow:null,
+      listUserMostOrder:null,
+      totalRevenueOfDate:null,
+      totalRevenueOfYear:null,
+      totalRevenue:null,
       dateFilter:null,
       chartDataRevenue:null,
       chartOptionsRevenue:null,
@@ -135,105 +115,157 @@ export default {
       chartOptionsProduct:null,
       chartDataUser:null,
       chartOptionsUser:null,
-
     }
   },
+  created() {
+        const date = new Date();
+        this.dateFilter = date ;
+  },
   mounted() {
-    this.chartDataRevenue = this.setChartDataRevenue();
+    this.takeOrderByStatus();
+    this.takeTotalNumberOrder();
+    this.takeUserMostOrder();
+    this.takeTotalRevenue();
+    this.setChartDataRevenue();
     this.chartOptionsRevenue = this.setChartOptionsRevenue();
-    this.chartDataProduct = this.setChartDataProduct();
+    this.setChartDataProduct();
     this.chartOptionsProduct = this.setChartOptionsProduct();
-
   },
   methods: {
-        setChartDataProduct() {
-            const documentStyle = getComputedStyle(document.body);
+    async takeOrderByStatus(){
+      var res =await ordersService.getOrderByStatus(this.Enum.OrderStatus.Pending)
+      this.listOrder = res.data;
+    },
+    async takeTotalNumberOrder(){
+      var res = await ordersService.getTotalNumberOrder("All");
+      this.totalOrder = res.data;
+      var resNow = await ordersService.getTotalNumberOrder("DateNow");
+      this.totalOrderNow = resNow.data;
+    },
+    async takeUserMostOrder(){
+      var res = await ordersService.getUserMostOrder();
+      this.listUserMostOrder = res.data;
+    },
+    async takeTotalRevenue(){
+      var res = await ordersService.getTotalRevenue();
+      this.totalRevenue = res.data;
+      let today = new Date();
 
-            return {
-                labels: ['Sản phẩm', 'Sản hẩm 2', 'C'],
-                datasets: [
-                    {
-                        data: [100, 325, 702],
-                        backgroundColor: [documentStyle.getPropertyValue('--cyan-500'), documentStyle.getPropertyValue('--orange-500'), documentStyle.getPropertyValue('--gray-500')],
-                        hoverBackgroundColor: [documentStyle.getPropertyValue('--cyan-400'), documentStyle.getPropertyValue('--orange-400'), documentStyle.getPropertyValue('--gray-400')]
-                    }
-                ]
-            };
-        },
-        setChartOptionsProduct() {
-            const documentStyle = getComputedStyle(document.documentElement);
-            const textColor = documentStyle.getPropertyValue('--text-color');
+      // Lấy thông tin về năm, tháng và ngày
+      let year = today.getFullYear();
+      let month = (today.getMonth() + 1).toString().padStart(2, '0'); // Thêm số 0 đằng trước nếu tháng < 10
+      let day = today.getDate().toString().padStart(2, '0'); // Thêm số 0 đằng trước nếu ngày < 10
 
-            return {
-                options:{
-                  responsive:false,
-                  maintainAspectRatio:false,
-                },
-                plugins: {
-                    
-                    legend: {
-                        position:'right',
-                        labels: {
-                            cutout: '10%',
-                            color: textColor
-                        }
+      // Tạo chuỗi ngày tháng trong định dạng "YYYY-MM-DD"
+      let formattedDate = `${year}-${month}-${day}`;
+      var resDate = await ordersService.getTotalRevenueByDate(formattedDate);
+      this.totalRevenueOfDate = resDate.data;
+    },
+    async setChartDataProduct() {
+        const documentStyle = getComputedStyle(document.body);
+        const res = await productService.getProductHot();
+        var dataLabel = [];
+        var dataNumberSold = [];
+        var listData = res.data;
+        listData.forEach(element => {
+          dataLabel.push(element.ProductName);
+          dataNumberSold.push(element.ProductSold);
+        });
+        this.chartDataProduct = {
+            labels: dataLabel,
+            datasets: [
+                {
+                    data: dataNumberSold,
+                    backgroundColor: [documentStyle.getPropertyValue('--cyan-500'), documentStyle.getPropertyValue('--orange-500'), documentStyle.getPropertyValue('--gray-500')],
+                    hoverBackgroundColor: [documentStyle.getPropertyValue('--cyan-400'), documentStyle.getPropertyValue('--orange-400'), documentStyle.getPropertyValue('--gray-400')]
+                }
+            ]
+        };
+    },
+    setChartOptionsProduct() {
+        const documentStyle = getComputedStyle(document.documentElement);
+        const textColor = documentStyle.getPropertyValue('--text-color');
+
+        return {
+            options:{
+              responsive:false,
+              maintainAspectRatio:false,
+            },
+            plugins: {
+                
+                legend: {
+                    position:'right',
+                    labels: {
+                        cutout: '10%',
+                        color: textColor
                     }
                 }
-            };
-        },
-        setChartDataRevenue() {
-            const documentStyle = getComputedStyle(document.documentElement);
-            
-            return {
-                labels: ['1', '2', '3', '4', '5', '6', '7','8','9','10','11','12'],
+            }
+        };
+    },
+    async setChartDataRevenue() {
+        const documentStyle = getComputedStyle(document.documentElement);
+            var date = new Date();
+            var dateFilter = `${date.getFullYear()}-01-01`;
+            var res = await ordersService.getRevenueByMonthOfYear(dateFilter);
+            const listData = res.data;
+            var dataLabel = [];
+            var dataRevenue=[];
+            listData.forEach(element => {
+                dataLabel.push(this.helper.formatMonth(element.DateLabel));
+                dataRevenue.push(element.Revenue);
+                this.totalRevenueOfYear += element.Revenue;
+            });
+            this.chartDataRevenue = {
+                labels: dataLabel,
                 datasets: [
                     {
-                        type: 'line',
+                        type: 'bar',
                         fill:true,
                         label: 'Doanh thu',
                         backgroundColor: documentStyle.getPropertyValue('--cyan-600'),
-                        data: [4100000, 5100000, 2100000, 6100000, 9100000, 6700000, 2100000,12100000,8100000,3100000,4100000,1100000]
+                        data: dataRevenue
                     }
                 ]
             };
-        },
-        setChartOptionsRevenue() {
-            const documentStyle = getComputedStyle(document.documentElement);
-            const textColor = documentStyle.getPropertyValue('--text-color');
-            const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-            const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    },
+    setChartOptionsRevenue() {
+        const documentStyle = getComputedStyle(document.documentElement);
+        const textColor = documentStyle.getPropertyValue('--text-color');
+        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-            return {
-                maintainAspectRatio: false,
-                aspectRatio: 0.6,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: textColor
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        ticks: {
-                            color: textColorSecondary
-                        },
-                        grid: {
-                            color: surfaceBorder
-                        }
-                    },
-                    y: {
-                        ticks: {
-                            color: textColorSecondary
-                        },
-                        grid: {
-                            color: surfaceBorder
-                        }
+        return {
+            maintainAspectRatio: false,
+            aspectRatio: 0.6,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: textColor
                     }
                 }
-            };
-        }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder
+                    }
+                }
+            }
+        };
     }
+  }
   
 }
 </script>
@@ -243,8 +275,13 @@ export default {
   max-height: 210px;
   overflow: hidden;
 }
+.under-user-infor i {
+  font-size: 20px;
+  color: gold;
+  margin-right: 20px;
+}
 .under-user-infor{
-  font-size: 14px !important;
+  font-size: 15px !important;
   font-weight: bold;
 }
 .under-user-infor,
@@ -259,6 +296,14 @@ export default {
   margin-right: 5px;
   width: 35px;
   height: 35px;
+}
+.under-user{
+  border-bottom:1px solid rgba(0,0,0,.12);
+}
+.under-user div:last-child{
+  font-style: italic;
+  color: #000;
+  font-size: 13px;
 }
 .overview-noti div{
   font-size: 15px;
@@ -324,6 +369,7 @@ export default {
 .overview-left-under{
   display: flex;
 }
+.right-under-header,
 .overvie-right-header{
   font-size: 16px;
   font-weight: bold;
@@ -331,7 +377,7 @@ export default {
 }
 .overview-right-under{
   max-height: 200px;
-  overflow-y: hidden;
+  overflow-y: scroll;
 
 }
 .overview-right-under,
