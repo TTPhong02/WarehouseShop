@@ -29,5 +29,22 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
             var res = await _dbContext.Connection.QueryFirstOrDefaultAsync<Address>(sql);
             return res;
         }
+
+        public async Task<int> SetAddressDefault(Guid idAddress, Guid idUser)
+        {
+            var sql = $"UPDATE Address SET AddressDefault = 0 WHERE UsersId = '{idUser}'";
+            var res = await _dbContext.Connection.ExecuteAsync(sql);
+            if (res > 0)
+            {
+                var sqlUpdate = $"UPDATE Address SET AddressDefault = 1 WHERE UsersId = '{idUser}' AND AddressId = '{idAddress}'";
+                var resUpdate = await _dbContext.Connection.ExecuteAsync(sqlUpdate);
+                return resUpdate;
+            }
+            else
+            {
+                return res;
+            }
+
+        }
     }
 }

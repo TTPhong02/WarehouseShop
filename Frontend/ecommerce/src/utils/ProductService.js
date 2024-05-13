@@ -19,6 +19,15 @@ class ProductService extends BaseService{
         const res = await this.baseAxios.get(`${this.baseUrl}/Slug/${slug}`);
         return res;
     }
+    async getProductByCategories(id) {
+        const res = await this.baseAxios.get(`${this.baseUrl}/Categories/${id}`);
+        return res;
+    }
+    async SortAndFilterProductByCategories(data) {
+        const res = await this.baseAxios.get(`${this.baseUrl}/SortByCategories`,data);
+        console.log(data);
+        return res;
+    }
 }
 const productService = new ProductService();
 export default productService;

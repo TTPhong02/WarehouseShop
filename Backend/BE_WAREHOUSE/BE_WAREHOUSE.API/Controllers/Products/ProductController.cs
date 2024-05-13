@@ -22,6 +22,12 @@ namespace BE_WAREHOUSE.API.Controllers.Products
             var res = await _repository.GetProductNew();
             return Ok(res);
         }
+        [HttpGet("Categories/{id}")]
+        public async Task<IActionResult> GetProductByCategories(Guid id)
+        {
+            var res = await _repository.GetProductByCategories(id);
+            return Ok(res);
+        }
         [HttpGet("Slug/{slug}")]
         public async Task<IActionResult> GetProductBySlug(string slug)
         {
@@ -37,6 +43,12 @@ namespace BE_WAREHOUSE.API.Controllers.Products
         [HttpPost("ListId")]
         public async Task<IActionResult> GetProductByListId([FromBody]List<Guid> ids) {
             var res = await _repository.GetProductByListId(ids);
+            return Ok(res);
+        }
+        [HttpGet("SortByCategories")]
+        public async Task<IActionResult> SortAndSearchProductByCategories(int pageSize, int pageNumber,int sortType,double? minPrice,double? maxPrice, string? searchString,string? slug)
+        {
+            var res = await _repository.FilterProductByCategories(pageSize, pageNumber,minPrice,maxPrice, sortType, searchString,slug);
             return Ok(res);
         }
     }

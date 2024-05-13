@@ -269,7 +269,6 @@ export default {
                     const formData = new FormData();
                     formData.append("dataJson",JSON.stringify(address));
                     await addressService.post(formData);
-                    
                 }
                 var orderData = {}
                 orderData.OrderDetails = this.cartSelected;
@@ -289,10 +288,11 @@ export default {
                         var dataOrder = {}
                         dataOrder.OrderType = "Online";
                         dataOrder.Amount = this.order.TotalAmount;
-                        dataOrder.OrderDescription = this.order.Note
+                        dataOrder.OrderDescription = JSON.stringify(this.order.TotalAmount);
                         dataOrder.OrderId = res.data.OrdersId;
                         var urlDirect = await vnPayService.createPaymentUrl(dataOrder);
                         location.href = urlDirect.data;
+                        await this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Đặt hàng thành công !")
                         return ;
                     }else{
                         this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Đặt hàng thành công !")

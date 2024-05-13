@@ -12,5 +12,6 @@ namespace BE_WAREHOUSE.Core.Interfaces.IAddress
     {
         Task<IEnumerable<Address>> GetAddresByUsersId(Guid id);
         Task<Address> GetAddresDefaultByUsersId(Guid id);
+        Task<int> SetAddressDefault(Guid idAddress, Guid idUser);
     }
 }

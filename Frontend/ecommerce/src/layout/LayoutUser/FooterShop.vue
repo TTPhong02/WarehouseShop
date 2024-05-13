@@ -26,15 +26,15 @@
                         <span>Trụ sở gia dịch : 16 Xóm 6 Lã Côi, Xã Yên Viên, H.Gia Lâm, TP.Hà Nội</span>
                     </div>
                     <div>
-                        <span class="s-footer-color">Mã số thuế:</span>
+                        <span class="s-footer-color">Mã số thuế: </span>
                         <span>123456789</span>
                     </div>
                     <div>
-                        <span class="s-footer-color">Email:</span>
+                        <span class="s-footer-color">Email: </span>
                         <span>Phong762002@gmail.com</span>
                     </div>
                     <div>
-                        <span class="s-footer-color">Hotline:</span>
+                        <span class="s-footer-color">Hotline: </span>
                         <span>0359650520</span>
                     </div>
                 </div>
@@ -132,5 +132,8 @@ export default {
 .item-content a:hover,
 .s-footer-color{
     color: #a2c5d2;
+}
+.s-footer{
+    margin-top: 30px;
 }
 </style>

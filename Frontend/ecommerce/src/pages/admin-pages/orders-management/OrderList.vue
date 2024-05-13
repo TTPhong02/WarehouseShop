@@ -19,6 +19,11 @@
                     <i class="fa-solid fa-trash-can"></i>
                     Xóa tất cả
                 </button>
+                <div class="combobox-status-order">
+                    <MCombobox textPlaceHolder="Trạng thái đơn hàng" v-model="this.dataCombobox.statusOrder.selected" :dataCombobox="this.dataCombobox.statusOrder.data"></MCombobox>
+                    <MCombobox textPlaceHolder="Trạng thái thanh toán" v-model="this.dataCombobox.statusPayment.selected" :dataCombobox="this.dataCombobox.statusPayment.data"></MCombobox>
+                    <MCombobox textPlaceHolder="Trạng thái vận chuyển" v-model="this.dataCombobox.statusDelivery.selected" :dataCombobox="this.dataCombobox.statusDelivery.data"></MCombobox>
+                </div>
             </div>
             <div class="p-home__main--action--button">
                 <MTextSearch :searchMethod="loadDataPagingOrders" v-model="filter.paging.searchString"></MTextSearch>
@@ -117,6 +122,8 @@ export default {
             checkedIDs:[],
             allSelected:false,
             Orders:{},
+            OrdersDto:{},
+            OrdersAll:{},
             idEntity:null,
             FormMode:null,
             isImport:false,
@@ -128,6 +135,18 @@ export default {
             dataCombobox:{
                 paging:{
                     pageSize:[10,20,30,50,100]
+                },
+                statusOrder:{
+                    data:["Chờ xác nhận","Đã xác nhận","Đang xử lý","Hoàn thành","Bị hủy"],
+                    selected:null
+                },
+                statusPayment:{
+                    data:["Chờ thanh toán","Đã thanh toán"],
+                    selected:null
+                },
+                statusDelivery:{
+                    data:["Chờ vận chuyển","Đang vận chuyển","Đã vận chuyển"],
+                    selected:null
                 }
             },
             totalRecord:null,
@@ -162,9 +181,43 @@ export default {
         document.title = "Admin"
     },
     watch:{
-        FormMode(newValue){
-            if(newValue === this.Enum.FormMode.UPDATE){
-                this.take
+        'dataCombobox.statusPayment.selected': function (newvalue) {
+            if (newvalue == "Chờ thanh toán") {
+                this.OrdersDto = this.OrdersAll.filter(item=> item.PaymentStatus == this.Enum.PaymentStatus.PENDING_PAID);
+                this.Orders = this.OrdersDto;
+            }else if(newvalue == "Đã thanh toán"){
+                this.OrdersDto = this.OrdersAll.filter(item=> item.PaymentStatus == this.Enum.PaymentStatus.PAID);
+                this.Orders = this.OrdersDto;
+            }
+        },
+        'dataCombobox.statusDelivery.selected': function (newvalue) {
+            if (newvalue == "Chờ vận chuyển") {
+                this.OrdersDto = this.OrdersAll.filter(item=> item.DeliveryStatus == this.Enum.DeliveryStatus.PENDING_DELIVERY);
+                this.Orders = this.OrdersDto;
+            }else if(newvalue == "Đã vận chuyển"){
+                this.OrdersDto = this.OrdersAll.filter(item=> item.DeliveryStatus == this.Enum.DeliveryStatus.DELIVERED);
+                this.Orders = this.OrdersDto;
+            }else if(newvalue == "Đang vận chuyển"){
+                this.OrdersDto = this.OrdersAll.filter(item=> item.DeliveryStatus == this.Enum.DeliveryStatus.DELIVERING);
+                this.Orders = this.OrdersDto;
+            }
+        },
+        'dataCombobox.statusOrder.selected': function (newvalue) {
+            if (newvalue == "Chờ xác nhận") {
+                this.OrdersDto = this.OrdersAll.filter(item=> item.OrdersStatus == this.Enum.OrderStatus.Pending);
+                this.Orders = this.OrdersDto;
+            }else if(newvalue == "Đã xác nhận"){
+                this.OrdersDto = this.OrdersAll.filter(item=> item.OrdersStatus == this.Enum.OrderStatus.Confirmed);
+                this.Orders = this.OrdersDto;
+            }else if(newvalue == "Đang xử lý"){
+                this.OrdersDto = this.OrdersAll.filter(item=> item.OrdersStatus == this.Enum.OrderStatus.Processing);
+                this.Orders = this.OrdersDto;
+            }else if(newvalue == "Hoàn thành"){
+                this.OrdersDto = this.OrdersAll.filter(item=> item.OrdersStatus == this.Enum.OrderStatus.Finished);
+                this.Orders = this.OrdersDto;
+            }else if(newvalue == "Bị hủy"){
+                this.OrdersDto = this.OrdersAll.filter(item=> item.OrdersStatus == this.Enum.OrderStatus.Cancelled);
+                this.Orders = this.OrdersDto;
             }
         },
         fileImport(){
@@ -285,13 +338,6 @@ export default {
             }
         },
         /**
-         * Hàm lấy dữ liệu listTableEmployee
-         * Author: TTPhong(22/01/2024)
-        */
-        handleListEmployee(data){
-            this.listTableEmployee = data;
-        },
-        /**
          * Hàm lấy dữ liệu listChecked
          * Author: TTPhong(22/01/2024)
         */
@@ -367,6 +413,7 @@ export default {
                     this.totalPage = res.data.TotalPage 
                     this.totalRecord = res.data.TotalRecord 
                     this.Orders = res.data.Data;
+                    this.OrdersAll  = res.data.Data;
                 } 
             }catch(error){
                 console.log(error);
@@ -380,6 +427,14 @@ export default {
 }
 </script>
 <style scoped>
+.combobox-status-order input{
+    margin: 0px 5px;
+}
+.combobox-status-order {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .p-home__main--header--title{
     display: flex !important; 
     align-items: center !important;

@@ -19,6 +19,9 @@
                     <div class="col-lg-1 col-md-1 col-sm-1 cart-header-item">Thao tác</div>
                 </div>
                 <div class="row cart-list-item">
+                    <div v-if="cartItems.length ==0" class="cart-list-noitem">
+                        Chưa có sản phẩm nào , hãy tiếp tục mua hàng nhé ! 
+                    </div>
                     <div v-for="item in cartItems" :key="item.CartItemsId" class="row cart-item">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-6 cart-item-product text-left">
                             <div class="cart-input-check">
@@ -67,7 +70,7 @@
                     <router-link to="/" class="cart-back-home" >
                         Tiếp tục mua hàng
                     </router-link>
-                    <router-link to="/checkout" class="cart-checkout">
+                    <router-link v-if="this.cartItemSelected.length > 0" to="/checkout" class="cart-checkout">
                         Tiến hành thanh toán
                     </router-link>
 
@@ -220,6 +223,15 @@ export default {
 </script>
 
 <style scope>
+.cart-list-noitem{
+    padding-bottom: 20px;
+    width: 100%;
+    text-align: center;
+    color: #ccc;
+    font-style: italic;
+    font-size: 20px;
+    font-weight: bold;
+}
 .cart-action{
     margin: 20px 50px;
     justify-content: flex-end;

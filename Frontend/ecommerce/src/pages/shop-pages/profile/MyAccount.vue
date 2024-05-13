@@ -84,7 +84,11 @@
 <script>
 import localStorageService from '../../../js/storage/LocalStorageService'
 import usersService from '../../../utils/UserService';
+
 export default {
+    components:{
+        
+    },
     data() {
         return {
             isChangePassword:false,

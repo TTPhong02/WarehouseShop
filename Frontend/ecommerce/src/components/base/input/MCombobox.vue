@@ -289,4 +289,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+.p-dropmenu{
+    margin-right:5px ;
+}
 </style>

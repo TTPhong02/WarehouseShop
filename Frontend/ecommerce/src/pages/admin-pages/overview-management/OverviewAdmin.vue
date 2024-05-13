@@ -80,10 +80,12 @@
           <div class="right-under-header">
             Thông báo đơn hàng
           </div>
-          <div v-for="item in listOrder" :key="item.OrdersId"  class="overview-noti">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <div>Bạn có đơn hàng mới chờ xác nhận</div> 
-            <router-link to="/admin/orders-management">Xem</router-link>        
+          <div class="right-under-main">
+            <div v-for="item in listOrder" :key="item.OrdersId"  class="overview-noti">
+              <i class="fa-solid fa-bag-shopping"></i>
+              <div>Bạn có đơn hàng mới chờ xác nhận</div> 
+              <router-link to="/admin/orders-management">Xem</router-link>        
+            </div>
           </div>
         </div>
       </div>
@@ -376,8 +378,7 @@ export default {
   color: #0096cc;
 }
 .overview-right-under{
-  max-height: 200px;
-  overflow-y: scroll;
+
 
 }
 .overview-right-under,
@@ -427,5 +428,11 @@ export default {
 .overview-header{
   display: flex;
   justify-content: space-between;
+}
+.right-under-main{
+  max-height: 170px;
+  overflow-y:  scroll;
+      scrollbar-width: thin;
+    scroll-behavior: smooth;
 }
 </style>

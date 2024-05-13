@@ -3,11 +3,13 @@
     <div class="main-categories-list">
         <div v-for="item in categories" :key="item.CategoriesId" class="categories-item">
             <div class="categories-item-image">
-                <img :src="this.helper.checkImagePath(item.ImagesPath)" alt="">
+                <router-link :to="'categories/'+item.CategoriesSlug">
+                    <img :src="this.helper.checkImagePath(item.ImagesPath)" alt="">
+                </router-link>
             </div>
-            <div class="categories-item-name">{{item.CategoriesName}}</div>
+            <router-link :to="'categories/'+item.CategoriesSlug" class="categories-item-name">{{item.CategoriesName}}</router-link>
             <div class="categories-item-action">
-                <router-link to="">Xem tất cả</router-link>
+                <router-link :to="'categories/'+item.CategoriesSlug">Xem tất cả</router-link>
             </div>
         </div>
     </div>
@@ -66,6 +68,7 @@ export default {
     transition: 0.5s;
 }
 .categories-item-image{
+    margin-bottom: 10px;
     overflow: hidden;
     cursor: pointer;
     box-shadow: 0px 0px 30px 0px #d3dcdc ;

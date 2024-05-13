@@ -16,9 +16,12 @@
             <swiper-slide v-for="item in productNew" :key="item.ProductId" class="s-product-item">
                 <div class="s-product-image">
                     <img :src="checkImagePath(item.ProductId)" alt="">
+                <div class="tage-new">
+                    NEW
+                </div>
                 </div>
                 <div class="s-product-infor">
-                    <div class="product-name">{{item.ProductName}}</div>
+                    <div class="producthot-name">{{item.ProductName}}</div>
                     <div class="product-price">{{this.helper.formatMoney(item.ProductPrice)}}</div>                           
                 </div>
                 <div class="product-select">
@@ -90,8 +93,8 @@ export default {
                 data.ProductId = id;
                 data.Quantity = 1;
                 data.CartsId = this.user.CartsId;
-                console.log(data);
                 await cartItemsService.insertCartItems(data);
+                this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Đã thêm vào giỏ hàng !")
                 var res = await cartItemsService.getByUserId(this.user.UsersId);
                 localStorage.setItem("CartItems",JSON.stringify(res.data));
                 this.emitter.emit("takeNumberOfCart");
@@ -113,6 +116,9 @@ export default {
 </script>
 
 <style scoped>
+.producthot-name{
+    font-weight: bold;
+}
 .s-productnew-list{
     padding: 20px 0px;
     margin: 20px 0px;
@@ -131,7 +137,18 @@ export default {
     font-size: 16px;
     color: #fff;
 }
-
+.s-product-image{
+    position: relative;
+}
+.tage-new{
+    background-color: #00afef;
+    position: absolute;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 3px 10px;
+    color: #fff;
+    top: 0px;
+}
 @-webkit-keyframes my {
     0% { color: #f8790a; } 
     50% { color: #fff;  } 

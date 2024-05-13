@@ -82,14 +82,7 @@
                     <div class="analysis-item-main">{{this.helper.formatMoney(this.totalRevenueByTime)}}</div>
                     <span>Tổng doanh thu theo thời gian thống kê </span>
                 </div>
-                <div class=" analysis-under-item">
-                    <div class="analysis-item-main">{{this.helper.formatMoney(500000000000)}}</div>
-                    <span>Tổng tấn tông</span>
-                </div>
-                <div class=" analysis-under-item">
-                    <div class="analysis-item-main">{{this.helper.formatMoney(500000000000)}}</div>
-                    <span>Tổng tấn tông</span>
-                </div>
+
             </div>
 
         </div>
@@ -364,6 +357,10 @@ export default {
     color: #005979;
     font-weight: bold;
     margin-bottom: 20px;
+}
+.analysis-order-item{
+    overflow-y: scroll;
+    height: 303px;
 }
 table{
     overflow: scroll;

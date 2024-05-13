@@ -11,6 +11,10 @@ class AddressService extends BaseService{
         const res = await this.baseAxios.get(`${this.baseUrl}/Default/${id}`);
         return res.data;
     }
+    async setAddressDefault(idAddress,idUsers) {
+        const res = await this.baseAxios.get(`${this.baseUrl}/Default/${idAddress}/${idUsers}`);
+        return res;
+    }
 
 }
 const addressService = new AddressService();

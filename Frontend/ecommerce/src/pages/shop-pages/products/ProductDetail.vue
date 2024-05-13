@@ -27,10 +27,10 @@
                 <div>Thời gian giao hàng:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
                 <div>
                     <div class="product-delivery-address">
-                        Giao đến..........
+                        - Giao tới: <em>{{this.address.HomeNumber}},{{this.address.Ward}},{{this.address.District}},{{this.address.Province}}</em>
                     </div>
                     <div class="product-delivery-date">
-                        Dự kiến giao ......
+                        - Dự kiến giao:  <em>{{this.helper.formatDateJS(this.dateDelivery)}}</em>
                     </div>
                 </div>
             </div>
@@ -38,15 +38,16 @@
                 <div>Chính sách bảo hành:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                 <div>
                     <div class="product-warranty-date">
-                        Doi tra trong vong 30 ngay
+                        Đổi trả trong vòng 30 ngày
                     </div>
                 </div>
             </div>
             <div class="product-detail-price">
-                <div class="detail-price">999999đ</div>
-                <div class="price-after-discount">9999999đ
+                <div v-if="this.discount > 0" class="detail-price">{{this.helper.formatMoney(this.product.ProductPrice * this.discount)}}</div>
+                <div v-if="this.discount == 0" class="detail-price">{{this.helper.formatMoney(this.product.ProductPrice)}}</div>
+                <div v-if="this.discount > 0" class="price-after-discount">{{this.helper.formatMoney(this.product.ProductPrice)}}
                 </div>
-                    <div class="amount-discount">-99%</div>
+                <div class="amount-discount">-{{this.discount}}%</div>
             </div>
             <div class="product-detail-quantity">
                 <div class="product-quantity-title">Số lượng: </div>
@@ -55,21 +56,45 @@
                     <input type="number" v-model="this.quantity">
                     <i @click="increaseQuantity()" class="fa-solid fa-plus"></i>
                 </div>
+                <span v-if="this.errorQuanity?.length > 0" class="error">{{this.errorQuanity}}</span>
             </div>
             <div class="product-detail-action">
                 <button @click="addToCart(this.product.ProductId)" class="add-to-cart">
                     <i class="fa-solid fa-cart-plus"></i> 
                      &nbsp; Thêm vào giỏ hàng
                 </button>
-                <button class="buy-now">Mua ngay</button>
+                <button @click="buyNow(this.product.ProductId)" class="buy-now">Mua ngay</button>
             </div>
         </div>
     </div>
+    <div class="s-product-related">
+        <div class="product-related-header">Sản phẩm liên quan</div>
+        <swiper :slides-per-view="7"
+        :space-between="35" 
+        navigation
+         class="row s-productRelated-list"
+         >
+            <swiper-slide v-for="item in productRelated" :key="item.ProductId" class="s-product-item">
+                <router-link 
+                    :to="'/product/' + item.ProductSlug"
+                >
+                    <div class="s-productRelated-image">
+                        <img :src="checkImagePath(item.ProductId)" alt="">
+                    </div>
+                    <div class="s-productRelated-infor">
+                        <div class="productRelated-name">{{item.ProductName}}</div>
+                        <div class="productRelated-price">{{this.helper.formatMoney(item.ProductPrice)}}</div>                           
+                    </div>
+                </router-link>
+            </swiper-slide>
+        </swiper>
+    </div>
     <div class="product-detail-more">
+        <div class="product-detail-header">Thông tin sản phẩm</div>
         <table>
             <tr>
                 <th>Mã sản phẩm: </th>
-                <td>ABC</td>
+                <td>{{this.product.ProductCode}}</td>
             </tr>
             <tr>
                 <th>Nhà sản xuất: </th>
@@ -89,11 +114,11 @@
             </tr>
             <tr>
                 <th>Mô tả: </th>
-                <td>ABC</td>
+                <td>{{this.product.ProductDescription}}</td>
             </tr>
             <tr>
                 <th>Chính sách bảo hành: </th>
-                <td>ABC</td>
+                <td>Bảo hành tỏng vòng 30 ngày</td>
             </tr>
 
         </table>
@@ -102,27 +127,92 @@
 </template>
 
 <script>
+import { Navigation} from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
+import 'swiper/css/navigation';
 import localStorageService from '../../../js/storage/LocalStorageService';
 import imagesService from "../../../utils/ImagesService";
 import cartItemsService from "../../../utils/CartItemsService"
 import productService from '../../../utils/ProductService';
+import addressService from '../../../utils/AddressService';
 export default {
     props:['slug'],
+    components: {
+      Swiper,
+      SwiperSlide,
+    },
     data() {
         return {
+            modules: [Navigation],
+            discount:0,
+            dateDelivery:null,
+            address:{},
             quantity:1,
             product:{},
             images:[],
+            errorQuanity:null,
+            productRelated:[],
         }
     },
-    created() {
+    watch:{
+        slug(newValue){
+            if(newValue){
+                window.location.reload();
+            }
+        },
+        quantity(newValue){
+            if(newValue > this.product.ProductStock){
+                this.errorQuanity = "Số lượng sản phẩm còn lại không đủ";
+                this.quantity = this.product.ProductStock;
+            }else if(newValue <= 0){
+                this.errorQuanity = "Số lượng không được nhỏ hơn 1";
+                this.quantity = 1;
+            }
+        }
+    },
+    mounted() {
         this.takeDataProduct();
         this.takeDataImages();
+        this.takeAddress();
     },
     methods: {
+        async takeProductRelated(){
+            var res = await productService.getProductByCategories(this.product.CategoriesId);
+            this.productRelated = res.data;
+            console.log(this.productRelated);
+        },
+        async calculateDelivery(){
+            var date = new Date();
+            if(this.address.Province !== null ||this.address.Province !== "" ||this.address.Province !== undefined ){
+                if(this.address.Province.includes("Hà Nội")){
+                    date.setDate(date.getDate() + 2);
+                    this.dateDelivery = date;
+                }else{
+                    date.setDate(date.getDate() + 3);
+                    this.dateDelivery = date;
+                }
+            }else{
+                date.setDate(date.getDate() + 3);
+                this.dateDelivery = date;
+            }
+        },
+        async takeAddress(){
+            var user =await localStorageService.getItemFromLocalStorage("User");
+            if(user){
+                var res = await addressService.getAddressDefaultById(user.UsersId);
+                this.address = res;
+                await this.calculateDelivery();
+            }
+            else{
+                this.address = "";
+            }
+
+        },
         async takeDataProduct(){
             var res = await productService.getProductBySlug(this.slug);
             this.product = res.data;
+            await this.takeProductRelated();
         },
         async takeDataImages(){
             try{
@@ -146,22 +236,28 @@ export default {
         decreaseQuantity(){
             if(this.quantity <= 1){
                 this.quantity = 1;
+                this.errorQuanity = "Số lượng không được nhỏ hơn 1";
             }else{
+                this.errorQuanity = "";
                 this.quantity -= 1;
-
-                
             }
         },
         increaseQuantity(){
             if(this.quantity >= this.product.ProductStock){
+                this.errorQuanity = "Số lượng sản phẩm còn lại không đủ";
                 this.quantity = this.product.ProductStock;
             }
             else{
+                this.errorQuanity = "";
                 this.quantity = this.quantity + 1;
             }
         },
+        async buyNow(id){
+            this.addToCart(id);
+            this.$router.push("/cart");
+        },
         async addToCart(id){
-            var user = localStorageService.getItemFromLocalStorage("User")
+            var user = await localStorageService.getItemFromLocalStorage("User");
             if(!user){
                 location.assign("http://localhost:8080/login")
             }else{
@@ -170,9 +266,11 @@ export default {
                 data.Quantity = this.quantity;
                 data.CartsId = user.CartsId;
                 await cartItemsService.insertCartItems(data);
+                this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Đã thêm vào giỏ hàng !")
                 var res = await cartItemsService.getByUserId(user.UsersId);
-                localStorageService.setItemToLocalStorage("CartItems",res.data);
+                localStorage.setItem("CartItems",JSON.stringify(res.data));
                 this.emitter.emit("takeNumberOfCart");
+                window.location.reload();
             }
         },
     },
@@ -180,6 +278,56 @@ export default {
 </script>
 
 <style scoped>
+td{
+    padding: 8px 10px !important;
+}
+.product-detail-more{
+    background-color: #fff;
+    box-shadow: 0px 2px 46.41px 4.59px rgba(2,38,113,0.1);
+    margin: 0px;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 0px -15px;
+}
+.product-detail-header{
+    font-size: 20px;
+    font-weight: bold;
+}
+.product-related-header{
+    padding: 10px 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.productRelated-price{
+    color: #a2c5d2;
+}
+.productRelated-name{
+    padding: 5px 0px;
+    color: #000;
+}
+.s-productRelated-image img{
+    width: 150px;
+    height: 150px;
+}
+.s-product-item{
+    box-shadow: none;
+}
+.s-product-related{
+    margin: 10px -15px;
+    box-shadow: 0px 2px 46.41px 4.59px rgba(2,38,113,0.1);
+    padding: 5px 10px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+.error{
+    color:red;
+    font-size: 13px;
+    font-style: italic;
+}
+em{
+    color: #a2c5d2 ;
+    font-weight: 100;
+}
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;

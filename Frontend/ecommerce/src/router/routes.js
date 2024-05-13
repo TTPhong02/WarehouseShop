@@ -20,6 +20,7 @@ import MyAddress from "../pages/shop-pages/profile/MyAddress.vue";
 import MyOrder from "../pages/shop-pages/profile/MyOrder.vue";
 import MainProduct from "../pages/shop-pages/products/MainProduct.vue"
 import ProductDetail from "../pages/shop-pages/products/ProductDetail.vue"
+import CategoriesDetail from "../pages/shop-pages/categories/CategoriesDetail.vue";
 import localStorageService from "@/js/storage/LocalStorageService";
 import AnalysisAdmin from '../pages/admin-pages/analysis-management/AnalysisAdmin.vue'
 const routes = [
@@ -71,12 +72,19 @@ const routes = [
                 path:'cart',
                 components:{
                     ShopRouterView : CartPage
-                }
+                },
             },
             {
                 path:'product/:slug',
                 components:{
                     ShopRouterView : ProductDetail
+                },
+                props: true,
+            },
+            {
+                path:'categories/:slug',
+                components:{
+                    ShopRouterView : CategoriesDetail
                 },
                 props: true,
             }
@@ -166,7 +174,6 @@ const routes = [
     }
     
 ];
-
 const router = createRouter({
     history: createWebHistory(),
     routes,
@@ -180,8 +187,8 @@ router.beforeEach((to, from, next) => {
     } else if (to.path === "/" && user?.Role === "Admin") {
       next("/admin");
     }
-    else{
-        next();
+    else {
+    next();
     }
 });
 export default router

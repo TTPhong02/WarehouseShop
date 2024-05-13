@@ -10,5 +10,6 @@ namespace BE_WAREHOUSE.Core.Interfaces.Category
 {
     public interface ICategoriesRepository :IBaseRepository<Categories>
     {
+        Task<Categories> GetCategoriesBySlug(string slug);
     }
 }

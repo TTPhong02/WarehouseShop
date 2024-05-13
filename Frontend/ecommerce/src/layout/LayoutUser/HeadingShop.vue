@@ -33,7 +33,6 @@
             class="col-lg-2 col-md-2 col-sm-0 mid-header-profile menu-father"
           >
             <div v-if="this.user" class="profile-avatar">
-              <img src="../../assets/img/cart.png" alt="" />
               <div class="profile-name">Xin chào, {{this.user.Fullname}}</div>
             </div>
             <div v-if="!this.user" class="profile-signin">
@@ -65,9 +64,11 @@
                 <i class="fa-solid fa-caret-down"></i>
                 <div class="menu-child">
                   <div class="menu-child-list">
-                    <router-link v-for="item in categories" :key="item.CategoriesId" :to="item.CategoriesSlug" class="child-item">
-                      {{item.CategoriesName}}
-                    </router-link>
+                    <div v-for="item in categories" :key="item.CategoriesId" class="item-menu-child">
+                      <router-link  :to="'categories/' + item.CategoriesSlug" class="child-item">
+                        {{item.CategoriesName}}
+                      </router-link>
+                    </div>
                   </div>
                 </div>
               </router-link>
@@ -191,6 +192,12 @@ export default {
 </script>
 
 <style scoped>
+.item-menu-child{
+  padding: 10px 0px;
+}
+.child-item{
+  margin: 10px 0px;
+}
 .profile-name{
   color: #a2c5d2;
   font-size: 14px;
@@ -253,34 +260,23 @@ a {
     position: relative;
 }
 .menu-father:hover .menu-child {
-    overflow: visible;
-    max-height: 3000px;
-    max-width: 3000px;
-    opacity: 1;
-    transform: perspective(600px) rotateX(0deg);
-    transition: transform 0.5s ease, opacity 0.2s ease, max-height 0s step-end, max-width 0s step-end, padding 0s step-end;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
 }
 
 .menu-child {
+  top: 100%;
+    z-index: 10000;
     background: #fff;
-    overflow: hidden;
-    display: block;
-    max-height: 3000px;
-    max-width: 3000px;
-    opacity: 0;
-    transform: perspective(600px) rotateX(-90deg);
-    transition: transform 0.5s ease, opacity 0.6s ease, max-height 0.6s step-end, max-width 0.6s step-end, padding 0.6s step-end;
-    box-shadow: 0 1px 11px 0px rgba(0,0,0,0.2);
-    transform-origin: 0% 0%;
-    margin: 0;
-    padding: 20px 20px 20px 15px;
     position: absolute;
-    top: 120%;
-    right: 0;
-    z-index: 99;
-    width: 100%;
-    border: none;
-    text-align: left;
+    display: none;
+    padding: 10px 20px;
+    width:300px;
+    text-align: left !important;
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: 0px 2px 46.41px 4.59px rgba(2,38,113,0.1);
 }
 .s-header-nav {
   height: 50px;

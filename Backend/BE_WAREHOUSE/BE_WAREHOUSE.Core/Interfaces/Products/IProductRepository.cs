@@ -14,5 +14,7 @@ namespace BE_WAREHOUSE.Core.Interfaces.Products
         Task<IEnumerable<Product>> GetProductByListId(List<Guid> ids);
         Task<Product> GetProductBySlug(string slug);
         Task<IEnumerable<Product>> GetProductHot();
+        Task<IEnumerable<Product>> GetProductByCategories(Guid id);
+        Task<PagingEntity<Product>> FilterProductByCategories(int pageSize,int pageNumber,double? minPrice,double? maxPrice, int sortType, string? searchString,string? slug);
     }
 }

@@ -107,6 +107,20 @@ const helper = {
             return "";
         }
     },
+    formatDateJS(date){
+        if(date){
+            var originalDate = new Date(date);
+            // Lấy ra ngày, tháng và năm
+            var day = originalDate.getDate();
+            var month = originalDate.getMonth() + 1; // Lưu ý: getMonth trả về giá trị từ 0 đến 11, nên cần cộng thêm 1
+            var year = originalDate.getFullYear();
+            var formattedDate = (day < 10 ? '0' : '') + day + '-' + (month < 10 ? '0' : '') + month + '-' + year ;
+
+            return formattedDate;    
+        }else{
+            return "";
+        }
+    },
     formatMonth(date){
         if(date){
             date = String(date).substring(5,7);

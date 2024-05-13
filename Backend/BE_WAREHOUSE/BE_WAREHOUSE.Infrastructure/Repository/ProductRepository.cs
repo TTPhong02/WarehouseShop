@@ -47,5 +47,38 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
             var res = await _dbContext.Connection.QueryAsync<Product>(sql) ;
             return res;
         }
+        public async Task<IEnumerable<Product>> GetProductByCategories(Guid id)
+        {
+            var sql = $"SELECT * FROM view_product WHERE CategoriesId = '{id}' ";
+            var res = await _dbContext.Connection.QueryAsync<Product>(sql);
+            return res;
+        }
+
+        public async Task<PagingEntity<Product>> FilterProductByCategories(int pageSize, int pageNumber, double? minPrice, double? maxPrice, int sortType, string? searchString, string slug)
+        {
+            var procedure = $"Proc_Sort_Product_By_Categories";
+
+            PagingEntity<Product> pagingEntity = new PagingEntity<Product>();
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("@pageSize", pageSize);
+            parameters.Add("@pageNumber", pageNumber);
+            parameters.Add("@minPrice", minPrice);
+            parameters.Add("@maxPrice", maxPrice);
+            parameters.Add("@typeSort", sortType);
+            parameters.Add("@searchString", searchString);
+            parameters.Add("@categoriesSlug", slug);
+
+            parameters.Add("@totalRecord", dbType: System.Data.DbType.Int32, direction: System.Data.ParameterDirection.Output);
+            parameters.Add("@totalPage", dbType: System.Data.DbType.Int32, direction: System.Data.ParameterDirection.Output);
+
+            var res = await _dbContext.Connection.QueryAsync<Product>(procedure, parameters, commandType: System.Data.CommandType.StoredProcedure);
+
+            pagingEntity.Data = res;
+            pagingEntity.TotalRecord = parameters.Get<int>("@totalRecord");
+            pagingEntity.TotalPage = parameters.Get<int>("@totalPage");
+
+            return pagingEntity;
+        }
     }
 }

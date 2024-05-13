@@ -28,5 +28,11 @@ namespace BE_WAREHOUSE.API.Controllers.Addresss
             var res = await _addressRepository.GetAddresDefaultByUsersId(id);
             return Ok(res);
         }
+        [HttpPut("SetDefault/{idAddress}/{idUser}")]
+        public async Task<IActionResult> SetAddressDefaut(Guid idAddress, Guid idUser)
+        {
+            var res = await _addressRepository.SetAddressDefault(idAddress,idUser);
+            return Ok(res);
+        }
     }
 }
