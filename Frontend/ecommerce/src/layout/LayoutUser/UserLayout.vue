@@ -4,12 +4,13 @@
     <router-view name="ShopRouterView"></router-view>
     <FooterShop></FooterShop>
     <MToastMessage></MToastMessage>
+
   </div>
 </template>
 
 <script>
 import HeadingShop from "./HeadingShop.vue";
-// import MainShop from './MainShop.vue';
+
 import FooterShop from './FooterShop.vue';
 import MToastMessage from '../../components/base/toast/MToastMessage.vue';
 export default {

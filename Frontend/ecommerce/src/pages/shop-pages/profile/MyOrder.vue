@@ -68,7 +68,7 @@
                     <td>{{item.ReminiscentName}}</td>
                     <td>{{this.helper.formatMoney(item.TotalAmount)}}</td>
                     <td>{{this.helper.formatOrderStatus(item.OrdersStatus)}}</td>
-                    <td><a href="/profile/order">Xem chi tiết</a></td>
+                    <td><a :href="'/profile/order/' + item.OrdersId">Xem chi tiết</a></td>
                 </tr>
             </tbody>
         </table>
@@ -134,6 +134,10 @@ export default {
 </script>
 
 <style scoped>
+.s-order-list{
+    height: 400px;
+    overflow-y: scroll;
+}
 .s-order-list table{
     width: 100%;
 }

@@ -19,6 +19,10 @@ namespace BE_WAREHOUSE.Core.Entities
         public string ProductDescription { get; set; }
         public string ProductSlug { get; set; }
         public Boolean? ProductNewFlag { get; set; }
+        public string? Material { get; set; }
+        public double? ProductWeight { get; set; }
+        public int? YearOfProduce { get; set; }
+        public string? ProductUses { get; set; }
         public string? CreatedBy { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? CreatedDate { get; set; }

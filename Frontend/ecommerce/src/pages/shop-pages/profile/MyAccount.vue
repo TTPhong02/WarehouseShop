@@ -73,6 +73,7 @@
                     <span v-if="this.errorValidate.checkPassword" class="p-input__validate--error red">{{this.errorValidate.checkPassword}}</span>
                 </div>
             </div>
+            <span v-if="this.errorUpdatePassword" class="red">{{this.errorUpdatePassword}}</span>
         </div> 
         <div class="account-infor-action">
             <button @click="updateUser()">Lưu thay đổi</button>
@@ -94,7 +95,8 @@ export default {
             isChangePassword:false,
             user:{},
             checkPassword:null,
-            errorValidate:{}
+            errorValidate:{},
+            errorUpdatePassword:null,
         }
     },
     computed: {
@@ -165,11 +167,9 @@ export default {
                 if(this.isChangePassword == true){
                     this.validateDataNoPassword();
                     this.validateDataPassword();
-                    console.log(this.user.CurrentPassword);
-                    console.log(this.user.NewPassword);
-                    console.log(this.checkPassword);
                     if(Object.keys(this.errorValidate).length === 0){
                         var resPassword = await usersService.update(this.user.UsersId,formData);
+                        console.log(resPassword);
                         switch (resPassword.data.StatusCode) {
                             case 200:
                                 this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Cập nhật thành công !")
@@ -177,6 +177,7 @@ export default {
                                 localStorageService.setItemToLocalStorage("User",user1.data);
                                 this.takeDataUser();
                                 this.emitter.emit("takeDataUsersHeading");
+                                this.errorUpdatePassword = null;
                                 break;
                             default:
                                 break;
@@ -201,6 +202,14 @@ export default {
                 }
             }catch(error){
                 console.log(error);
+                switch(error.response.status){
+                    case 400 :
+                        this.errorUpdatePassword = error.response.data.Errors[0];
+                        this.emitter.emit("showToast",this.Enum.ToastType.FAILED,"Cập nhật không thành công !")
+                        break;
+                    default:
+                        break;
+                }
             }
         },
     },

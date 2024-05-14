@@ -1,13 +1,28 @@
 <template>
-  <div  class="p-loading">
+  <div v-if="isLoading"  class="p-loading">
     <img src="../../../assets/img/loading.svg" alt="">
   </div>
 </template>
 
 <script>
 export default {
-    name:'MLoading',
-
+  data() {
+    return {
+      isLoading:false,
+    }
+  },
+  created() {
+    this.emitter.on("loading",this.showLoading);
+    this.emitter.on("unloading",this.hiddenLoading);
+  },
+  methods: {
+    showLoading(){
+      this.isLoading = true
+    },
+    hiddenLoading(){
+      this.isLoading = false
+    }
+  },
 }
 </script>
 
@@ -22,7 +37,7 @@ export default {
 }
 
 .p-loading img{
-    animation: rotate 2s linear infinite;
+    animation: rotate 1.5s linear infinite;
     scale: 1.8;
 }
 .p-loading{

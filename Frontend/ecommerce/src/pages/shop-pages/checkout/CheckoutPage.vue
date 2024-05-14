@@ -154,23 +154,25 @@
                 </div>
             </div>
             <div class="checkout-coupon">
-                <input type="text" placeholder="Nhập mã giảm giá tại đây">
-                <button>Áp dụng</button>
+                <input type="text" v-model="this.voucher.VoucherCode" placeholder="Nhập mã giảm giá tại đây">
+                <button @click="useVoucher()">Áp dụng</button>
             </div>
             <div class="checkout-total-payment">
+                <div v-if="this.discount" class="red">Đã áp dụng mã khuyến mãi : - {{this.voucher.VoucherType == this.Enum.VoucherType.PRICE ? this.helper.formatMoney(this.totalToPay * discount/100) +' tiền hàng'  : this.helper.formatMoney(this.deliveryFee * discount/100) + ' phí vận chuyển'}}</div>
                 <div class="checkout-payment-item">
                     <div class="payment-item-title">Tạm tính</div>
-                    <div class="payment-item-content">{{this.helper.formatMoney(this.totalToPay - (this.totalToPay * discount))}}</div>
+                    <div class="payment-item-content">{{this.voucher.VoucherType == this.Enum.VoucherType.PRICE ? this.helper.formatMoney(this.totalToPay - (this.totalToPay * discount/100)) : this.helper.formatMoney(this.totalToPay)}}</div>
                 </div>
                 <div class="checkout-payment-item">
                     <div class="payment-item-title">Phí vận chuyển</div>
-                    <div class="payment-item-content">{{this.helper.formatMoney(this.deliveryFee)}}</div>
+                    <div class="payment-item-content">{{this.voucher.VoucherType == this.Enum.VoucherType.SHIPPING ? this.helper.formatMoney(this.deliveryFee - (this.deliveryFee * discount/100)) : this.helper.formatMoney(this.deliveryFee)}}</div>
+                    
                 </div>
             </div>
             <div class="checkout-total-total">
                 <div class="checkout-payment-item">
                     <div class="payment-item-title">Tổng cộng</div>
-                    <div class="payment-item-content">{{this.helper.formatMoney(this.totalToPay + this.deliveryFee)}}</div>
+                    <div class="payment-item-content">{{this.helper.formatMoney(this.totalAmountMustPay)}}</div>
                 </div>
             </div>
             <div class="checkout-action-other">
@@ -192,6 +194,7 @@ import addressApiService from '../../../utils/ApiAddressService.js';
 import ordersService from '../../../utils/OrdersService';
 import cartItemsService from '../../../utils/CartItemsService';
 import vnPayService from '../../../utils/VnPayService'
+import voucherService from '../../../utils/VoucherService';
 
 export default {
     data() {
@@ -214,10 +217,21 @@ export default {
             deliveryFee:30000,
             totalToPay:null,
             listErrorMessage:{},
-            addressDefaultUser:{}
+            addressDefaultUser:{},
+            voucher:{},
+            totalAmountMustPay:null,
         }
     },
     watch:{
+        discount(newValue){
+            if(newValue){
+                if(this.voucher.VoucherType == this.Enum.VoucherType.SHIPPING){
+                    this.totalAmountMustPay = this.totalToPay + (this.deliveryFee - (this.deliveryFee * newValue/100))
+                }else if(this.voucher.VoucherType == this.Enum.VoucherType.PRICE){
+                    this.totalAmountMustPay = this.deliveryFee + (this.totalToPay - (this.totalToPay * newValue/100))
+                }
+            }
+        },
         typeAddress(newValue){
            if(newValue == "default"){
                 this.order.ReminiscentName = this.addressDefaultUser.ReminiscentName;
@@ -250,10 +264,23 @@ export default {
         }
     },
     created() {
+
         this.takeAddressProvince();
         this.takeDataFromLocalStorage();
     },
     methods: {
+        async useVoucher(){
+            try{
+                var res = await voucherService.useVoucher(this.voucher.VoucherCode)
+                if(res.data){
+                    this.voucher = res.data
+                    this.discount = this.voucher.AmountDiscount;
+                }
+            }catch(error){
+                console.log(error);
+            }
+            
+        },
         async checkout(){
             try{
                 if(this.typeAddress == "other"){
@@ -277,10 +304,12 @@ export default {
                 this.order.DeliveryMethod =  this.deliveryMethod;
                 this.order.PaymentMethod = this.paymentMethod;
                 this.order.DeliveryAddress = this.addressDelivery.HomeNumber + "," +this.addressDelivery.Ward +"," + this.addressDelivery.District +"," + this.addressDelivery.Province   ;
-                this.order.TotalAmount = this.totalToPay + this.deliveryFee;
+                this.order.TotalAmount = this.totalAmountMustPay;
                 this.order.FeeShipping = this.deliveryFee;
                 this.order.UsersId = this.user.UsersId;
+                this.order.DeliveryStatus = this.Enum.DeliveryStatus.PENDING_DELIVERY;
                 orderData.Orders = this.order;
+                this.emitter.emit("loading");
                 var res = await ordersService.checkout(orderData);
                 if(res.data){
                     
@@ -291,14 +320,16 @@ export default {
                         dataOrder.OrderDescription = JSON.stringify(this.order.TotalAmount);
                         dataOrder.OrderId = res.data.OrdersId;
                         var urlDirect = await vnPayService.createPaymentUrl(dataOrder);
+                        this.emitter.emit("unloading");
                         location.href = urlDirect.data;
                         await this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Đặt hàng thành công !")
                         return ;
                     }else{
-                        this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Đặt hàng thành công !")
+                        this.$router.push("/profile/order");
                         setTimeout(() => {
-                            this.$router.push("/profile/order");
-                        }, 3000);
+                            this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Đặt hàng thành công !")
+                            this.emitter.emit("unloading");
+                        }, 1000);
                     }
                     this.cartSelected = [];
                     localStorageService.removeItemLocalStorage("CartSelected")
@@ -326,6 +357,7 @@ export default {
             var listCartItems = await localStorageService.getItemFromLocalStorage("CartItems");
             this.cartSelected = await  listCartItems.filter(item => listIdCartItemsId.includes(item.CartItemsId));
             await this.totalMoneyToPay();
+            this.totalAmountMustPay = this.deliveryFee + this.totalToPay ;
             this.takeDataAddressDefault();
         },
         async takeAddressProvince(){

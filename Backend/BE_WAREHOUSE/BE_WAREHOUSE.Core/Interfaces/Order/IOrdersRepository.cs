@@ -27,5 +27,7 @@ namespace BE_WAREHOUSE.Core.Interfaces.Order
         public Task<int> GetNumberTotalOrder(string type);
         public Task<IEnumerable<Orders>> GetOrdersByStatus(OrderStatus status);
 
+        public Task<PagingEntity<Orders>> FilterOrderByStatus(int pageSize, int pageNumber, int? orderStatus, int? paymentStatus, int? deliveryStatus,string searchString);
+
     }
 }

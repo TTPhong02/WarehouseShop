@@ -209,7 +209,12 @@ export default {
         },
         getCartItemsFormLocal(){
             var item = localStorage.getItem("CartItems");
-            this.cartItems = JSON.parse(item);
+            if(item){
+                this.cartItems = JSON.parse(item);
+            }
+            else{
+                this.cartItems = [];
+            }
         },
         
         pathImage(valueId){

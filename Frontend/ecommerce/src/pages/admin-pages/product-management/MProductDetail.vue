@@ -14,6 +14,10 @@
                     <th>Giá tiền</th>
                     <th>Số lượng trong kho</th>
                     <th>Số lượng đã bán</th>
+                    <th>Trọng lượng</th>
+                    <th>Chất liệu</th>
+                    <th>Công dụng</th>
+                    <th>Năm sản xuất</th>
                     <th>Mô tả</th>
                     <th>Mã danh mục</th>
                     <th>Tên danh mục</th>
@@ -30,6 +34,10 @@
                     <td>{{this.helper.formatMoney(item.ProductPrice)}}</td>
                     <td>{{item.ProductStock}}</td>
                     <td>{{item.ProductSold}}</td>
+                    <td>{{item.ProductWeight}} kg</td>
+                    <td>{{item.Material}}</td>
+                    <td>{{item.ProductUses}}</td>
+                    <td>{{item.YearOfProduce}}</td>
                     <td>{{item.ProductDescription}}</td>
                     <td>{{item.CategoriesCode}}</td>
                     <td>{{item.CategoriesName}}</td>
@@ -314,6 +322,11 @@ export default {
     .p-table__row td img{
         width: 70px;
         height: 70px;
+    }
+    .p-table__row td{
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .p-tbl-option-fixed-position{
         top:24px;

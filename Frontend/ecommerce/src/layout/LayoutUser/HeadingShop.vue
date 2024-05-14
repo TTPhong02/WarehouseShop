@@ -53,19 +53,19 @@
           <div class="col-lg-1 col-md-1 col-sm-0 nav-content-first"></div>
           <div class="col-lg-10 col-md-10 col-sm-0 nav-content-list">
             <div class="list-item-nav">
-              <router-link to="/"> Trang chủ </router-link>
+              <router-link to=""> Trang chủ </router-link>
             </div>
             <div class="list-item-nav">
               <router-link to="/gioi-thieu"> Giới thiệu </router-link>
             </div>
             <div class="list-item-nav menu-father">
-              <router-link to="/">
+              <router-link to="">
                 Sản phẩm
                 <i class="fa-solid fa-caret-down"></i>
                 <div class="menu-child">
                   <div class="menu-child-list">
                     <div v-for="item in categories" :key="item.CategoriesId" class="item-menu-child">
-                      <router-link  :to="'categories/' + item.CategoriesSlug" class="child-item">
+                      <router-link  :to="'/categories/' + item.CategoriesSlug" class="child-item">
                         {{item.CategoriesName}}
                       </router-link>
                     </div>
@@ -77,7 +77,7 @@
               <router-link to="/tin-tuc"> Tin tức </router-link>
             </div>
             <div class="list-item-nav">
-              <router-link to="/kiem-tra-don-hang">
+              <router-link :to="this.user ? '/profile/order' : '/login'">
                 Kiểm tra đơn hàng
               </router-link>
             </div>

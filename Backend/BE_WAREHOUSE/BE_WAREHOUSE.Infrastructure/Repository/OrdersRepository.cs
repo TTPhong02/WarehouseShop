@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using OfficeOpenXml.Table.PivotTable;
 
 namespace BE_WAREHOUSE.Infrastructure.Repository
 {
@@ -22,7 +23,7 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
 
         public async Task<IEnumerable<Orders>> GetOrderByUsersId(Guid UsersId)
         {
-            var sql = $"SELECT * FROM Orders WHERE UsersId = '{UsersId}'";
+            var sql = $"SELECT * FROM Orders WHERE UsersId  = '{UsersId}' ORDER BY CreatedDate DESC ";
             var res = await _dbContext.Connection.QueryAsync<Orders>(sql);
             return res;
         }
@@ -211,5 +212,32 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
             var res = await _dbContext.Connection.QueryAsync<Orders>(sql);
             return res;
         }
+
+        public async Task<PagingEntity<Orders>> FilterOrderByStatus(int pageSize, int pageNumber, int? orderStatus, int? paymentStatus, int? deliveryStatus,string searchString)
+        {
+            var procedure = $"Proc_Filter_Order_By_Status";
+
+            PagingEntity<Orders> pagingEntity = new PagingEntity<Orders>();
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("@pageSize", pageSize);
+            parameters.Add("@pageNumber", pageNumber);
+            parameters.Add("@orderStatus", orderStatus);
+            parameters.Add("@paymentStatus",paymentStatus);
+            parameters.Add("@deliveryStatus", deliveryStatus);
+            parameters.Add("@searchString", searchString);
+
+            parameters.Add("@totalRecord", dbType: System.Data.DbType.Int32, direction: System.Data.ParameterDirection.Output);
+            parameters.Add("@totalPage", dbType: System.Data.DbType.Int32, direction: System.Data.ParameterDirection.Output);
+
+            var res = await _dbContext.Connection.QueryAsync<Orders>(procedure, parameters, commandType: System.Data.CommandType.StoredProcedure);
+
+            pagingEntity.Data = res;
+            pagingEntity.TotalRecord = parameters.Get<int>("@totalRecord");
+            pagingEntity.TotalPage = parameters.Get<int>("@totalPage");
+
+            return pagingEntity;
+        }
+    
     }
 }

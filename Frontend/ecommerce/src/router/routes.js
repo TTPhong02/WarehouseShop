@@ -22,7 +22,9 @@ import MainProduct from "../pages/shop-pages/products/MainProduct.vue"
 import ProductDetail from "../pages/shop-pages/products/ProductDetail.vue"
 import CategoriesDetail from "../pages/shop-pages/categories/CategoriesDetail.vue";
 import localStorageService from "@/js/storage/LocalStorageService";
-import AnalysisAdmin from '../pages/admin-pages/analysis-management/AnalysisAdmin.vue'
+import AnalysisAdmin from '../pages/admin-pages/analysis-management/AnalysisAdmin.vue';
+import MyOrderDetail from '../pages/shop-pages/profile/MyOrderDetail.vue';
+import VoucherList from '../pages/admin-pages/voucher-management/VoucherList.vue';
 const routes = [
     {
         path:"/",
@@ -65,6 +67,13 @@ const routes = [
                         components:{
                             LayoutRouterProfile: MyOrder
                         }
+                    },
+                    {
+                        path:'order/:id',
+                        components:{
+                            LayoutRouterProfile: MyOrderDetail
+                        },
+                        props: true,
                     }
                 ]
             },
@@ -146,6 +155,20 @@ const routes = [
             },
             {
                 path:"analysis-management",
+                components:{
+                    // default:DefaultLayout,
+                    ContentRouterView: AnalysisAdmin,
+                },              
+            },
+            {
+                path:"voucher-management",
+                components:{
+                    // default:DefaultLayout,
+                    ContentRouterView: VoucherList,
+                },              
+            },
+            {
+                path:"feedback-management",
                 components:{
                     // default:DefaultLayout,
                     ContentRouterView: AnalysisAdmin,

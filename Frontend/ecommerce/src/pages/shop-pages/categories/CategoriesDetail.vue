@@ -154,6 +154,11 @@ export default {
         }
     },
     watch:{
+        slug(newValue){
+            if(newValue){
+                window.location.reload();
+            }
+        },
         rangePrice: {
             async handler(){
                 var data = this.rangePrice;

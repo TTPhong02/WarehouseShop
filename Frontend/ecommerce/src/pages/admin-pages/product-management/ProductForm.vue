@@ -34,6 +34,18 @@
                 <div class="item-sold">
                     <MTextfield  ref="ProductSold" :message="dialog.errors.ProductSold"  typeInput="number" textPlaceHolder="Số lượng đã bán" textLabel="Số lượng đã bán" v-model="Product.ProductSold"> </MTextfield>                
                 </div>
+                <div class="item-weight">
+                    <MTextfield  ref="ProductWeight" :message="dialog.errors.ProductWeight"  typeInput="number" textPlaceHolder="Trọng lượng" textLabel="Trọng lượng" v-model="Product.ProductWeight"> </MTextfield>                
+                </div>
+                <div class="item-material">
+                    <MTextfield  ref="Material" :message="dialog.errors.Material"  typeInput="text" textPlaceHolder="Chất liệu" textLabel="Chất liệu" v-model="Product.Material"> </MTextfield>                
+                </div>
+                <div class="item-yearofproduce">
+                    <MTextfield  ref="YearOfProduce" :message="dialog.errors.YearOfProduce"  typeInput="text" textPlaceHolder="Năm sản xuất" textLabel="Năm sản xuất" v-model="Product.YearOfProduce"> </MTextfield>                
+                </div>
+                <div class="item-uses">
+                    <MTextfield  ref="ProductUses" :message="dialog.errors.ProductUses"  typeInput="text" textPlaceHolder="Công dụng" textLabel="Công dụng" v-model="Product.ProductUses"> </MTextfield>                
+                </div>
                 <div class="item-description">
                     <MTextfield  ref="ProductDescription" typeInput="text" textPlaceHolder="Mô tả sản phẩm" name="Mô tả sản phẩm"  textLabel="Mô tả sản phẩm" v-model="Product.ProductDescription" :message="dialog.errors.ProductDescription" :required ="true"> </MTextfield>
                 </div>
@@ -414,8 +426,6 @@ export default {
                     this.closeForm();     
                     this.Product={};
                     this.dataCombobox.Categories.selectedItem="";
-
-
                 }
             }catch(error){
                 console.log(error);

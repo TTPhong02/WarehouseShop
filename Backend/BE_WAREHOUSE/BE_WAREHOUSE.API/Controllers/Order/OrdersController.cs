@@ -102,6 +102,12 @@ namespace BE_WAREHOUSE.API.Controllers.Order
             var res = await _ordersRepository.GetOrdersByStatus(status);
             return Ok(res);
         }
+        [HttpGet("FilterOrderByStatus")]
+        public async Task<IActionResult> FilterOrderByStatus(int pageSize, int pageNumber, int? orderStatus, int? paymentStatus, int? deliveryStatus, string? searchString)
+        {
+            var res = await _ordersRepository.FilterOrderByStatus(pageSize, pageNumber, orderStatus, paymentStatus, deliveryStatus, searchString);
+            return Ok(res);
+        }
 
     }
 }

@@ -52,9 +52,9 @@ const helper = {
                 case Enum.PaymentMethod.COD:
                     return "Thanh toán khi nhận";
                 case Enum.PaymentMethod.MOMO:
-                    return "MOMO";
+                    return "Thanh toán qua MOMO";
                 case Enum.PaymentMethod.VNPAY:
-                return "VNPay";
+                return "Thanh toán qua VNPay";
                 default:
                     return "Khác";
             }
@@ -95,6 +95,18 @@ const helper = {
                     return "Dừng hoạt động";
                 default:
                     return "Dừng hoạt động";
+            }
+        }
+    },
+    formatVoucherType(status){
+        if(status != null || status != undefined){
+            switch (status) {
+                case Enum.VoucherType.SHIPPING:
+                    return "Khuyến mãi phí ship";
+                case Enum.VoucherType.PRICE:
+                    return "Khuyến mãi giá";
+                default:
+                    return "";
             }
         }
     },

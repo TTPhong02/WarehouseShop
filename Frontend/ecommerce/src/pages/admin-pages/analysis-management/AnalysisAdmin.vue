@@ -173,6 +173,7 @@ export default {
             else{
                 var resA = await ordersService.getOrderbyTime(this.typeFilter.dateSelect);
                 this.listOrder = resA.data;
+                this.totalRevenueByTime = 0;
                 this.listOrder.forEach(element => {
                     this.totalRevenueByTime += element.TotalAmount;
                 });

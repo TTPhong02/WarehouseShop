@@ -47,7 +47,7 @@ namespace BE_WAREHOUSE.Core.Services.User
                 //không khớp ném ra lỗi
                 if (currentPasswordMD5 != userDb.Password)
                 {
-                    throw new MISAValidateException("Mật khẩu hiện tại không chính xác.");
+                    throw new MISAValidateException(System.Net.HttpStatusCode.BadRequest,"Mật khẩu hiện tại không chính xác.");
                 }
                 //hợp lệ thì gán lại giá trị password
                 else

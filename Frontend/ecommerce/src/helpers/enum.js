@@ -44,6 +44,10 @@ const Enum = {
     AccountStatus:{
         Active:1,
         Unactive:0
+    },
+    VoucherType:{
+        SHIPPING:0,
+        PRICE:1
     }
 }
 

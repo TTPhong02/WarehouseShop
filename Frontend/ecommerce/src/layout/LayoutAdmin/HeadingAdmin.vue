@@ -69,6 +69,7 @@ export default {
     position: absolute;
     top: 25px;
     border-radius: 5px;
+    z-index: 1000000;
 }
 .s-header-user:hover .s-user-nav{
     display: block;

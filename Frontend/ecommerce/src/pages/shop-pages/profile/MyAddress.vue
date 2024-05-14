@@ -7,7 +7,7 @@
       </div>
     </div>
     <div v-if="isShowForm" class="s-address-form">
-      <div class="address-user-location-update">Địa chỉ của bạn : {{this.address.HomeNumber}}, {{this.address.Ward}}, {{this.address.District}}, {{this.address.Province}}</div>
+      <div v-if="this.formMode == this.Enum.FormMode.UPDATE" class="address-user-location-update">Địa chỉ của bạn : {{this.address.HomeNumber}}, {{this.address.Ward}}, {{this.address.District}}, {{this.address.Province}}</div>
       <div class="address-form">
         <div class="address-form-item">
           <label for="">Họ tên:</label>
@@ -148,10 +148,14 @@ export default {
   },
   methods: {
     showFormAdd(){
+      this.address={};
       this.isShowForm = true;
       this.formMode = this.Enum.FormMode.ADD
     },
     async showFormUpdateAddress(id){
+      this.provinceSelected = {}
+      this.districtSelected={}
+      this.wardSelected={}
       this.formMode = this.Enum.FormMode.UPDATE
       this.isShowForm = true;
       await this.takeAddressById(id);
@@ -161,6 +165,7 @@ export default {
         var res = await addressService.setAddressDefault(id,this.user.UsersId);
         if(res.status == 200){
           this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Đặt mặc định thành công !")
+          await this.takeDataAddress();
         }
       }catch(error){
         console.log(error);
@@ -224,7 +229,7 @@ export default {
               addressUpdate.HomeNumber = this.address.HomeNumber;
               addressUpdate.ReminiscentName = this.address.ReminiscentName;
               addressUpdate.PhoneNumber = this.address.PhoneNumber;
-              addressUpdate.AddressDefault = 0;
+              addressUpdate.AddressDefault = this.address.AddressDefault;
               const formData = new FormData();
               formData.append("dataJson",JSON.stringify(addressUpdate));
               var resUpdate = await addressService.put(id,formData);

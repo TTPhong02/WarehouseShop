@@ -1,6 +1,9 @@
 const MISAResource = {
     VN : {
         "CategoriesNameNotEmpty" : "Tên danh mục không được để trống ",
+        "VoucherCodeNotEmpty" : "Mã khuyến mãi không được để trống ",
+        "VoucherTypeNotEmpty" : "Loại khuyến mãi không được để trống ",
+        "ExpiredDateNotEmpty" : "ngày hết hạn khuyến mãi không được để trống ",
         "CategoriesCodeNotEmpty" : "Mã danh mục không được để trống ",
         "CategoriesSlugNotEmpty" : "Slug danh mục không được để trống ",
         "CategoriesDescriptionNotEmpty" : "Mô tả danh mục không được để trống ",
@@ -14,6 +17,10 @@ const MISAResource = {
         "ProductSoldNotSmallThanZero":"Số lượng đã bán không thể nhỏ hơn 0",
         "ProductStockNotSmallThanZero":"Số lượng trong kho không thể nhỏ hơn 0",
         "ProductPriceNotSmallThanZero":"Giá đã bán không thể nhỏ hơn 0",
+        "AmountDiscountNotSmallThanZero":"Phần trăm giảm giá không thể nhỏ hơn 0",
+        "AmountDiscountNotEmpty":"Phần trăm giảm giá không được để trống",
+        "QuantityNotSmallThanZero":"Số lượng không thể nhỏ hơn 0",
+        "QuantityNotEmpty":"Số lượng không được để trống",
         "ImageFileNotEmpty" : "Ảnh không được để trống ",
         "CategoriesNotEmpty" : "Danh mục sản phẩm không được để trống ",
         "FullNameNotEmpty" : "Họ tên không được để trống",

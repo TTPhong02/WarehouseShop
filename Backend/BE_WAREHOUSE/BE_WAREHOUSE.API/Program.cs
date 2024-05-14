@@ -10,6 +10,7 @@ using BE_WAREHOUSE.Core.Interfaces.Payment.VNPay;
 using BE_WAREHOUSE.Core.Interfaces.Products;
 using BE_WAREHOUSE.Core.Interfaces.Token;
 using BE_WAREHOUSE.Core.Interfaces.User;
+using BE_WAREHOUSE.Core.Interfaces.Vouchers;
 using BE_WAREHOUSE.Core.Services.Addresss;
 using BE_WAREHOUSE.Core.Services.Base;
 using BE_WAREHOUSE.Core.Services.Cart;
@@ -20,6 +21,7 @@ using BE_WAREHOUSE.Core.Services.Payment.VNPay;
 using BE_WAREHOUSE.Core.Services.Products;
 using BE_WAREHOUSE.Core.Services.Token;
 using BE_WAREHOUSE.Core.Services.User;
+using BE_WAREHOUSE.Core.Services.Vouchers;
 using BE_WAREHOUSE.Infrastructure.DbContext;
 using BE_WAREHOUSE.Infrastructure.Interfaces;
 using BE_WAREHOUSE.Infrastructure.Repository;
@@ -87,6 +89,9 @@ builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
 
 builder.Services.AddScoped<IOrderDetailsService, OrderDetailsService>();
 builder.Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
+
+builder.Services.AddScoped<IVoucherService, VoucherService>();
+builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 
 builder.Services.AddScoped<IVnPayServices, VnPayService>();
 

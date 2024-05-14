@@ -52,6 +52,10 @@ class OrdersService extends BaseService{
         const res = await this.baseAxios.get(`${this.baseUrl}/OrderStatus/${status}`);
         return res;
     }
+    async filterOrderByStatus(data){
+        const res = await this.baseAxios.get(`${this.baseUrl}/FilterOrderByStatus`,data);
+        return res;
+    }
 }
 const ordersService = new OrdersService();
 export default ordersService;

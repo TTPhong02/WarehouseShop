@@ -137,16 +137,16 @@ export default {
                     pageSize:[10,20,30,50,100]
                 },
                 statusOrder:{
-                    data:["Chờ xác nhận","Đã xác nhận","Đang xử lý","Hoàn thành","Bị hủy"],
-                    selected:null
+                    data:["Mặc định","Chờ xác nhận","Đã xác nhận","Đang xử lý","Hoàn thành","Bị hủy"],
+                    selected:"Mặc định"
                 },
                 statusPayment:{
-                    data:["Chờ thanh toán","Đã thanh toán"],
-                    selected:null
+                    data:["Mặc định","Chờ thanh toán","Đã thanh toán"],
+                    selected:"Mặc định"
                 },
                 statusDelivery:{
-                    data:["Chờ vận chuyển","Đang vận chuyển","Đã vận chuyển"],
-                    selected:null
+                    data:["Mặc định","Chờ vận chuyển","Đang vận chuyển","Đã vận chuyển"],
+                    selected:"Mặc định"
                 }
             },
             totalRecord:null,
@@ -155,7 +155,10 @@ export default {
                 paging:{
                     pageSize:50,
                     pageNumber: 1,
-                    searchString:""
+                    searchString:"",
+                    orderStatus:"",
+                    paymentStatus:"",
+                    deliveryStatus:"",
                 }
             },
             listTableEmployee:[],
@@ -183,43 +186,59 @@ export default {
     watch:{
         'dataCombobox.statusPayment.selected': function (newvalue) {
             if (newvalue == "Chờ thanh toán") {
-                this.OrdersDto = this.OrdersAll.filter(item=> item.PaymentStatus == this.Enum.PaymentStatus.PENDING_PAID);
-                this.Orders = this.OrdersDto;
+                this.filter.paging.paymentStatus = this.Enum.PaymentStatus.PENDING_PAID
+                this.loadDataPagingOrders();
             }else if(newvalue == "Đã thanh toán"){
-                this.OrdersDto = this.OrdersAll.filter(item=> item.PaymentStatus == this.Enum.PaymentStatus.PAID);
-                this.Orders = this.OrdersDto;
+                this.filter.paging.paymentStatus = this.Enum.PaymentStatus.PAID
+                this.loadDataPagingOrders();
+            }else{
+                this.filter.paging.paymentStatus = ""
+                this.loadDataPagingOrders();
             }
         },
         'dataCombobox.statusDelivery.selected': function (newvalue) {
             if (newvalue == "Chờ vận chuyển") {
-                this.OrdersDto = this.OrdersAll.filter(item=> item.DeliveryStatus == this.Enum.DeliveryStatus.PENDING_DELIVERY);
-                this.Orders = this.OrdersDto;
+                this.filter.paging.deliveryStatus = this.Enum.DeliveryStatus.PENDING_DELIVERY
+                this.loadDataPagingOrders();
             }else if(newvalue == "Đã vận chuyển"){
-                this.OrdersDto = this.OrdersAll.filter(item=> item.DeliveryStatus == this.Enum.DeliveryStatus.DELIVERED);
-                this.Orders = this.OrdersDto;
+                this.filter.paging.deliveryStatus = this.Enum.DeliveryStatus.DELIVERED
+                this.loadDataPagingOrders();
             }else if(newvalue == "Đang vận chuyển"){
-                this.OrdersDto = this.OrdersAll.filter(item=> item.DeliveryStatus == this.Enum.DeliveryStatus.DELIVERING);
-                this.Orders = this.OrdersDto;
+                this.filter.paging.deliveryStatus = this.Enum.DeliveryStatus.DELIVERING
+                this.loadDataPagingOrders();
+            }else{
+                this.filter.paging.deliveryStatus = ""
+                this.loadDataPagingOrders();
             }
         },
         'dataCombobox.statusOrder.selected': function (newvalue) {
             if (newvalue == "Chờ xác nhận") {
-                this.OrdersDto = this.OrdersAll.filter(item=> item.OrdersStatus == this.Enum.OrderStatus.Pending);
-                this.Orders = this.OrdersDto;
+                this.filter.paging.orderStatus = this.Enum.OrderStatus.Pending
+                this.loadDataPagingOrders();
             }else if(newvalue == "Đã xác nhận"){
-                this.OrdersDto = this.OrdersAll.filter(item=> item.OrdersStatus == this.Enum.OrderStatus.Confirmed);
-                this.Orders = this.OrdersDto;
+                this.filter.paging.orderStatus = this.Enum.OrderStatus.Confirmed
+                this.loadDataPagingOrders();
             }else if(newvalue == "Đang xử lý"){
-                this.OrdersDto = this.OrdersAll.filter(item=> item.OrdersStatus == this.Enum.OrderStatus.Processing);
-                this.Orders = this.OrdersDto;
+                this.filter.paging.orderStatus = this.Enum.OrderStatus.Processing
+                this.loadDataPagingOrders();
             }else if(newvalue == "Hoàn thành"){
-                this.OrdersDto = this.OrdersAll.filter(item=> item.OrdersStatus == this.Enum.OrderStatus.Finished);
-                this.Orders = this.OrdersDto;
+                this.filter.paging.orderStatus = this.Enum.OrderStatus.Finished
+                this.loadDataPagingOrders();
             }else if(newvalue == "Bị hủy"){
-                this.OrdersDto = this.OrdersAll.filter(item=> item.OrdersStatus == this.Enum.OrderStatus.Cancelled);
-                this.Orders = this.OrdersDto;
+                this.filter.paging.orderStatus = this.Enum.OrderStatus.Cancelled
+                this.loadDataPagingOrders();
+
+            }else{
+                this.filter.paging.orderStatus = ""
+                this.loadDataPagingOrders();
             }
         },
+        'filter.paging.pageSize': function () {
+            this.loadDataPagingOrders();
+        },
+        // 'filter.paging.pageNumber': function () {
+        //     this.loadDataPagingOrders();
+        // },
         fileImport(){
             this.importEmployee();
         },
@@ -397,23 +416,21 @@ export default {
         async loadDataPagingOrders(){
             try{
                 this.emitter.emit("showLoading");
-                let params = !this.filter.paging.searchString
-                ? {
-                    pageSize: this.filter.paging.pageSize,
+                const params = {
+                    pageSize:this.filter.paging.pageSize,
                     pageNumber: this.filter.paging.pageNumber,
-                }
-                : {
-                    searchString: this.filter.paging.searchString,
-                    pageSize: this.filter.paging.pageSize,
-                    pageNumber: this.filter.paging.pageNumber,
+                    orderStatus:this.filter.paging.orderStatus,
+                    paymentStatus:this.filter.paging.paymentStatus,
+                    deliveryStatus:this.filter.paging.deliveryStatus,
+                    searchString:this.filter.paging.searchString,
                 };
-                var res = await ordersService.getFilterPaging({params})
+                console.log(params);
+                var res = await ordersService.filterOrderByStatus({params})
                 if(res.data){
                     this.emitter.emit("hiddenLoading");
                     this.totalPage = res.data.TotalPage 
                     this.totalRecord = res.data.TotalRecord 
                     this.Orders = res.data.Data;
-                    this.OrdersAll  = res.data.Data;
                 } 
             }catch(error){
                 console.log(error);

@@ -98,19 +98,23 @@
             </tr>
             <tr>
                 <th>Nhà sản xuất: </th>
-                <td>ABC</td>
+                <td>{{this.product.ProductBrandName}}</td>
             </tr>
             <tr>
                 <th>Chất liệu: </th>
-                <td>ABC</td>
+                <td>{{this.product.Material}}</td>
             </tr>
             <tr>
                 <th>Trọng lượng: </th>
-                <td>ABC</td>
+                <td>{{this.product.ProductWeight}} kg</td>
             </tr>
             <tr>
                 <th>Năm sản xuất: </th>
-                <td>ABC</td>
+                <td>{{this.product.YearOfProduce}}</td>
+            </tr>
+            <tr>
+                <th>Công dụng: </th>
+                <td>{{this.product.ProductUses}}</td>
             </tr>
             <tr>
                 <th>Mô tả: </th>
@@ -118,11 +122,12 @@
             </tr>
             <tr>
                 <th>Chính sách bảo hành: </th>
-                <td>Bảo hành tỏng vòng 30 ngày</td>
+                <td>Bảo hành 1 đổi 1 trong vòng 30 ngày</td>
             </tr>
 
         </table>
     </div>
+
   </div>
 </template>
 

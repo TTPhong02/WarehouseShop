@@ -117,4 +117,9 @@ namespace BE_WAREHOUSE.Core.Enum
         Active = 1,
         Unactive = 0,
     }
+    public enum VoucherType
+    {
+        Shipping = 0,
+        Price = 1,
+    }
 }
