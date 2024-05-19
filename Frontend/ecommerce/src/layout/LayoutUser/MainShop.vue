@@ -5,6 +5,7 @@
         <router-view name="ShopRouterView"></router-view>
     </div>
   </div>
+  
 </template>
 
 <script>

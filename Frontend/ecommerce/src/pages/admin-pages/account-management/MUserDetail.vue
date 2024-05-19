@@ -7,9 +7,7 @@
                     <th>
                         <input type="checkbox"  @click="selectAll" v-model="allSelected" class="checkAll">
                     </th>
-                    <th>Hình ảnh</th>
                     <th>Email</th>
-                    <th>Password</th>
                     <th>Họ tên</th>
                     <th>Giới tính</th>
                     <th>Ngày sinh</th>
@@ -22,9 +20,7 @@
             <tbody>
                 <tr v-for="item in Users" :key="item.UsersId" class="p-table__row">
                     <td ><input v-model="checkedIDs" @click="select" :value="item.UsersId" type="checkbox"></td>
-                    <td><img :src="checkImagePath(item.UsersId)" alt=""></td>
                     <td>{{item.Email}}</td>
-                    <td>{{item.Password}}</td>
                     <td>{{item.Fullname}}</td>
                     <td>{{this.helper.formatGender(item.Gender)}}</td>
                     <td>{{this.helper.formatDate(item.DateOfBirth)}}</td>

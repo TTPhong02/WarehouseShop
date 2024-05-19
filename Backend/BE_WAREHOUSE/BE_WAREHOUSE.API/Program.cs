@@ -3,6 +3,7 @@ using BE_WAREHOUSE.Core.AutoMapper;
 using BE_WAREHOUSE.Core.Interfaces.Base;
 using BE_WAREHOUSE.Core.Interfaces.Cart;
 using BE_WAREHOUSE.Core.Interfaces.Category;
+using BE_WAREHOUSE.Core.Interfaces.Excel;
 using BE_WAREHOUSE.Core.Interfaces.IAddress;
 using BE_WAREHOUSE.Core.Interfaces.Image;
 using BE_WAREHOUSE.Core.Interfaces.Order;
@@ -15,6 +16,7 @@ using BE_WAREHOUSE.Core.Services.Addresss;
 using BE_WAREHOUSE.Core.Services.Base;
 using BE_WAREHOUSE.Core.Services.Cart;
 using BE_WAREHOUSE.Core.Services.Category;
+using BE_WAREHOUSE.Core.Services.Excel;
 using BE_WAREHOUSE.Core.Services.Image;
 using BE_WAREHOUSE.Core.Services.Order;
 using BE_WAREHOUSE.Core.Services.Payment.VNPay;
@@ -92,6 +94,13 @@ builder.Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
 
 builder.Services.AddScoped<IVoucherService, VoucherService>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
+
+builder.Services.AddScoped<IViewedProductService, ViewedProductService>();
+builder.Services.AddScoped<IViewedProductRepository, ViewedProductRepository>();
+
+
+
+builder.Services.AddScoped<IOrderExportExcelService, OrderExportExcelService>();
 
 builder.Services.AddScoped<IVnPayServices, VnPayService>();
 

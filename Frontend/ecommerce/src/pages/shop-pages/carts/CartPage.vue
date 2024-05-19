@@ -32,7 +32,7 @@
                             </div>
                             <div class="cart-product-infor ">
                                 <div class="product-name">{{item.ProductName}}</div>
-                                <div class="product-description">{{item.ProductDescription}}</div>
+                                <div class="product-description">Số lượng còn lại : {{item.ProductStock}}</div>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2  cart-item-price">
@@ -44,9 +44,9 @@
                                 <input :value="item.Quantity" type="text" readonly>
                                 <button v-on:click="increaseQuantity(item.CartItemsId)">+</button>
                             </div>
-                            <div class="d-lg-none d-md-none col-sm-12 col-12 product-action">
-                                <i class="fa-solid fa-xmark"></i>
-                            </div>
+                            <span v-if="this.errorQuantity?.length > 0" class="red">
+                                {{this.errorQuantity}}
+                            </span>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-2 cart-item-sum">
                             <div class="product-sum product-price">{{formatMoney(item.ProductPrice * item.Quantity)}}</div>
@@ -99,9 +99,10 @@ export default {
             totalMoney: 0,
             cartItemSelected: [],
             allSelected:false,
+            errorQuantity:"",
         }
     },
-    created() {
+    mounted() {
         this.takeDataUsers();
         this.getCartItemsFormLocal();
     },
@@ -147,6 +148,16 @@ export default {
         }
     },
     methods: {
+        async checkCartItem(){
+            var arrayCartItem = this.cartItems;
+            for (const item of arrayCartItem) {
+                console.log(item);
+                if (item.ProductStock == 0) {
+                    console.log("abc");
+                    await this.deleteCartItems(item.CartItemsId);
+                }
+            }
+        },
         setLocalStorageCartSelect(){
             localStorageService.setItemToLocalStorage("CartSelected",this.cartItemSelected);
         },
@@ -173,15 +184,20 @@ export default {
             const formData = new FormData();
             var arrCartItems = this.cartItems;
             arrCartItems.forEach(item => {
-                if(item.CartItemsId == id && item.Quantity > 1 ){
-                    item.Quantity = item.Quantity - 1
-                    data.ProductId = item.ProductId;
-                    data.CartsId = item.CartsId;
-                    data.CartItemsId = id;
-                    data.Quantity = item.Quantity;
-                    formData.append("dataJson",JSON.stringify(data));
-                    cartItemsService.put(id,formData);
-                    localStorage.setItem("CartItems",JSON.stringify(arrCartItems)); 
+                if(item.CartItemsId == id ){
+                    item.Quantity = item.Quantity - 1;
+                    if(item.Quantity < 1){
+                        item.Quantity = 1;
+                        this.emitter.emit("showToast",this.Enum.ToastType.FAILED,"Số lượng không nhỏ hơn 0 !")
+                    }else{
+                        data.ProductId = item.ProductId;
+                        data.CartsId = item.CartsId;
+                        data.CartItemsId = id;
+                        data.Quantity = item.Quantity;
+                        formData.append("dataJson",JSON.stringify(data));
+                        cartItemsService.put(id,formData);
+                        localStorage.setItem("CartItems",JSON.stringify(arrCartItems)); 
+                    }
                 }
             });
             
@@ -194,12 +210,19 @@ export default {
             arrCartItems.forEach(item => {
                 if(item.CartItemsId == id){
                     item.Quantity = item.Quantity + 1
-                    data.ProductId = item.ProductId;
-                    data.CartsId = item.CartsId;
-                    data.CartItemsId = id;
-                    data.Quantity = item.Quantity;
-                    formData.append("dataJson",JSON.stringify(data));
-                     cartItemsService.put(id,formData);
+                    if(item.Quantity > item.ProductStock){
+                        item.Quantity = item.ProductStock
+                        this.emitter.emit("showToast",this.Enum.ToastType.FAILED,"Số lượng đã vượt quá số hàng còn lại !")
+                    }else{
+                        this.errorQuantity = "";
+                        data.ProductId = item.ProductId;
+                        data.CartsId = item.CartsId;
+                        data.CartItemsId = id;
+                        data.Quantity = item.Quantity;
+                        formData.append("dataJson",JSON.stringify(data));
+                        cartItemsService.put(id,formData);
+                    }
+                    
                 }
             });
             localStorage.setItem("CartItems",JSON.stringify(arrCartItems));          
@@ -207,14 +230,15 @@ export default {
         takeDataUsers(){
             this.users = JSON.parse(localStorage.getItem("User"));
         },
-        getCartItemsFormLocal(){
+        async getCartItemsFormLocal(){
             var item = localStorage.getItem("CartItems");
             if(item){
-                this.cartItems = JSON.parse(item);
+                 this.cartItems = await JSON.parse(item);
             }
             else{
                 this.cartItems = [];
             }
+            await this.checkCartItem();
         },
         
         pathImage(valueId){
@@ -312,12 +336,17 @@ export default {
     padding: 0px !important;
     font-style: italic;
     font-size: 14px;
+    width: 100%;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }
 .product-price{
         padding: 0px !important;
     font-size: 15px;
 }
 .product-name{
+
     font-weight: bold;
     padding: 0px !important;
     font-size: 17px;
@@ -368,7 +397,9 @@ export default {
     width: 100%;
     padding: 20px 0px ;
 }
-.cart-input-check{
+.cart-product-infor {
+    width: 100%;
+    overflow: hidden;
 
 }
 .cart-list-item{

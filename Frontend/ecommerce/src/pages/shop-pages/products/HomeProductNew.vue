@@ -10,22 +10,28 @@
         </div>
         <swiper :slides-per-view="5"
         :space-between="35" 
+        :pagination="{ clickable: true }"
+        :modules="modules"
         navigation
          class="row s-productnew-list"
          >
             <swiper-slide v-for="item in productNew" :key="item.ProductId" class="s-product-item">
                 <div class="s-product-image">
                     <img :src="checkImagePath(item.ProductId)" alt="">
-                <div class="tage-new">
-                    NEW
-                </div>
+                    <div class="tage-new">
+                        Mới nhất
+                    </div>
+                    <div v-if="item.ProductStock == 0" class="tage-sold">
+                        Hết
+                    </div>
+                
                 </div>
                 <div class="s-product-infor">
                     <div class="producthot-name">{{item.ProductName}}</div>
                     <div class="product-price">{{this.helper.formatMoney(item.ProductPrice)}}</div>                           
                 </div>
                 <div class="product-select">
-                    <router-link :to="'/product/' + item.ProductSlug" class="product-detail">
+                    <router-link @click="viewProduct(item.ProductId)" :to="'/product/' + item.ProductSlug" class="product-detail">
                         <i class="fa-regular fa-eye"></i>
                         Xem 
                     </router-link>
@@ -47,6 +53,7 @@ import 'swiper/css/navigation';
 import productService from '../../../utils/ProductService';
 import imagesService from '../../../utils/ImagesService';
 import cartItemsService from '../../../utils/CartItemsService';
+import viewedProductService from '../../../utils/ViewedProduct';
 export default {
     components: {
       Swiper,
@@ -66,6 +73,17 @@ export default {
         this.takeDataImages();
     },
     methods: {
+        async viewProduct(id){
+            try{
+                var params ={
+                    ProductId : id,
+                    UsersId : this.user.UsersId
+                }
+                await viewedProductService.viewProduct({params});
+            }catch(error){
+                console.log(error);
+            }
+        },
         async takeDataUsers(){
             this.user = await JSON.parse(localStorage.getItem("User"));
         },
@@ -86,18 +104,25 @@ export default {
             }
         },
         async addToCart(id){
+            this.viewProduct(id);
             if(!this.user){
                 location.assign("http://localhost:8080/login")
             }else{
                 var data = {};
                 data.ProductId = id;
-                data.Quantity = 1;
-                data.CartsId = this.user.CartsId;
-                await cartItemsService.insertCartItems(data);
-                this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Đã thêm vào giỏ hàng !")
-                var res = await cartItemsService.getByUserId(this.user.UsersId);
-                localStorage.setItem("CartItems",JSON.stringify(res.data));
-                this.emitter.emit("takeNumberOfCart");
+                var product  = await productService.getById(id);
+                if(product.data.ProductStock > 0){
+                    data.Quantity = 1;
+                    data.CartsId = this.user.CartsId;
+                    await cartItemsService.insertCartItems(data);
+                    this.emitter.emit("showToast",this.Enum.ToastType.SUCCESS,"Đã thêm vào giỏ hàng !")
+                    var res = await cartItemsService.getByUserId(this.user.UsersId);
+                    localStorage.setItem("CartItems",JSON.stringify(res.data));
+                    this.emitter.emit("takeNumberOfCart");
+                }
+                else{
+                    this.emitter.emit("showToast",this.Enum.ToastType.FAILED,"Sản phẩm đã hết !")
+                }
             }
         },
         checkImagePath(valueId) {
@@ -117,16 +142,19 @@ export default {
 
 <style scoped>
 .producthot-name{
+    white-space: nowrap; 
+    width: 170px;
+    overflow: hidden;
+    text-overflow: ellipsis; 
     font-weight: bold;
+    text-align: center;
 }
 .s-productnew-list{
     padding: 20px 0px;
     margin: 20px 0px;
     box-shadow: 0px 0px 30px 0px #ebecec;
 }
-.s-product-item{
-    margin: 0px 50px;
-}
+
 .swiper-button-prev{
     color: #a2c5d2 !important;
 }
@@ -137,13 +165,27 @@ export default {
     font-size: 16px;
     color: #fff;
 }
+.s-product-image img{
+    object-fit: cover;
+}
 .s-product-image{
     position: relative;
+}
+.tage-sold{
+    padding: 30px 30px;
+    border-radius: 50%;
+    background-color: rgba(56, 55, 55, 0.5);
+    position: absolute;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ccc;
+    top:80px;
+    right: 55px;
 }
 .tage-new{
     background-color: #00afef;
     position: absolute;
-    font-size: 17px;
+    font-size: 14px;
     font-weight: bold;
     padding: 3px 10px;
     color: #fff;

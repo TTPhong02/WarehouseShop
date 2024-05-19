@@ -31,6 +31,7 @@ namespace BE_WAREHOUSE.Infrastructure.Interfaces
         /// </returns>
         /// Created by : TTPhong (16/03/2023)
         Task<T?> GetByIdAsync<T>(Guid id);
+        Task<IEnumerable< T?>> GetByIdsAsync<T>(List<Guid> ids);
         /// <summary>
         /// Thực hiện thêm mới dữ liệu 
         /// </summary>

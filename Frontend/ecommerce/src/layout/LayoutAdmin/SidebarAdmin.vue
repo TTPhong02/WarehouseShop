@@ -46,17 +46,10 @@
                 </router-link>
                 <router-link to="/admin/voucher-management" class="p-sidebar__list--item">
                     <div class="p-sidebar__list--item--icon ">
-                        <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-ticket"></i>
                     </div>
                     <!-- <img src="../assets/img/add.png" alt="addicon"> -->
                     <div v-if="!isHidden" class="p-sidebar__list--item--title">Quản lý khuyến mãi</div>
-                </router-link>
-                <router-link to="/admin/feeback-management" class="p-sidebar__list--item">
-                    <div class="p-sidebar__list--item--icon ">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <!-- <img src="../assets/img/add.png" alt="addicon"> -->
-                    <div v-if="!isHidden" class="p-sidebar__list--item--title">Quản lý đánh giá</div>
                 </router-link>
 
             </div>

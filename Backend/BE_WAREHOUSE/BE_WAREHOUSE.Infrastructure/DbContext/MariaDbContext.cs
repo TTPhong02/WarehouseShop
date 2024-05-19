@@ -133,5 +133,15 @@ namespace BE_WAREHOUSE.Infrastructure.DbContext
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<T?>> GetByIdsAsync<T>(List<Guid> ids)
+        {
+            var className = typeof(T).Name;
+            var sql = $"SELECT * FROM view_{className} where {className}Id IN @{className}Id";
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add($"@{className}Id", ids);
+            var res = await Connection.QueryAsync<T>(sql, param: dynamicParameters);
+            return res;
+        }
     }
 }

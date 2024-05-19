@@ -2,7 +2,11 @@
 using BE_WAREHOUSE.Core.Entities;
 using BE_WAREHOUSE.Core.Enum;
 using BE_WAREHOUSE.Core.Interfaces.Base;
+using BE_WAREHOUSE.Core.Interfaces.Excel;
 using BE_WAREHOUSE.Core.Interfaces.Order;
+using BE_WAREHOUSE.Core.Model.Excel;
+using BE_WAREHOUSE.Core.Model.Revenue;
+using BE_WAREHOUSE.Core.Services.Excel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata;
@@ -14,10 +18,12 @@ namespace BE_WAREHOUSE.API.Controllers.Order
     {
         IOrdersService _ordersService;
         IOrdersRepository _ordersRepository;
-        public OrdersController(IBaseRepository<Orders> baseRepository, IBaseService<Orders> baseService, IOrdersService ordersService, IOrdersRepository ordersRepository) : base(baseRepository, baseService)
+        IOrderExportExcelService _orderExportExcelService;
+        public OrdersController(IBaseRepository<Orders> baseRepository, IBaseService<Orders> baseService, IOrdersService ordersService, IOrdersRepository ordersRepository, IOrderExportExcelService orderExportExcelService) : base(baseRepository, baseService)
         {
             _ordersService = ordersService;
             _ordersRepository = ordersRepository;
+            _orderExportExcelService= orderExportExcelService;
         }
         [HttpPost("Checkout")]
         public async Task<IActionResult> CheckOutAsync(OrderData orderData) 
@@ -108,6 +114,44 @@ namespace BE_WAREHOUSE.API.Controllers.Order
             var res = await _ordersRepository.FilterOrderByStatus(pageSize, pageNumber, orderStatus, paymentStatus, deliveryStatus, searchString);
             return Ok(res);
         }
+        [HttpPost("Export")]
+        public async Task<IActionResult> ExportToExcel([FromBody] ExcelRequest<Orders> excelRequest)
+        {
+            var contenType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
+            var fileName = "Danh sách đơn hàng";
+            if (excelRequest.EntityIds?.Count() > 0)
+            {
+                var bytes = await _orderExportExcelService.ExportListAsync(excelRequest);
+                return File(bytes, contenType, fileName);
+            }
+            var res = await _orderExportExcelService.ExportAllAsync(excelRequest);
+
+            return File(res, contenType, fileName);
+        }
+
+        [HttpPost("Export/[action]")]
+        public IActionResult ExportRevenueByTime(ExcelRequest<Orders> excelRequest)
+        {
+            var contenType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            var fileName = "Thống kê doanh thu";
+
+            var res = _orderExportExcelService.ExportRevenueByTime(excelRequest);
+
+            return File(res, contenType, fileName);
+        }
+
+        [HttpPost("Export/[action]")]
+        public IActionResult ExportRevenueByProduct(ExcelRequest<RevenueProduct> excelRequest)
+        {
+            var contenType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            var fileName = "Thống kê doanh thu";
+
+            var res = _orderExportExcelService.ExportRevenueByProduct(excelRequest);
+
+            return File(res, contenType, fileName);
+        }
     }
 }

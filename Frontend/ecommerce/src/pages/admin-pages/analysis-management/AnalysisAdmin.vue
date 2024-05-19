@@ -5,7 +5,7 @@
             <div class="analysis-header-title">Thống kê </div>
         </div>
         <div class="analysis-header-left">
-            <MButton className="p-button1" text="Xuất Excel"></MButton>
+            <MButton @click="exportRenvenueByTime()" className="p-button1" text="Xuất Excel"></MButton>
         </div>
     </div>
     <div class="row s-analysis-main">
@@ -97,6 +97,7 @@ import MButton from '../../../components/base/button/MButton.vue'
 import MCombobox from '../../../components/base/input/MCombobox.vue'
 import Calendar from 'primevue/calendar'
 import ordersService from '../../../utils/OrdersService'
+import { saveAs } from "file-saver";
 export default {
     components:{
         MButton,Chart,MCombobox,Calendar
@@ -156,6 +157,31 @@ export default {
         this.chartOptionsLine = this.setChartOptionsLine();
     },
     methods: {
+        async exportRenvenueByTime() {
+            try {
+                this.emitter.emit("loading");
+                const date = this.helper.formatDateJS(this.typeFilter.dateSelect[0]) +" - " + this.helper.formatDateJS(this.typeFilter.dateSelect[1])
+                const excelRequest = {
+                    TitleHeader: "Thống kê doanh thu "+ date,
+                    EntityIds: [],
+                    Data: this.listOrder,
+                    WorksheetName: "Thống kê doanh thu",
+                };
+                const res = await ordersService.exportRevenueByTime(excelRequest);
+                const blob = new Blob([res.data], {
+                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                });
+                var fileName = "Thống kê doanh thu";
+                if (res.status == 200) {
+                    this.emitter.emit("unloading");
+                    // Mở cửa sổ thoại mở thư mục và cho phép thay tên file
+                    saveAs(blob, fileName, { autoBom: false });
+                }
+            } catch (error) {
+                this.emitter.emit("handleApiError", error);
+                this.emitter.emit("unoading", false);
+            }
+        },
         async getListOrderByTime(){
             if(this.typeFilter.typeFilterSelected == "Năm" && this.typeFilter.dateSelect.length == 1){
                 var date = [];

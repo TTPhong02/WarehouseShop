@@ -4,7 +4,11 @@
     <router-view name="ShopRouterView"></router-view>
     <FooterShop></FooterShop>
     <MToastMessage></MToastMessage>
-
+    <df-messenger
+      chat-title="Hỗ trợ khách hàng"
+      agent-id="3d69f23e-a3ab-4242-90d8-eda26580989b"
+      language-code="en"
+    ></df-messenger>
   </div>
 </template>
 

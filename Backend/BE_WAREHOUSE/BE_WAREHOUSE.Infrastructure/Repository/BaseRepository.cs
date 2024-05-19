@@ -48,6 +48,12 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
             return res;
         }
 
+        public async  Task<IEnumerable<T>> GetByIdsAsync(List<Guid> ids)
+        {
+            var res = await _dbContext.GetByIdsAsync<T>(ids);
+            return res;
+        }
+
         public async Task<string> GetMaxCodeAsync()
         {
             var res = await _dbContext.GetMaxCodeAsync<T>();

@@ -307,10 +307,16 @@ td{
     color: #a2c5d2;
 }
 .productRelated-name{
+    width: 130px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    font-weight: bold;
     padding: 5px 0px;
     color: #000;
 }
 .s-productRelated-image img{
+    object-fit: cover;
     width: 150px;
     height: 150px;
 }
@@ -481,6 +487,7 @@ input[type="number"]::-webkit-inner-spin-button {
     align-items: center;
 }
 .product-image-main img{
+    object-fit: cover;
     width: 360px;
     height: 400px;
 }
@@ -489,6 +496,7 @@ input[type="number"]::-webkit-inner-spin-button {
     border-radius: 8px;
 }
 .product-list-image img {
+    object-fit: cover;
     width: 70px;
     height: 70px;
 }

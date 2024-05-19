@@ -299,6 +299,9 @@ export default {
 }
 </script>
 <style scoped>
+.p-table__row img{
+    object-fit: cover;
+}
     .p-button-table-option:hover{
         color: #a2c5d2;
     }

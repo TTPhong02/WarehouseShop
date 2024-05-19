@@ -26,6 +26,14 @@ namespace BE_WAREHOUSE.Core.Interfaces.Base
         /// Created by : TTPhong (18/03/2024)
         Task<T> GetByIdAsync(Guid id);
         /// <summary>
+        /// Thực hiện lấy thông tin bằng id 
+        /// </summary>
+        /// <returns>
+        /// trả về thông tin theo id
+        /// </returns>
+        /// Created by : TTPhong (18/03/2024)
+        Task<IEnumerable<T>> GetByIdsAsync(List<Guid> ids);
+        /// <summary>
         /// Thực hiện thêm mới dữ liệu 
         /// </summary>
         /// <returns>

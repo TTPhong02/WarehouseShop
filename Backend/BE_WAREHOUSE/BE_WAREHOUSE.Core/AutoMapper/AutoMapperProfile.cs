@@ -14,6 +14,7 @@ namespace BE_WAREHOUSE.Core.AutoMapper
         public AutoMapperProfile()
         {
             CreateMap<UserDTO, Users>();
+            CreateMap<Orders, OrderDto>();
         }
     }
 }

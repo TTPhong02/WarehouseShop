@@ -29,8 +29,32 @@
       "PackagePath": "staticwebassets\\images\\quat-de-ban-mini.jpg"
     },
     {
+      "Id": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\quat-dieu-hoa-apido.jpg",
+      "PackagePath": "staticwebassets\\images\\quat-dieu-hoa-apido.jpg"
+    },
+    {
       "Id": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\quat-dieu-hoa-mini-hoi-nuoc.jpg",
       "PackagePath": "staticwebassets\\images\\quat-dieu-hoa-mini-hoi-nuoc.jpg"
+    },
+    {
+      "Id": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\quat-hop-panasonic.jpg",
+      "PackagePath": "staticwebassets\\images\\quat-hop-panasonic.jpg"
+    },
+    {
+      "Id": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\quat-sac-comet.jpg",
+      "PackagePath": "staticwebassets\\images\\quat-sac-comet.jpg"
+    },
+    {
+      "Id": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\quat-san-asia.jpg",
+      "PackagePath": "staticwebassets\\images\\quat-san-asia.jpg"
+    },
+    {
+      "Id": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\quat-tran-panosonic.jpg",
+      "PackagePath": "staticwebassets\\images\\quat-tran-panosonic.jpg"
+    },
+    {
+      "Id": "D:\\ĐỒ ÁN\\Backend\\BE_WAREHOUSE\\BE_WAREHOUSE.API\\wwwroot\\images\\quat-treo-senko.jpg",
+      "PackagePath": "staticwebassets\\images\\quat-treo-senko.jpg"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.BE_WAREHOUSE.API.Microsoft.AspNetCore.StaticWebAssets.props",

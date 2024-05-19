@@ -51,7 +51,7 @@
             <!-- <MTextfield v-model="account.phoneNumber"  :required="true" textPlaceHolder="Số điện thoại/email"></MTextfield>
             <MTextfield v-model="account.password" :required="true" typeInput="password" textPlaceHolder="Mật khẩu"></MTextfield> -->
             <div class="p-login-action">
-                <router-link to="/forget" class="p-login-form-forget">Đã có tài khoản?</router-link>
+                <router-link to="/login" class="p-login-form-forget">Đã có tài khoản?</router-link>
             </div>
             <div class="p-login-form-button">
                 <MButton  @click="validateForm()" text="Đăng ký" className="p-button5"></MButton>

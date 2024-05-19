@@ -126,7 +126,7 @@ export default {
                 },
             ],
             filterData:{
-                pageSize:2,
+                pageSize:8,
                 pageNumber:1,
                 sortType:0,
                 minPrice:null,
@@ -340,7 +340,7 @@ export default {
     box-shadow: 0px 2px 46.41px 4.59px rgba(2,38,113,0.1);
     background-color: #fff;
     border-radius: 10px;
-    max-height: 800px;
+    max-height: 700px;
 }
 .categories-content-name{
     color: #a2c5d2;
@@ -408,6 +408,7 @@ color: #059ad0;
     flex-wrap: wrap ;
 }
 .categories-product-image img{
+    object-fit: cover;
     width: 170px;
     height: 170px;
 }

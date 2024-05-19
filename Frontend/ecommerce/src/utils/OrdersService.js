@@ -56,6 +56,43 @@ class OrdersService extends BaseService{
         const res = await this.baseAxios.get(`${this.baseUrl}/FilterOrderByStatus`,data);
         return res;
     }
+    async exportRecord(data) {
+        const res = await this.baseAxios.post(`${this.baseUrl}/Export`, data, {
+          responseType: "blob",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        return res;
+      }
+    
+      async exportRevenueByTime(data) {
+        const res = await this.baseAxios.post(
+          `${this.baseUrl}/Export/ExportRevenueByTime`,
+          data,
+          {
+            responseType: "blob",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(data);
+        return res;
+      }
+      async exportRevenueByProduct(data) {
+        const res = await this.baseAxios.post(
+          `${this.baseUrl}/Export/ExportRevenueByProduct`,
+          data,
+          {
+            responseType: "blob",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        return res;
+      }
 }
 const ordersService = new OrdersService();
 export default ordersService;

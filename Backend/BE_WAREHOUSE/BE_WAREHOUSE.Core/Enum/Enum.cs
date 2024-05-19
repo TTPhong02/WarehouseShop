@@ -57,7 +57,7 @@ namespace BE_WAREHOUSE.Core.Enum
         /// <summary>
         /// Đã lấy hàng
         /// </summary>
-        RECEIVED_THE_GOODS = 2,
+        DELIVERIED = 2,
     }
 
     /// <summary>
