@@ -1,5 +1,5 @@
 <template>
-    <div class="s-home-productnew">
+    <div v-if="this.show" class="s-home-productnew">
         <div class="s-productnew-wrap">
             <div class="productnew-wrap-title">
                 SẢN PHẨM MÀ BẠN THÍCH
@@ -64,11 +64,11 @@ export default {
             images:[],
             user:{},
             modules: [Navigation],
+            show:null,
         }
     },
     mounted() {
         this.takeDataUsers();
-
         this.takeDataImages();
     },
     methods: {
@@ -85,8 +85,12 @@ export default {
         },
         async takeDataUsers(){
             this.user = await JSON.parse(localStorage.getItem("User"));
-            console.log(this.user);
-            await this.takedataProduct();
+            if(this.user){
+                this.show = true;
+                await this.takedataProduct();
+            }else{
+                this.show = false
+            }
         },
         async takedataProduct(){
             try{

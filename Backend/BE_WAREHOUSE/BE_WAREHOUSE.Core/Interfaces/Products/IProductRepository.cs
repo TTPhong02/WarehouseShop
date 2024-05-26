@@ -1,4 +1,5 @@
-﻿using BE_WAREHOUSE.Core.Entities;
+﻿using BE_WAREHOUSE.Core.DTOs;
+using BE_WAREHOUSE.Core.Entities;
 using BE_WAREHOUSE.Core.Interfaces.Base;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace BE_WAREHOUSE.Core.Interfaces.Products
         Task<Product> GetProductBySlug(string slug);
         Task<IEnumerable<Product>> GetProductHot();
         Task<IEnumerable<Product>> GetProductByCategories(Guid id);
+        Task<IEnumerable<ProductOrderByTime>> GetProductInOrderByTime(List<DateTime> Date, Guid? CategoriesId);
         Task<PagingEntity<Product>> FilterProductByCategories(int pageSize,int pageNumber,double? minPrice,double? maxPrice, int sortType, string? searchString,string? slug);
+        Task<IEnumerable<Product>> SearchProduct(string searchString);
     }
 }

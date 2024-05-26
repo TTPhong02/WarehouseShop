@@ -138,8 +138,7 @@ export default {
             this.$emit('employees',newValue)
         },
     },
-    created() {
-        this.takeImages();
+    created() { 
         this.dialog = this.dialogData;
         this.filter = this.filterParent; 
         this.emitter.on("loadDataPagingCategories",this.loadDataPagingCategories);
@@ -211,6 +210,7 @@ export default {
          * Author:TTPhong(23/01/2024)
          */
           async loadDataPagingCategories(){
+            this.takeImages();
             try{
                 this.emitter.emit("showLoading");
                 let params = !this.filter.paging.searchString

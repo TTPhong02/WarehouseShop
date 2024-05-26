@@ -28,6 +28,15 @@ class ProductService extends BaseService{
         console.log(data);
         return res;
     }
+    async SearchProduct(data) {
+        const res = await this.baseAxios.get(`${this.baseUrl}/Search/${data}`);
+        console.log(data);
+        return res;
+    }
+    async getProductOrderByTime(data) {
+        const res = await this.baseAxios.post(`${this.baseUrl}/ProductOrdersTime`,data);
+        return res;
+    }
 }
 const productService = new ProductService();
 export default productService;

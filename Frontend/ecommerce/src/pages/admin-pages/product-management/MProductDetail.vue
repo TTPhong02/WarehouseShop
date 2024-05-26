@@ -152,7 +152,6 @@ export default {
         },
     },
     created() {
-        this.takeImages();
         this.dialog = this.dialogData;
         this.filter = this.filterParent; 
         this.emitter.on("loadDataPagingProduct",this.loadDataPagingProduct);
@@ -217,6 +216,7 @@ export default {
          * Author:TTPhong(23/01/2024)
          */
         async loadDataPagingProduct(){
+            this.takeImages();
             try{
                 this.emitter.emit("showLoading");
                 let params = !this.filter.paging.searchString

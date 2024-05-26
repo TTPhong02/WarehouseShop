@@ -1,6 +1,6 @@
 <template>
     <div class="p-textfield1">
-        <input @keydown="handleEnter"  class="p-textfield1__input" id="name" type="text" placeholder="Tìm kiếm" name="name" v-model="inputChild" >
+        <input @keydown="handleEnter"  class="p-textfield1__input" @focus="handleFocus" @blur="handleBlur" id="name" type="text" placeholder="Tìm kiếm" name="name" v-model="inputChild" >
         <div @click="onSearch()" class="p-textfield1-icon icon-search">
         </div>
     </div>
@@ -23,6 +23,7 @@ export default {
         }
     },
     watch:{
+
         /**
      * Hàm thực hiện lắng nghe khi inputchild thay đổi
      *  Author: TTPhong(22/01/2024)
@@ -32,6 +33,12 @@ export default {
         },  
     },
     methods: {
+    handleFocus() {
+      this.$emit('focus');
+    },
+    handleBlur() {
+      this.$emit('blur');
+    },
             /**
      * Hàm thực hiện gọi sự kiện tìm kiếm khi nhấn vào icon search
      *  Author: TTPhong(22/01/2024)

@@ -20,7 +20,7 @@
             <img src="../../assets/img/logo.png" alt="logo" />
           </router-link>
           <div class="col-lg-6 col-md-6 col-sm-0 mid-header-search">
-            <MTextSearch> </MTextSearch>
+            <SearchProduct> </SearchProduct>
           </div>
           <router-link
             to="/cart"
@@ -56,7 +56,7 @@
               <router-link to=""> Trang chủ </router-link>
             </div>
             <div class="list-item-nav">
-              <router-link to="/gioi-thieu"> Giới thiệu </router-link>
+              <router-link to="/"> Giới thiệu </router-link>
             </div>
             <div class="list-item-nav menu-father">
               <router-link to="">
@@ -74,7 +74,7 @@
               </router-link>
             </div>
             <div class="list-item-nav">
-              <router-link to="/tin-tuc"> Tin tức </router-link>
+              <router-link to="/"> Tin tức </router-link>
             </div>
             <div class="list-item-nav">
               <router-link :to="this.user ? '/profile/order' : '/login'">
@@ -82,12 +82,12 @@
               </router-link>
             </div>
             <div class="list-item-nav menu-father">
-              <router-link to="/he-thong-cua-hang">
+              <router-link to="/">
                 Hệ thống cửa hàng
                 <i class="fa-solid fa-caret-down"></i>
                 <div class="menu-child">
                   <div class="menu-child-list">
-                    <router-link to="danh-sach-cua-hang" class="child-item">
+                    <router-link to="" class="child-item">
                       Danh sách cửa hàng
                     </router-link>
                   </div>
@@ -107,14 +107,14 @@
 
 <script>
 import cartLocalStorageService from "../../js/storage/CartLocalStorage"
-import MTextSearch from "../../components/base/input/MTextSearch.vue";
 import usersService from '../../utils/UserService';
 import categoriesService from '../../utils/CategoriesService';
+import SearchProduct from '../../pages/admin-pages/product-management/SearchProduct.vue';
 
 export default {
   name: "HeadingShop",
   components: {
-    MTextSearch,
+    SearchProduct,
   },
   data() {
     return {

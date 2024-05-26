@@ -48,12 +48,12 @@
                 </div>
                 <div class="item-content">
                     <router-link to="/"> Trang chủ</router-link>
-                    <router-link to="/gioi-thieu"> Giới thiệu</router-link>
-                    <router-link to="/san-pham"> Sản phẩm</router-link>
-                    <router-link to="/tin-tuc"> Tin tức</router-link>
-                    <router-link to="/lien-he"> Liên hệ</router-link>
-                    <router-link to="/kiem-tra-don-hang"> Kiểm tra đơn hàng</router-link>
-                    <router-link to="/he-thong-khach-hang"> Hệ thống khách hàng</router-link>
+                    <router-link to="/"> Giới thiệu</router-link>
+                    <router-link to="/"> Sản phẩm</router-link>
+                    <router-link to="/"> Tin tức</router-link>
+                    <router-link to="/"> Liên hệ</router-link>
+                    <router-link :to="this.user ? '/profile/order' : '/login'"> Kiểm tra đơn hàng</router-link>
+                    <router-link to="/"> Hệ thống khách hàng</router-link>
                 </div>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-12 s-footer-item policy">

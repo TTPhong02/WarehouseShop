@@ -22,6 +22,8 @@ namespace BE_WAREHOUSE.Core.Interfaces.Order
         public Task<Double> GetSumRevenueByMonth(DateTime Date);
         public Task<Double> GetSumRevenueByDate(DateTime Date);
         public Task<Double> GetSumRevenueByYear(DateTime Date);
+
+        //public Task<RevenueData> GetRevenueDataByProuct()
         public Task<IEnumerable<UserOrders>> GetUserMostOrders();
 
         public Task<int> GetNumberTotalOrder(string type);

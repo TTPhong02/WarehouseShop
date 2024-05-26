@@ -128,11 +128,11 @@ export default {
         this.emitter.on("deleteEmployee",this.deleteEmployee);
     },
     mounted() {
-        document.title="Nhân viên | MISA CukCuk"
+        document.title="Danh mục | Admin"
 
     },
     beforeUnmount() {
-        document.title = "MISA CukCuk"
+        document.title = "Thowie"
     },
     watch:{
         FormMode(newValue){

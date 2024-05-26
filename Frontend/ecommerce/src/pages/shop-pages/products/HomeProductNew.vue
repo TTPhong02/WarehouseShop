@@ -142,8 +142,8 @@ export default {
 
 <style scoped>
 .producthot-name{
-    white-space: nowrap; 
     width: 170px;
+    white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
     font-weight: bold;

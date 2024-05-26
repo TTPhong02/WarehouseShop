@@ -122,10 +122,6 @@
                 <span for="">Thanh toán khi giao hàng (COD)</span>
             </div>
             <div class="checkout-label">
-                <input name="payment-method" v-model="this.paymentMethod" type="radio" :value="this.Enum.PaymentMethod.MOMO">
-                <span for="">Momo </span>
-            </div>
-            <div class="checkout-label">
                 <input name="payment-method" v-model="this.paymentMethod" type="radio" :value="this.Enum.PaymentMethod.VNPAY">
                 <span for="">VNPay</span>
             </div>

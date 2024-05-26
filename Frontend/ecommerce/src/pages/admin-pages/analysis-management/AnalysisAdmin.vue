@@ -2,9 +2,14 @@
   <div class="s-analysis">
     <div class="row s-analysis-header">
         <div class="analysis-header-left">
-            <div class="analysis-header-title">Thống kê </div>
+            <div class="analysis-header-title">Thống kê doanh thu theo :  </div>
+            <MCombobox :dataCombobox="dataCombobox.typeAnalysis.data" v-model="this.dataCombobox.typeAnalysis.selected"></MCombobox>
+            <div v-if="this.dataCombobox.typeAnalysis.selected == 'Sản phẩm'" class="combobox-product">
+                <div>Danh mục sản phẩm : </div>
+                <MCombobox :dataCombobox="this.dataCombobox.categories.data" v-model="this.dataCombobox.categories.selected"></MCombobox>
+            </div>
         </div>
-        <div class="analysis-header-left">
+        <div class="analysis-header-right">
             <MButton @click="exportRenvenueByTime()" className="p-button1" text="Xuất Excel"></MButton>
         </div>
     </div>
@@ -28,9 +33,9 @@
                     <Chart type="bar" width="620" height="300" :data="chartDataBar" :options="chartOptionsBar" class="h-30rem" />
                 </div>
             </div>
-            <div class="analysis-list-order">
+            <div v-if="this.dataCombobox.typeAnalysis.selected == 'Đơn hàng'" class="analysis-list-order">
                 <div class="list-order-header">
-                    Danh sách đơn hàng({{this.listOrder.length}})
+                    Danh sách đơn hàng
                 </div>
                 <div class="analysis-order-item">
                     <table>
@@ -45,6 +50,29 @@
                             <td>{{item.ReminiscentName}}</td>
                             <td>{{this.helper.formatMoney(item.TotalAmount)}}</td>
                             <td>{{this.helper.formatOrderStatus(item.OrdersStatus)}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div v-if="this.dataCombobox.typeAnalysis.selected == 'Sản phẩm'" class="analysis-list-order">
+                <div class="list-order-header">
+                    Danh sách sản phẩm
+                </div>
+                <div class="analysis-order-item">
+                    <table>
+                        <thead>
+                            <th>Mã SP  </th>
+                            <th>Tên SP</th>
+                            <th>Tên danh mục</th>
+                            <th>Số lượng bán</th>
+                            <th>Tổng tiền</th>
+                        </thead>
+                        <tr v-for="item in ListProduct" :key="item.ProductId">
+                            <td>{{item.ProductCode}}</td>
+                            <td>{{item.ProductName}}</td>
+                            <td>{{item.CategoriesName}}</td>
+                            <td>{{item.ProductSold}}</td>
+                            <td>{{this.helper.formatMoney(item.ProductRevenue)}}</td>
                         </tr>
                     </table>
                 </div>
@@ -98,6 +126,8 @@ import MCombobox from '../../../components/base/input/MCombobox.vue'
 import Calendar from 'primevue/calendar'
 import ordersService from '../../../utils/OrdersService'
 import { saveAs } from "file-saver";
+import productService from '../../../utils/ProductService'
+import categoriesService from '../../../utils/CategoriesService'
 export default {
     components:{
         MButton,Chart,MCombobox,Calendar
@@ -107,6 +137,8 @@ export default {
             totalRevenue:null,
             totalRevenueByTime:null,
             listOrder:[],
+            listCategories:[],
+            idCategories:null,
             numberCompare:{
                 data:[1,2,3,4,5],
                 numberCompareSelected:1
@@ -118,6 +150,17 @@ export default {
                 data:["Ngày","Tháng","Năm"],
                 typeFilterSelected:null,
             },
+            dataCombobox:{
+                typeAnalysis:{
+                    data:["Đơn hàng", "Sản phẩm"],
+                    selected: "Đơn hàng",
+                },
+                categories:{
+                    data:[],
+                    selected:null,
+                }
+                
+            },
             chartDataBar:null,
             chartOptionsBar:null,
             chartDataLine:null,
@@ -128,6 +171,21 @@ export default {
         }
     },
     watch:{
+        'dataCombobox.categories.selected' : function(newvalue){
+            if(newvalue){
+                this.listCategories.forEach(element => {
+                    if(newvalue == element.CategoriesName){
+                        this.idCategories = element.CategoriesId;
+                    }
+                });
+                this.setChartDataBar();
+            }
+        },
+        'dataCombobox.typeAnalysis.selected' : function(newvalue){
+            if(newvalue){
+                this.setChartDataBar();
+            }
+        },
         'typeFilter.typeFilterSelected':function(newValue){
             if(newValue == "Tháng"){
                 this.typeFilter.typeDateCombobox = 'month';
@@ -151,12 +209,23 @@ export default {
         this.typeFilter.typeFilterSelected = "Năm";
     },
     mounted() {
+        this.takeDataCategories();
         this.setChartDataBar();
         this.chartOptionsBar = this.setChartOptionsBar();
         this.chartDataLine = this.setChartDataLine();
         this.chartOptionsLine = this.setChartOptionsLine();
     },
     methods: {
+        async takeDataCategories(){
+            var res = await categoriesService.getAll();
+            const array = res.data;
+            this.listCategories = res.data;
+            const data = []
+            for (const item of array) {
+                await data.push(item.CategoriesName);
+            }
+            this.dataCombobox.categories.data = data;       
+        },
         async exportRenvenueByTime() {
             try {
                 this.emitter.emit("loading");
@@ -182,13 +251,43 @@ export default {
                 this.emitter.emit("unoading", false);
             }
         },
+        async getListProductByTime(){
+            if(this.typeFilter.typeFilterSelected == "Năm" && this.typeFilter.dateSelect.length == 1){
+                var date = [];
+                 date[1] = new Date(this.typeFilter.dateSelect[0]);
+                var endDate = new Date(this.typeFilter.dateSelect[0]);
+                endDate.setFullYear(endDate.getFullYear()-9);
+                date[0] = endDate;    
+                var res = await productService.getProductOrderByTime({
+                   Date:date,
+                    CategoriesId:this.idCategories
+                } );
+                this.ListProduct = res.data;
+                console.log(this.ListProduct);
+                this.totalRevenueByTime = 0;
+                this.ListProduct.forEach(element => {
+                    this.totalRevenueByTime += element.ProductRevenue;
+                });
+            }
+            else{
+                var resA = await productService.getProductOrderByTime({
+                    Date:this.typeFilter.dateSelect,
+                    CategoriesId:this.idCategories
+                } );
+                this.ListProduct = resA.data;
+                this.totalRevenueByTime = 0;
+                this.ListProduct.forEach(element => {
+                    this.totalRevenueByTime += element.ProductRevenue;
+                });
+            }
+        },
         async getListOrderByTime(){
             if(this.typeFilter.typeFilterSelected == "Năm" && this.typeFilter.dateSelect.length == 1){
                 var date = [];
                 date[1] = this.typeFilter.dateSelect[0];
                 var endDate = new Date(this.typeFilter.dateSelect[0]);
                 endDate.setFullYear(endDate.getFullYear()-9);
-                date[0] = endDate;     
+                date[0] = endDate;    
                 var res = await ordersService.getOrderbyTime(date);
                 this.listOrder = res.data;
                 this.totalRevenueByTime = 0;
@@ -211,7 +310,12 @@ export default {
         },
         async setChartDataBar() {
             const documentStyle = getComputedStyle(document.documentElement);
-            this.getListOrderByTime();
+            if(this.dataCombobox.typeAnalysis.selected== 'Sản phẩm'){
+
+                this.getListProductByTime();
+            }else{
+                this.getListOrderByTime();
+            }
             if(this.typeFilter.typeFilterSelected == "Năm"){
                 var res = await ordersService.getRevenueByYear(this.typeFilter.dateSelect);
                 const listData = res.data;
@@ -379,6 +483,11 @@ export default {
 </script>
 
 <style scoped>
+.combobox-product,
+.analysis-header-left{
+    display: flex;
+    align-items: center;
+}
 .list-order-header{ 
     font-size: 18px;
     color: #005979;

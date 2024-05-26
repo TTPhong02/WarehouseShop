@@ -80,4 +80,8 @@ export default {
 .categories-item{
     padding: 0px 10px;
 }
+.main-categories-list{
+    width: 1136px;
+    overflow: hidden;
+}
 </style>

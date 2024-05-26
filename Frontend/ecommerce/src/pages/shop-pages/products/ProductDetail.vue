@@ -71,6 +71,8 @@
         <div class="product-related-header">Sản phẩm liên quan</div>
         <swiper :slides-per-view="7"
         :space-between="35" 
+        :pagination="{ clickable: true }"
+        :modules="modules"
         navigation
          class="row s-productRelated-list"
          >

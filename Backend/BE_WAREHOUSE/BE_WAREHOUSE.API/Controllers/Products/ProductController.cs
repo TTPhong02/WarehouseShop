@@ -1,4 +1,5 @@
 ﻿using BE_WAREHOUSE.API.Controllers.Base;
+using BE_WAREHOUSE.Core.DTOs;
 using BE_WAREHOUSE.Core.Entities;
 using BE_WAREHOUSE.Core.Interfaces.Base;
 using BE_WAREHOUSE.Core.Interfaces.Products;
@@ -49,6 +50,18 @@ namespace BE_WAREHOUSE.API.Controllers.Products
         public async Task<IActionResult> SortAndSearchProductByCategories(int pageSize, int pageNumber,int sortType,double? minPrice,double? maxPrice, string? searchString,string? slug)
         {
             var res = await _repository.FilterProductByCategories(pageSize, pageNumber,minPrice,maxPrice, sortType, searchString,slug);
+            return Ok(res);
+        }
+        [HttpPost("ProductOrdersTime")]
+        public async Task<IActionResult> GetOrderByTime(ProductByTime productByTime)
+        {
+            var res = await _repository.GetProductInOrderByTime(productByTime.Date, productByTime.CategoriesId);
+            return Ok(res);
+        }
+        [HttpGet("Search/{searchString}")]
+        public async Task<IActionResult> SearchProduct( string searchString)
+        {
+            var res = await _repository.SearchProduct( searchString);
             return Ok(res);
         }
     }

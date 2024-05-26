@@ -1,4 +1,5 @@
-﻿using BE_WAREHOUSE.Core.Entities;
+﻿using BE_WAREHOUSE.Core.DTOs;
+using BE_WAREHOUSE.Core.Entities;
 using BE_WAREHOUSE.Core.Interfaces.Products;
 using BE_WAREHOUSE.Infrastructure.Interfaces;
 using Dapper;
@@ -79,6 +80,53 @@ namespace BE_WAREHOUSE.Infrastructure.Repository
             pagingEntity.TotalPage = parameters.Get<int>("@totalPage");
 
             return pagingEntity;
+        }
+
+        public async Task<IEnumerable<ProductOrderByTime>> GetProductInOrderByTime(List<DateTime> Date, Guid? CategoriesId)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            if (Date.Count > 1 && Date[1] != null)
+            {
+                parameters.Add("@StartDate", Date[0]);
+                parameters.Add("@EndDate", Date[1]);
+            }
+            else if (Date.Count > 1 && Date[1] == null)
+            {
+                DateTime startDate = Date[0].AddDays(1);
+                DateTime endDate = new DateTime(startDate.Year, 12, 31);
+                parameters.Add("@StartDate", Date[0]);
+                parameters.Add("@EndDate", endDate);
+            }
+            else
+            {
+                DateTime startDate = Date[0].AddDays(1);
+                DateTime endDate = new DateTime(startDate.Year, 12, 31);
+                parameters.Add("@StartDate", Date[0]);
+                parameters.Add("@EndDate", endDate);
+            }
+            if(CategoriesId != Guid.Empty)
+            {
+                parameters.Add("@CategoriesId", CategoriesId);
+            }
+            else
+            {
+                parameters.Add("@CategoriesId",null);
+            }
+            var sql = $"Proc_Get_Product_By_Time";
+
+            var res = await _dbContext.Connection.QueryAsync<ProductOrderByTime>(sql, parameters);
+
+            return res;
+        }
+
+        public async Task<IEnumerable<Product>> SearchProduct(string searchString)
+        {
+            var sql = "Proc_Search_Product";
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("SearchString", searchString);
+            var res = await _dbContext.Connection.QueryAsync<Product>(sql, parameters);
+            return res;
         }
     }
 }

@@ -424,7 +424,6 @@ export default {
                     deliveryStatus:this.filter.paging.deliveryStatus,
                     searchString:this.filter.paging.searchString,
                 };
-                console.log(params);
                 var res = await ordersService.filterOrderByStatus({params})
                 if(res.data){
                     this.emitter.emit("hiddenLoading");

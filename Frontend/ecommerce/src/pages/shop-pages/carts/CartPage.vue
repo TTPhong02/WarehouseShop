@@ -386,6 +386,7 @@ export default {
     padding: 0px 20px;
 }
 .cart-product-image img{
+    object-fit: cover;
     width: 100px;
     height: 110px;
 }
